@@ -8,10 +8,12 @@ public class PurchasedItem extends Item {
         this.quantity = quantity;
     }
 
+    /* Setter */
     public void setQuantity(int quantity){
         this.quantity = quantity;
     }
 
+    /* Getter */
     public int getQuantity(){
         return this.quantity;
     }

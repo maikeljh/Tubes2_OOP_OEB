@@ -1,39 +1,24 @@
-import UI.MainPage;
+import UI.*;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ApplicationBNMOStore extends Application {
-    private Group root;
-    private Scene scene;
-    private Menu menu;
-    private MenuBar menuBar;
     private TabPane tabPane;
+    private MainPage mainPage;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         // Create Group and new Scene
-        root = new Group();
-        scene = new Scene(root, 1280, 720);
+        Group root = new Group();
+        Scene scene = new Scene(root, 1280, 720);
 
         // Page Menu
-        menu = new Menu("Menu");
+        Menu menu = new Menu("Menu");
 
         /* Menu Items */
         // Members
@@ -52,6 +37,41 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
+            ListItemPage listItemPage = new ListItemPage(stage);
+            newTab.setContent(listItemPage);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
+
+        MenuItem addItemPage = new MenuItem("Add Item");
+        addItemPage.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("Add Item");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            AddItemPage addItemContent = new AddItemPage(stage);
+            newTab.setContent(addItemContent);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
+
+        MenuItem updateItemPage = new MenuItem("Update Item");
+        updateItemPage.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("Update Item");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            UpdateItemPage updateItemContent = new UpdateItemPage(stage);
+            newTab.setContent(updateItemContent);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
+
+        MenuItem detailItemPage = new MenuItem("Detail Item");
+        detailItemPage.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("Detail Item");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            ItemDetailPage detailItemContent = new ItemDetailPage(stage);
+            newTab.setContent(detailItemContent);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -99,13 +119,16 @@ public class ApplicationBNMOStore extends Application {
         // Add Menu Items to Menu
         menu.getItems().add(membersPage);
         menu.getItems().add(itemsPage);
+        menu.getItems().add(addItemPage);
+        menu.getItems().add(updateItemPage);
+        menu.getItems().add(detailItemPage);
         menu.getItems().add(cashierPage);
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
 
         // Main Menu Bar
-        menuBar = new MenuBar();
+        MenuBar menuBar = new MenuBar();
         menuBar.setPrefWidth(scene.getWidth());
         menuBar.getMenus().addAll(menu);
         menuBar.setStyle("-fx-background-color: #8CAEBB;");
@@ -120,7 +143,7 @@ public class ApplicationBNMOStore extends Application {
         mainTab.setStyle("-fx-background-color: #F3F9FB;");
 
         // Main Page
-        MainPage mainPage = new MainPage();
+        mainPage = new MainPage();
 
         // Setup Main Page Tab
         mainTab.setContent(mainPage);
@@ -142,9 +165,7 @@ public class ApplicationBNMOStore extends Application {
         stage.show();
 
         // Stop thread if application closed
-        stage.setOnCloseRequest(event -> {
-            mainPage.setStop(true);
-        });
+        stage.setOnCloseRequest(event -> mainPage.setStop(true));
     }
 
     public static void main(String[] args) {

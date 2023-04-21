@@ -12,6 +12,7 @@ public class Inventory<T> {
         this.neff = 0;
     }
 
+    /* Getter */
     public List<T> getList(){
         return this.list;
     }
@@ -24,6 +25,7 @@ public class Inventory<T> {
         return neff;
     }
 
+    /* Setter */
     public void setNeff(int neff){
         this.neff = neff;
     }

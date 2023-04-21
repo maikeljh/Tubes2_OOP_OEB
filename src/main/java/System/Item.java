@@ -1,6 +1,6 @@
 package System;
 
-import java.sql.Blob;
+import javafx.scene.image.Image;
 
 public class Item {
     protected String name;
@@ -8,9 +8,9 @@ public class Item {
     protected double sell_price;
     protected double buy_price;
     protected String category;
-    protected Blob image;
+    protected Image image;
 
-    public Item(String name, int stock, double sell_price, double buy_price, String category, Blob image){
+    public Item(String name, int stock, double sell_price, double buy_price, String category, Image image){
         this.name = name;
         this.stock = stock;
         this.sell_price = sell_price;
@@ -19,6 +19,7 @@ public class Item {
         this.image = image;
     }
 
+    /* Setter */
     public void setName(String name){
         this.name = name;
     }
@@ -39,10 +40,11 @@ public class Item {
         this.category = category;
     }
 
-    public void setImage(Blob image){
+    public void setImage(Image image){
         this.image = image;
     }
 
+    /* Getter */
     public String getName(){
         return this.name;
     }
@@ -63,7 +65,7 @@ public class Item {
         return this.category;
     }
 
-    public Blob getImage(){
+    public Image getImage(){
         return this.image;
     }
 }

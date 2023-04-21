@@ -1,5 +1,11 @@
-ApplicationBNMOStore.class
-UI\MainPage.class
 DataStore\DataStore.class
-System\Inventory.class
+UI\ItemDetailPage.class
 Controllers\MainPageController.class
+UI\MainPage.class
+UI\ListItemPage.class
+System\Inventory.class
+System\PurchasedItem.class
+ApplicationBNMOStore.class
+UI\UpdateItemPage.class
+System\Item.class
+UI\AddItemPage.class
