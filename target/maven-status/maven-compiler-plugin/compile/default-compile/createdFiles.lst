@@ -1,2 +1,5 @@
 ApplicationBNMOStore.class
 UI\MainPage.class
+DataStore\DataStore.class
+System\Inventory.class
+Controllers\MainPageController.class
