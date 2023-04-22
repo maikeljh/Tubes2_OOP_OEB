@@ -5,6 +5,8 @@ UI\ListItemPage.class
 UI\ListMemberPage.class
 System\Inventory.class
 System\FixedBill.class
+UI\AddMemberPage.class
+System\VIP.class
 System\Member.class
 Plugin\Plugin2$1.class
 System\SalesReport.class
@@ -17,6 +19,7 @@ DataStore\XMLAdapter.class
 System\PurchasedItem.class
 System\ReportItem.class
 ApplicationBNMOStore.class
+System\Customer.class
 UI\UpdateItemPage.class
 System\Item.class
 UI\AddItemPage.class

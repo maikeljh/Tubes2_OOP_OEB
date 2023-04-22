@@ -25,6 +25,7 @@ public class ApplicationBNMOStore extends Application {
         Menu menu = new Menu("Menu");
 
         /* Menu Items */
+
         // Members
         MenuItem membersPage = new MenuItem("Members");
         membersPage.setOnAction(event -> {
@@ -33,6 +34,18 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             ListMemberPage listMemberPage = new ListMemberPage(stage);
             newTab.setContent(listMemberPage);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
+
+        // Add Member
+        MenuItem addMember = new MenuItem("Add Member");
+        addMember.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("Add Member");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            AddMemberPage addMemberPage  = new AddMemberPage(stage);
+            newTab.setContent(addMemberPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -97,6 +110,7 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
+        menu.getItems().add(addMember);
 
         // Main Menu Bar
         MenuBar menuBar = new MenuBar();
