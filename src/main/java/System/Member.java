@@ -1,11 +1,12 @@
 package System;
 
-public class Member {
+public class Member extends Customer {
     private String name;
     private String phoneNumber;
     private int point;
 
     public Member(String name, String phoneNumber) {
+        super(id);
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.point = 0;
