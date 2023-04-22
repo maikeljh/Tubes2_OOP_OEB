@@ -37,4 +37,8 @@ public class Inventory<T> {
     public void removeElement(T element){
         this.list.remove(element);
     }
+    public void setElement(int idx, T element) { this.list.set(idx, element); }
+
+    public Boolean containsElement(T element){ return this.list.contains(element); }
+    public int getElementIdx(T element) { return this.list.indexOf(element); }
 }
