@@ -1,6 +1,6 @@
 package System;
 
-public class Member extends Customer {
+public class Member extends Customer implements Payment{
     private String name;
     private String phoneNumber;
     private int point;
@@ -34,5 +34,13 @@ public class Member extends Customer {
 
     public void setPoint(int point) {
         this.point = point;
+    }
+
+    public int calculatePoint(int total_price){
+        return (int) 0.01*total_price;
+    }
+
+    public double calculateDiscount(int total_price){
+        return (double) this.point;
     }
 }
