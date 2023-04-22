@@ -6,7 +6,7 @@ public class Member extends Customer {
     private int point;
 
     public Member(String name, String phoneNumber) {
-        super(id);
+        super();
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.point = 0;

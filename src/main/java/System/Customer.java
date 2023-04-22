@@ -1,7 +1,7 @@
 package System;
 
 public class Customer {
-    private static int id;
+    protected static int id;
 
     Customer() {
         this.id++;
