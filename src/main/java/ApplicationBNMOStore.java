@@ -69,6 +69,17 @@ public class ApplicationBNMOStore extends Application {
             tabPane.getSelectionModel().select(newTab);
         });
 
+        MenuItem cashierDetailPage = new MenuItem("Cashier Detail");
+        cashierDetailPage.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("Cashier Detail");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            CashierDetailPage cashierDetailTab = new CashierDetailPage(stage, newTab);
+            newTab.setContent(cashierDetailTab);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
+
         // Sales Report
         MenuItem salesReportPage = new MenuItem("Sales Report");
         salesReportPage.setOnAction(event -> {
@@ -108,6 +119,7 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
         menu.getItems().add(addMember);
+        menu.getItems().add(cashierDetailPage);
 
         // Main Menu Bar
         MenuBar menuBar = new MenuBar();
