@@ -89,6 +89,7 @@ public class AddMemberPage extends VBox {
         inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: #8CAEBB");
         inputName.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             inputName.setText("");
+            inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
         });
         inputName.setMinWidth(1194);
         inputName.setMinHeight(50);
@@ -111,6 +112,7 @@ public class AddMemberPage extends VBox {
         inputNumber.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: #8CAEBB");
         inputNumber.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             inputNumber.setText("");
+            inputNumber.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
         });
         inputNumber.setMinWidth(1194);
         inputNumber.setMinHeight(50);

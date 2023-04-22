@@ -4,12 +4,14 @@ UI\MainPage.class
 UI\ListItemPage.class
 UI\ListMemberPage.class
 System\Inventory.class
+UI\UpdateMemberPage.class
 System\FixedBill.class
 UI\AddMemberPage.class
 System\VIP.class
 System\Member.class
 Plugin\Plugin2$1.class
 System\SalesReport.class
+System\Payment.class
 System\Settings.class
 UI\ItemDetailPage.class
 DataStore\DataAdapter.class
