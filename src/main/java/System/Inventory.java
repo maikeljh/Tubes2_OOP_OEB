@@ -1,9 +1,15 @@
 package System;
 
+import jakarta.xml.bind.annotation.XmlAnyElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventory<T> {
+@XmlRootElement
+public class Inventory<T> implements Serializable{
+    @XmlAnyElement(lax = true)
     private List<T> list;
     private int neff;
 

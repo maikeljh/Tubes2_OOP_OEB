@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import DataStore.*;
-=======
->>>>>>> 0be1e83d458f2a59b3704eae29b7acf489d15a8e
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -138,11 +135,7 @@ public class ApplicationBNMOStore extends Application {
 
         // Stop thread if application closed
         stage.setOnCloseRequest(event -> mainPage.setStop(true));
-<<<<<<< HEAD
-
-//        Coba.tes();
-=======
->>>>>>> 0be1e83d458f2a59b3704eae29b7acf489d15a8e
+        Coba.tes();
     }
 
     public static void main(String[] args) {

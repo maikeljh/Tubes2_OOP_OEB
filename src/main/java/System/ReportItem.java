@@ -1,6 +1,8 @@
 package System;
 
-public class ReportItem extends PurchasedItem{
+import java.io.Serializable;
+
+public class ReportItem extends PurchasedItem {
     /* attributes */
     private double gross_profit;
     private double net_profit;

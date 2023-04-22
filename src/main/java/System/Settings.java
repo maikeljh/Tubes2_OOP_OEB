@@ -1,6 +1,8 @@
 package System;
 
-public class Settings {
+import java.io.Serializable;
+
+public class Settings implements Serializable {
     /* attributes */
     //private Plugin plugin_list[];
     private String format;
