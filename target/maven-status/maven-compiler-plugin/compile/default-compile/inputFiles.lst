@@ -1,37 +1,22 @@
-<<<<<<< HEAD
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\UI\ListMemberPage.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\DataStore\Coba.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\DataStore\XMLAdapter.java
+C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\Bill.java
+C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\FixedBill.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\UI\MainPage.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\UI\UpdateItemPage.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\DataStore\DataAdapter.java
+C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\Plugin\Plugin2.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\Item.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\UI\AddItemPage.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\ApplicationBNMOStore.java
+C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\Settings.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\UI\ItemDetailPage.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\UI\ListItemPage.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\Inventory.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\PurchasedItem.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\Member.java
+C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\ReportItem.java
+C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\System\SalesReport.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\Controllers\MainPageController.java
 C:\Users\marce\Documents\Semester 4\OOP\Tubes2_OOP_OEB\src\main\java\DataStore\DataStore.java
-=======
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\Controllers\MainPageController.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\Inventory.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\ApplicationBNMOStore.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\ReportItem.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\Settings.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\DataStore\DataStore.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\Plugin\Plugin2.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\SalesReport.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\UI\AddItemPage.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\UI\ItemDetailPage.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\DataStore\Coba.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\FixedBill.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\UI\ListItemPage.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\UI\UpdateItemPage.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\Bill.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\Item.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\UI\MainPage.java
-C:\Users\Dave Bahana\Downloads\Tubes 2 OOP - ReClone\Tubes2_OOP_OEB\src\main\java\System\PurchasedItem.java
->>>>>>> 0be1e83d458f2a59b3704eae29b7acf489d15a8e

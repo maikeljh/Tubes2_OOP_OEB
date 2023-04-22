@@ -3,6 +3,7 @@ package UI;
 import System.Member;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -34,6 +35,7 @@ public class ListMemberPage extends VBox {
         Button addButton = new Button("+ Add Member");
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
+        addButton.setCursor(Cursor.HAND);
 
         // Set add button to HBox
         addMemberButton.getChildren().add(addButton);
@@ -76,6 +78,16 @@ public class ListMemberPage extends VBox {
             // Set icon for history button
             ImageView historyIcon = new ImageView("/images/icon/historyButton.png");
 
+            // Set icon for update button
+            ImageView updateIcon = new ImageView("/images/icon/updateButton.png");
+
+            // Styling update button icon
+            updateIcon.setPreserveRatio(true);
+            updateIcon.setSmooth(true);
+            updateIcon.setCache(true);
+            updateIcon.setFitWidth(20);
+            updateIcon.setFitHeight(20);
+
             // Styling history button icon
             historyIcon.setPreserveRatio(true);
             historyIcon.setSmooth(true);
@@ -88,6 +100,14 @@ public class ListMemberPage extends VBox {
             historyButton.setPrefSize(27,27);
             historyButton.setStyle("-fx-background-color: #C8DFE8;");
             historyButton.setGraphic(historyIcon);
+            historyButton.setCursor(Cursor.HAND);
+
+            // Making a button for update
+            Button updateButton = new Button();
+            updateButton.setPrefSize(27,27);
+            updateButton.setStyle("-fx-background-color: #C8DFE8;");
+            updateButton.setGraphic(updateIcon);
+            updateButton.setCursor(Cursor.HAND);
 
             // Set vip Logo for every VIP member
             ImageView vipLogo = new ImageView("/images/icon/vipLogo.png");
@@ -113,6 +133,7 @@ public class ListMemberPage extends VBox {
 
             // Set buttons to memberButtons
             memberButtons.getChildren().add(historyButton);
+            memberButtons.getChildren().add(updateButton);
 
             // memberBox styling
             memberBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
