@@ -1,4 +1,3 @@
-import DataStore.Coba;
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -6,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import Plugin.Plugin2;
 
 
 public class ApplicationBNMOStore extends Application {
@@ -72,6 +72,7 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
+            newTab.setContent(new Plugin2());
         });
 
         // Settings
