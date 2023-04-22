@@ -1,12 +1,8 @@
 package System;
 
-<<<<<<< HEAD
 import java.io.Serializable;
 
-public class Member implements Serializable {
-=======
-public class Member extends Customer implements Payment{
->>>>>>> b9bd2be65ba702297b36b8ef8898f63c2e869b4c
+public class Member extends Customer implements Payment, Serializable{
     private String name;
     private String phoneNumber;
     private int point;
