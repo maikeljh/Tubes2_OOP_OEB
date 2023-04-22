@@ -1,17 +1,11 @@
 package System;
 
-<<<<<<< HEAD
-import java.io.Serializable;
-
-public class Member implements Serializable {
-=======
-public class Member extends Customer implements Payment{
->>>>>>> b9bd2be65ba702297b36b8ef8898f63c2e869b4c
+public class VIP extends Customer implements Payment{
     private String name;
     private String phoneNumber;
     private int point;
 
-    public Member(String name, String phoneNumber) {
+    public VIP(String name, String phoneNumber) {
         super();
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -47,6 +41,6 @@ public class Member extends Customer implements Payment{
     }
 
     public double calculateDiscount(int total_price){
-        return (double) this.point;
+        return (double) this.point + 0.1 * total_price;
     }
 }
