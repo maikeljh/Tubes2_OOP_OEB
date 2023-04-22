@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bill>
+    <bill_id>5678</bill_id>
+    <customer_id>1234</customer_id>
+    <date>2023-04-22</date>
+    <discount>10.0</discount>
+    <item>
+        <buyPrice>1.0</buyPrice>
+        <category>Drinks</category>
+        <image/>
+        <name>Cappucino</name>
+        <sellPrice>1.0</sellPrice>
+        <stock>1</stock>
+    </item>
+    <item>
+        <buyPrice>1.0</buyPrice>
+        <category>Drinks</category>
+        <image/>
+        <name>Cappucino</name>
+        <sellPrice>1.0</sellPrice>
+        <stock>1</stock>
+    </item>
+    <item>
+        <buyPrice>1.0</buyPrice>
+        <category>Drinks</category>
+        <image/>
+        <name>Cappucino</name>
+        <sellPrice>1.0</sellPrice>
+        <stock>1</stock>
+    </item>
+    <total_price>100.0</total_price>
+</bill>
