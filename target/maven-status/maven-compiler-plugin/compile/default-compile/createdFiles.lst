@@ -1,25 +1,19 @@
-<<<<<<< HEAD
-System\Member.class
-DataStore\DataStore.class
-UI\ItemDetailPage.class
-DataStore\DataAdapter.class
-Controllers\MainPageController.class
-=======
 System\Bill.class
 DataStore\DataStore.class
->>>>>>> 0be1e83d458f2a59b3704eae29b7acf489d15a8e
 UI\MainPage.class
 UI\ListItemPage.class
 UI\ListMemberPage.class
 System\Inventory.class
 System\FixedBill.class
+System\Member.class
 Plugin\Plugin2$1.class
 System\SalesReport.class
 System\Settings.class
-DataStore\Coba.class
 UI\ItemDetailPage.class
+DataStore\DataAdapter.class
 Controllers\MainPageController.class
 Plugin\Plugin2.class
+DataStore\XMLAdapter.class
 System\PurchasedItem.class
 System\ReportItem.class
 ApplicationBNMOStore.class
