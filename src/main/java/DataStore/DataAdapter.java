@@ -1,11 +1,10 @@
 package DataStore;
-import java.util.ArrayList;
-import java.util.List;
+import System.Inventory;
 
 public interface DataAdapter<T> {
     // Function to read data from a file
-    public ObjectList<T> readData(String filePath, Class<T> classType);
+    public Inventory<T> readData(String filePath, Class<?>[] classType);
 
     // Function to write data to a file
-    public void writeData(String filePath, Class<T> classType, T newData);
+    public void writeData(String filePath, Class<?>[] classType, Inventory<T> newData);
 }

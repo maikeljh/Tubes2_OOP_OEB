@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <bill>
-    <object>
+    <object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bill">
         <bill_id>5479</bill_id>
         <customer_id>5231</customer_id>
         <date>2023-02-22</date>
@@ -31,7 +31,7 @@
         </item>
         <total_price>150.0</total_price>
     </object>
-    <object>
+    <object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bill">
         <discount>0.0</discount>
         <item>
             <buyPrice>1.0</buyPrice>
