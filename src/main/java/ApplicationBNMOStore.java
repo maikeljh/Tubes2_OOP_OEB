@@ -38,41 +38,8 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab);
             newTab.setContent(listItemPage);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-        MenuItem addItemPage = new MenuItem("Add Item");
-        addItemPage.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("Add Item");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            AddItemPage addItemContent = new AddItemPage(stage);
-            newTab.setContent(addItemContent);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-        MenuItem updateItemPage = new MenuItem("Update Item");
-        updateItemPage.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("Update Item");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            UpdateItemPage updateItemContent = new UpdateItemPage(stage);
-            newTab.setContent(updateItemContent);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-        MenuItem detailItemPage = new MenuItem("Detail Item");
-        detailItemPage.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("Detail Item");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ItemDetailPage detailItemContent = new ItemDetailPage(stage);
-            newTab.setContent(detailItemContent);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -120,9 +87,6 @@ public class ApplicationBNMOStore extends Application {
         // Add Menu Items to Menu
         menu.getItems().add(membersPage);
         menu.getItems().add(itemsPage);
-        menu.getItems().add(addItemPage);
-        menu.getItems().add(updateItemPage);
-        menu.getItems().add(detailItemPage);
         menu.getItems().add(cashierPage);
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
@@ -167,8 +131,6 @@ public class ApplicationBNMOStore extends Application {
 
         // Stop thread if application closed
         stage.setOnCloseRequest(event -> mainPage.setStop(true));
-
-        Coba.tes();
     }
 
     public static void main(String[] args) {

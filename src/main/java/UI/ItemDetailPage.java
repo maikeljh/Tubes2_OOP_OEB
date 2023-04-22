@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -15,7 +16,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class ItemDetailPage extends VBox {
-    public ItemDetailPage(Stage stage){
+    public ItemDetailPage(Stage stage, Tab tab){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -32,13 +33,28 @@ public class ItemDetailPage extends VBox {
         updateButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         updateButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
 
+        // Add event on update button
+        updateButton.setOnAction(event -> {
+            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab);
+            tab.setContent(updateItemContent);
+        });
+
         // Create delete button
         Button deleteButton = new Button("Delete");
         deleteButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         deleteButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
 
+        // Create back button
+        Button backButton = new Button("Back");
+        backButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+        backButton.setStyle("-fx-background-color: #769295; -fx-text-fill: white;");
+        backButton.setOnAction(event -> {
+            ListItemPage listItemPage = new ListItemPage(stage, tab);
+            tab.setContent(listItemPage);
+        });
+
         // Set add button to HBox
-        rightButton.getChildren().addAll(updateButton, deleteButton);
+        rightButton.getChildren().addAll(backButton, updateButton, deleteButton);
         rightButton.setSpacing(15);
         HBox.setHgrow(rightButton, Priority.ALWAYS);
         rightButton.setAlignment(Pos.CENTER_RIGHT);

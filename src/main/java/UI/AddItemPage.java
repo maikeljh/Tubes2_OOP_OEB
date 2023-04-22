@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +22,7 @@ import java.io.File;
 public class AddItemPage extends VBox{
     private final ImageView itemImage;
 
-    public AddItemPage(Stage stage){
+    public AddItemPage(Stage stage, Tab tab){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -36,9 +37,22 @@ public class AddItemPage extends VBox{
         Button addButton = new Button("Save");
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
+        addButton.setOnAction(event -> {
+            ListItemPage listItemPage = new ListItemPage(stage, tab);
+            tab.setContent(listItemPage);
+        });
+
+        // Create cancel button
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+        cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
+        cancelButton.setOnAction(event -> {
+            ListItemPage listItemPage = new ListItemPage(stage, tab);
+            tab.setContent(listItemPage);
+        });
 
         // Set add button to HBox
-        rightButton.getChildren().add(addButton);
+        rightButton.getChildren().addAll(cancelButton, addButton);
         HBox.setHgrow(rightButton, Priority.ALWAYS);
         rightButton.setAlignment(Pos.CENTER_RIGHT);
 
@@ -134,6 +148,7 @@ public class AddItemPage extends VBox{
         sellPriceDetail.setSpacing(5);
         buyPriceDetail.setSpacing(5);
         stocksDetail.setSpacing(5);
+        rightButton.setSpacing(15);
 
         // Styling Label
         labelName.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
