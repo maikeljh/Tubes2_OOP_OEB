@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+import DataStore.*;
+=======
+>>>>>>> 0be1e83d458f2a59b3704eae29b7acf489d15a8e
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -28,6 +32,8 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
+            ListMemberPage listMemberPage = new ListMemberPage(stage);
+            newTab.setContent(listMemberPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -132,6 +138,11 @@ public class ApplicationBNMOStore extends Application {
 
         // Stop thread if application closed
         stage.setOnCloseRequest(event -> mainPage.setStop(true));
+<<<<<<< HEAD
+
+//        Coba.tes();
+=======
+>>>>>>> 0be1e83d458f2a59b3704eae29b7acf489d15a8e
     }
 
     public static void main(String[] args) {

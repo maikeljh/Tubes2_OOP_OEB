@@ -1,5 +1,8 @@
 package System;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.xml.bind.annotation.XmlTransient;
 import javafx.scene.image.Image;
 
 public class Item {
@@ -8,6 +11,8 @@ public class Item {
     protected double sell_price;
     protected double buy_price;
     protected String category;
+    @JsonIgnore
+    @XmlTransient
     protected Image image;
 
     public Item(String name, int stock, double sell_price, double buy_price, String category, Image image){
