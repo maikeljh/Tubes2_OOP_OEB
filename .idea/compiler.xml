@@ -9,8 +9,5 @@
         <module name="Tubes2_OOP_OEB" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Tubes2_OOP_OEB" target="16" />
-    </bytecodeTargetLevel>
   </component>
 </project>

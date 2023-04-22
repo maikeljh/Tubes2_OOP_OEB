@@ -1,7 +1,9 @@
 DataStore\DataStore.class
 DataStore\Coba.class
 UI\ItemDetailPage.class
+DataStore\DataAdapter.class
 Controllers\MainPageController.class
+DataStore\XMLAdapter.class
 UI\MainPage.class
 UI\ListItemPage.class
 System\Inventory.class
@@ -10,4 +12,5 @@ ApplicationBNMOStore.class
 UI\UpdateItemPage.class
 System\Item.class
 UI\AddItemPage.class
+DataStore\ObjectList.class
 DataStore\Bill.class
