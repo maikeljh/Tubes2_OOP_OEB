@@ -1,7 +1,16 @@
 package System;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.io.Serializable;
+
+@XmlRootElement
 public class PurchasedItem extends Item {
     protected int quantity;
+
+    public PurchasedItem(){
+        super();
+    }
 
     public PurchasedItem(Item e, int quantity){
         super(e.name, e.stock, e.sell_price, e.buy_price, e.category, e.image);

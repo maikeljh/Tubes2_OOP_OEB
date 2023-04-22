@@ -1,19 +1,22 @@
 package System;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import javafx.scene.image.Image;
 
-public class Item {
+import java.io.Serializable;
+
+@XmlRootElement
+public class Item implements Serializable {
     protected String name;
     protected int stock;
     protected double sell_price;
     protected double buy_price;
     protected String category;
-    @JsonIgnore
-    @XmlTransient
-    protected Image image;
+    protected transient Image image;
+
+    public Item(){}
 
     public Item(String name, int stock, double sell_price, double buy_price, String category, Image image){
         this.name = name;
@@ -70,6 +73,8 @@ public class Item {
         return this.category;
     }
 
+    @JsonIgnore
+    @XmlTransient
     public Image getImage(){
         return this.image;
     }

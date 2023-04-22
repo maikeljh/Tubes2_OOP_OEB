@@ -1,6 +1,8 @@
 package System;
 
-public class SalesReport {
+import java.io.Serializable;
+
+public class SalesReport implements Serializable {
     /* attributes */
     private double total_gross_profit;
     private double total_net_profit;

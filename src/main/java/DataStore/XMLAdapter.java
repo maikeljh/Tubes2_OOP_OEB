@@ -4,13 +4,13 @@ import jakarta.xml.bind.*;
 import System.Inventory;
 
 public class XMLAdapter<T> implements DataAdapter<T>{
-    public Inventory<T> readData(String filePath, Class<?>[] classType) {
+    public Inventory<T> readData(String filePath, Class<T> classT, Class<?>[] classTypes) {
         try {
             // Creating a File object
             File file = new File(filePath);
 
             // Creating a JAXB context
-            JAXBContext context = JAXBContext.newInstance(classType);
+            JAXBContext context = JAXBContext.newInstance(classTypes);
 
             // Create an Unmarshaller object from the JAXB context
             Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -25,13 +25,13 @@ public class XMLAdapter<T> implements DataAdapter<T>{
         return objectList;
     }
     @Override
-    public void writeData(String filePath, Class<?>[] classType, Inventory<T> newData) {
+    public void writeData(String filePath, Class<T> classT, Class<?>[] classTypes, Inventory<T> newData) {
         try {
             // Creating a File Object
             File file = new File(filePath);
 
             // Creating a JAXB context
-            JAXBContext context = JAXBContext.newInstance(classType);
+            JAXBContext context = JAXBContext.newInstance(classTypes);
 
             // Create a Marshaller object from the JAXB context
             Marshaller marshaller = context.createMarshaller();

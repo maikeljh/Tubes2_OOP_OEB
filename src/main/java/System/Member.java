@@ -1,6 +1,8 @@
 package System;
 
-public class Member extends Customer implements Payment{
+import java.io.Serializable;
+
+public class Member extends Customer implements Payment, Serializable{
     private String name;
     private String phoneNumber;
     private int point;

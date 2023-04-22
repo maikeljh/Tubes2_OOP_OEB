@@ -1,14 +1,21 @@
 package System;
 
-import java.time.LocalDate;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
-public class Bill {
+import java.io.Serializable;
+
+@XmlRootElement
+public class Bill implements Serializable {
     /* attributes */
     protected Inventory<PurchasedItem> items;
     protected double total_price;
     protected double discount;
-    protected LocalDate date;
+    protected String date;
     protected int customer_id;
+
+    public Bill(){
+        items = new Inventory<PurchasedItem>();
+    }
 
     /* methods */
     public void setTotalPrice(double total_price){
@@ -17,11 +24,14 @@ public class Bill {
     public void setDiscount(double discount){
         this.discount = discount;
     }
-    public void setDate(LocalDate date){
+    public void setDate(String date){
         this.date = date;
     }
     public void setCustomerID(int customer_id){
         this.customer_id = customer_id;
+    }
+    public void setItems(Inventory<PurchasedItem> list){
+        this.items = list;
     }
 
     public Inventory<PurchasedItem> getItems(){
@@ -33,7 +43,7 @@ public class Bill {
     public double getDiscount(){
         return discount;
     }
-    public LocalDate getDate(){
+    public String getDate(){
         return date;
     }
     public int getCustomerID(){
