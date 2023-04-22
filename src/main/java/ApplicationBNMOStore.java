@@ -1,3 +1,4 @@
+import DataStore.Coba;
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -166,6 +167,8 @@ public class ApplicationBNMOStore extends Application {
 
         // Stop thread if application closed
         stage.setOnCloseRequest(event -> mainPage.setStop(true));
+
+        Coba.tes();
     }
 
     public static void main(String[] args) {

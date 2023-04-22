@@ -1,4 +1,5 @@
 DataStore\DataStore.class
+DataStore\Coba.class
 UI\ItemDetailPage.class
 Controllers\MainPageController.class
 UI\MainPage.class
@@ -9,3 +10,4 @@ ApplicationBNMOStore.class
 UI\UpdateItemPage.class
 System\Item.class
 UI\AddItemPage.class
+DataStore\Bill.class
