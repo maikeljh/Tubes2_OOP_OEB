@@ -1,6 +1,5 @@
 package Plugin;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -29,13 +28,7 @@ public class Plugin2 extends BasePlugin {
         chart.getData().add(new PieChart.Data("Plums", 10));
         chart.getData().add(new PieChart.Data("Pears", 22));
         chart.getData().add(new PieChart.Data("Apples", 30));
-//        ObservableList<PieChart.Data> pieChartData =
-//                FXCollections.observableArrayList(
-//                        new PieChart.Data("Grapefruit", 13),
-//                        new PieChart.Data("Oranges", 25),
-//                        new PieChart.Data("Plums", 10),
-//                        new PieChart.Data("Pears", 22),
-//                        new PieChart.Data("Apples", 30));
+
         main.getChildren().add(chart);
         main.setAlignment(Pos.CENTER);
         main.setSpacing(5);
@@ -47,17 +40,16 @@ public class Plugin2 extends BasePlugin {
         caption.setTextFill(Color.DARKORANGE);
         caption.setStyle("-fx-font: 24 arial;");
         main.getChildren().add(caption);
+
         for (final PieChart.Data data : chart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
-                    new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent e) {
-                            caption.setTranslateX(e.getSceneX());
-                            caption.setTranslateY(e.getSceneY());
-                            caption.setText(String.valueOf(data.getPieValue()) + "%");
-                        }
+                    e -> {
+                        caption.setTranslateX(e.getSceneX());
+                        caption.setTranslateY(e.getSceneY());
+                        caption.setText(String.valueOf(data.getPieValue()) + "%");
                     });
         }
+
         return main;
     }
 }
