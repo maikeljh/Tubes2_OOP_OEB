@@ -2,14 +2,15 @@ UI\MainPage.class
 System\Inventory.class
 UI\UpdateMemberPage.class
 DataStore\JSONAdapter.class
-Plugin\Plugin2$1.class
 System\Payment.class
 System\Settings.class
 DataStore\Coba.class
 UI\ItemDetailPage.class
+UI\SettingsPage.class
 Plugin\PluginManager.class
 DataStore\XMLAdapter.class
 System\ReportItem.class
+Plugin\Plugin1.class
 System\Customer.class
 UI\UpdateItemPage.class
 System\Item.class

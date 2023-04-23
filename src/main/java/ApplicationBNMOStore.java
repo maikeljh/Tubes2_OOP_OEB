@@ -158,6 +158,8 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
+            SettingsPage settingsTab = new SettingsPage(stage);
+            newTab.setContent(settingsTab);
         });
 
         // Add Menu Items to Menu
