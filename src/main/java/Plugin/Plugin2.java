@@ -13,15 +13,21 @@ import javafx.scene.input.MouseEvent;
 public class Plugin2 extends VBox {
 
     public Plugin2(){
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("Grapefruit", 13),
-                        new PieChart.Data("Oranges", 25),
-                        new PieChart.Data("Plums", 10),
-                        new PieChart.Data("Pears", 22),
-                        new PieChart.Data("Apples", 30));
-        final PieChart chart = new PieChart(pieChartData);
+        PieChart chart = new PieChart();
         chart.setTitle("Imported Fruits");
+        // Add Data
+        chart.getData().add(new PieChart.Data("Grapefruit", 13));
+        chart.getData().add(new PieChart.Data("Oranges", 25));
+        chart.getData().add(new PieChart.Data("Plums", 10));
+        chart.getData().add(new PieChart.Data("Pears", 22));
+        chart.getData().add(new PieChart.Data("Apples", 30));
+//        ObservableList<PieChart.Data> pieChartData =
+//                FXCollections.observableArrayList(
+//                        new PieChart.Data("Grapefruit", 13),
+//                        new PieChart.Data("Oranges", 25),
+//                        new PieChart.Data("Plums", 10),
+//                        new PieChart.Data("Pears", 22),
+//                        new PieChart.Data("Apples", 30));
         getChildren().add(chart);
         setAlignment(Pos.CENTER);
         setSpacing(5);

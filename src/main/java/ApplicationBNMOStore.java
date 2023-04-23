@@ -1,3 +1,4 @@
+import Plugin.Plugin1;
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -110,7 +111,7 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
-            newTab.setContent(new Plugin2());
+            newTab.setContent(new Plugin1());
         });
 
         // Settings
