@@ -1,20 +1,22 @@
+import Plugin.BasePlugin;
+import Plugin.PluginManager;
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import Plugin.Plugin2;
-
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
+    private PluginManager pluginManager = new PluginManager();
 
     @Override
     public void start(Stage stage) {
@@ -113,13 +115,38 @@ public class ApplicationBNMOStore extends Application {
             FileChooser fileChooser = new FileChooser();
 
             // Set the extension filters
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JAR Files", "*.jar"));
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".jar Files", "*.jar"));
 
             // Show the file chooser dialog
             File selectedFile = fileChooser.showOpenDialog(stage);
 
             if (selectedFile != null) {
-                System.out.println("KONTOL");
+                try {
+                    pluginManager.loadPlugin(selectedFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+                int idx = pluginManager.getPlugins().size() - 1;
+                MenuItem newPage = new MenuItem(pluginManager.getPlugins().get(idx).getPluginName());
+
+                newPage.setOnAction(e -> {
+                    // Handle open menu item click
+                    BasePlugin newPlugin = pluginManager.getPlugins().get(idx);
+                    Tab newTab = new Tab(newPlugin.getPluginName());
+                    newTab.setStyle("-fx-background-color: #F3F9FB;");
+                    newTab.setContent(newPlugin.initialize());
+                    tabPane.getTabs().add(newTab);
+                    tabPane.getSelectionModel().select(newTab);
+                });
+
+                menu.getItems().add(newPage);
             }
         });
 
