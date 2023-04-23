@@ -1,11 +1,10 @@
 package UI;
 
+import DataStore.DataStore;
+import DataStore.XMLAdapter;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,10 +18,13 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+import System.Inventory;
+import System.Item;
+
 public class UpdateItemPage extends VBox {
     private final ImageView itemImage;
 
-    public UpdateItemPage(Stage stage, Tab tab){
+    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -37,17 +39,13 @@ public class UpdateItemPage extends VBox {
         Button addButton = new Button("Save");
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
-        addButton.setOnAction(event -> {
-            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab);
-            tab.setContent(detailItemContent);
-        });
 
         // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab);
+            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
             tab.setContent(detailItemContent);
         });
 
@@ -105,11 +103,11 @@ public class UpdateItemPage extends VBox {
         Label labelStocks = new Label("Stock");
 
         // Create item's attribute inputs
-        TextField name = new TextField("Cappucino");
-        TextField category = new TextField("Drink");
-        TextField sellPrice = new TextField("30000");
-        TextField buyPrice = new TextField("20000");
-        TextField stocks = new TextField("5");
+        TextField name = new TextField(item.getName());
+        TextField category = new TextField(item.getCategory());
+        TextField sellPrice = new TextField(Double.toString(item.getSellPrice()));
+        TextField buyPrice = new TextField(Double.toString(item.getBuyPrice()));
+        TextField stocks = new TextField(Integer.toString(item.getStock()));
 
         // Create VBox for each attribute inputs
         VBox nameDetail = new VBox();
@@ -184,5 +182,40 @@ public class UpdateItemPage extends VBox {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(40);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        // Add event
+        addButton.setOnAction(event -> {
+            String newName = name.getText();
+            String newStockText = stocks.getText();
+            String sellPriceText = sellPrice.getText();
+            String buyPriceText = buyPrice.getText();
+            String newCategory = category.getText();
+
+            if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
+                int newStock = Integer.parseInt(newStockText);
+                double sell_price = Double.parseDouble(sellPriceText);
+                double buy_price = Double.parseDouble(buyPriceText);
+
+                item.setName(newName);
+                item.setCategory(newCategory);
+                item.setBuyPrice(buy_price);
+                item.setSellPrice(sell_price);
+                item.setStock(newStock);
+
+                DataStore<Item> itemDS = new DataStore<Item>();
+                XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
+                itemDS.setAdapter(itemXML);
+                itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
+
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
+                tab.setContent(detailItemContent);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Fail to Add Item");
+                alert.setContentText("All fields must not empty!");
+                alert.showAndWait();
+            }
+        });
     }
 }

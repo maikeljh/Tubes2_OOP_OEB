@@ -1,11 +1,9 @@
 package UI;
 
+import DataStore.DataStore;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,10 +17,14 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+import DataStore.XMLAdapter;
+import System.Inventory;
+import System.Item;
+
 public class AddItemPage extends VBox{
     private final ImageView itemImage;
 
-    public AddItemPage(Stage stage, Tab tab){
+    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -37,17 +39,13 @@ public class AddItemPage extends VBox{
         Button addButton = new Button("Save");
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
-        addButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab);
-            tab.setContent(listItemPage);
-        });
 
         // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items);
             tab.setContent(listItemPage);
         });
 
@@ -191,5 +189,38 @@ public class AddItemPage extends VBox{
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(40);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        // Add Event
+        addButton.setOnAction(event -> {
+            String newName = name.getText();
+            String newStockText = stocks.getText();
+            String sellPriceText = sellPrice.getText();
+            String buyPriceText = buyPrice.getText();
+            String newCategory = category.getText();
+
+            if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
+                int newStock = Integer.parseInt(newStockText);
+                double sell_price = Double.parseDouble(sellPriceText);
+                double buy_price = Double.parseDouble(buyPriceText);
+
+                Item newItem = new Item(newName, newStock, sell_price, buy_price, newCategory, new Image("/images/dummy.png"));
+                items.addElement(newItem);
+
+                DataStore<Item> itemDS = new DataStore<Item>();
+                XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
+                itemDS.setAdapter(itemXML);
+                itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
+
+                ListItemPage listItemPage = new ListItemPage(stage, tab, items);
+                tab.setContent(listItemPage);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Fail to Add Item");
+                alert.setContentText("All fields must not empty!");
+                alert.showAndWait();
+            }
+
+        });
     }
 }

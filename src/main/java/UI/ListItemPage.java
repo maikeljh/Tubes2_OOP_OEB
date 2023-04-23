@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class ListItemPage extends VBox {
 
-    public ListItemPage(Stage stage, Tab tab){
+    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -35,7 +35,7 @@ public class ListItemPage extends VBox {
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setOnAction(event -> {
-            AddItemPage addItemContent = new AddItemPage(stage, tab);
+            AddItemPage addItemContent = new AddItemPage(stage, tab, items);
             tab.setContent(addItemContent);
         });
 
@@ -59,10 +59,9 @@ public class ListItemPage extends VBox {
         // Create Dummy List of Items
         int row = 0;
         int col = 0;
-        Inventory<Item> items = new Inventory<Item>();
-        for(int i = 0; i < 48; i++){
+        for(int i = 0; i < items.getNeff(); i++){
             Image image = new Image("/images/dummy.png");
-            items.addElement(new Item("Cappucino", 1, 1, 1, "Drinks", image));
+            items.getElement(i).setImage(image);
         }
 
         // Display List Of Items
@@ -95,7 +94,7 @@ public class ListItemPage extends VBox {
 
             // Add onclick event
             itemDisplay.setOnMouseClicked(event -> {
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
                 tab.setContent(detailItemContent);
             });
             // Add Item Display to Grid
@@ -111,8 +110,9 @@ public class ListItemPage extends VBox {
         ScrollPane scrollPane = new ScrollPane(grid);
 
         // Styling Scroll Pane
-        scrollPane.setMaxHeight(600);
-        scrollPane.setStyle("-fx-background-color: #F3F9FB;");
+        scrollPane.setPrefHeight(600);
+        scrollPane.setStyle("-fx-background: #F3F9FB; -fx-background-color: #F3F9FB;");
+
 
         // Add contents
         getChildren().add(hBox);

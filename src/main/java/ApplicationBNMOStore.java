@@ -1,3 +1,4 @@
+import DataStore.DataStore;
 import Plugin.BasePlugin;
 import Plugin.PluginManager;
 import UI.*;
@@ -11,15 +12,24 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
+import System.Inventory;
+import System.Item;
+import DataStore.XMLAdapter;
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
     private PluginManager pluginManager = new PluginManager();
+    private Inventory<Item> items = new Inventory<Item>();
 
     @Override
     public void start(Stage stage) {
+        // Read Data
+        DataStore<Item> itemDS = new DataStore<Item>();
+        XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
+        itemDS.setAdapter(itemXML);
+        items = itemDS.getDataAdapter().readData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class});
+
         // Create Group and new Scene
         Group root = new Group();
         Scene scene = new Scene(root, 1280, 720);
@@ -71,7 +81,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage, newTab);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab, items);
             newTab.setContent(listItemPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);

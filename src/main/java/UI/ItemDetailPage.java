@@ -1,5 +1,7 @@
 package UI;
 
+import DataStore.DataStore;
+import DataStore.XMLAdapter;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,8 +17,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import System.Inventory;
+import System.Item;
+
 public class ItemDetailPage extends VBox {
-    public ItemDetailPage(Stage stage, Tab tab){
+    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -35,7 +40,7 @@ public class ItemDetailPage extends VBox {
 
         // Add event on update button
         updateButton.setOnAction(event -> {
-            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab);
+            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items);
             tab.setContent(updateItemContent);
         });
 
@@ -44,12 +49,23 @@ public class ItemDetailPage extends VBox {
         deleteButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         deleteButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
 
+        deleteButton.setOnAction(event -> {
+            items.removeElement(item);
+
+            DataStore<Item> itemDS = new DataStore<Item>();
+            XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
+            itemDS.setAdapter(itemXML);
+            itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
+
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items);
+            tab.setContent(listItemPage);
+        });
         // Create back button
         Button backButton = new Button("Back");
         backButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         backButton.setStyle("-fx-background-color: #769295; -fx-text-fill: white;");
         backButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items);
             tab.setContent(listItemPage);
         });
 
@@ -67,7 +83,7 @@ public class ItemDetailPage extends VBox {
         detailLayout.setSpacing(20);
 
         // Item Name
-        Label name = new Label("Cappucino");
+        Label name = new Label(item.getName());
 
         // Others (All Other Attributes)
         HBox others = new HBox();
@@ -92,10 +108,10 @@ public class ItemDetailPage extends VBox {
         Label labelStocks = new Label("Stock");
 
         // Create item's attributes label
-        Label category = new Label("Drink");
-        Label sellPrice = new Label("30000");
-        Label buyPrice = new Label("20000");
-        Label stocks = new Label("5");
+        Label category = new Label(item.getCategory());
+        Label sellPrice = new Label(Double.toString(item.getSellPrice()));
+        Label buyPrice = new Label(Double.toString(item.getBuyPrice()));
+        Label stocks = new Label(Integer.toString(item.getStock()));
 
         // Create VBox for each attribute labels
         VBox categoryDetail = new VBox();

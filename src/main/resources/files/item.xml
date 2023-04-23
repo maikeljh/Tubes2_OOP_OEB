@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <item>
+        <buyPrice>2.0</buyPrice>
+        <category>Makanan</category>
+        <name>Anjay TES 2</name>
+        <sellPrice>1.0</sellPrice>
+        <stock>3</stock>
+    </item>
+    <neff>1</neff>
+</inventory>

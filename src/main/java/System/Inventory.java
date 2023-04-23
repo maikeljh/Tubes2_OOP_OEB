@@ -38,10 +38,12 @@ public class Inventory<T> implements Serializable{
 
     public void addElement(T element) {
         this.list.add(element);
+        this.neff++;
     }
 
     public void removeElement(T element){
         this.list.remove(element);
+        this.neff--;
     }
     public void setElement(int idx, T element) { this.list.set(idx, element); }
 
