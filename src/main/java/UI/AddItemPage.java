@@ -14,12 +14,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.embed.swing.SwingFXUtils;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import DataStore.XMLAdapter;
 import System.Inventory;
 import System.Item;
+
+import javax.imageio.ImageIO;
 
 public class AddItemPage extends VBox{
     private final ImageView itemImage;
@@ -197,14 +202,26 @@ public class AddItemPage extends VBox{
             String sellPriceText = sellPrice.getText();
             String buyPriceText = buyPrice.getText();
             String newCategory = category.getText();
+            Image newImage = itemImage.getImage();
 
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
                 int newStock = Integer.parseInt(newStockText);
                 double sell_price = Double.parseDouble(sellPriceText);
                 double buy_price = Double.parseDouble(buyPriceText);
 
-                Item newItem = new Item(newName, newStock, sell_price, buy_price, newCategory, new Image("/images/dummy.png"));
+                Item newItem = new Item(newName, newStock, sell_price, buy_price, newCategory, newImage);
                 items.addElement(newItem);
+
+                // Create Image File
+                File output = new File("src/main/resources/images/item/item" + newItem.getItemID() + ".png");
+                try {
+                    BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TRANSLUCENT);
+                    SwingFXUtils.fromFXImage(newImage, awtImage);
+                    ImageIO.write(awtImage, "png", output);
+
+                } catch (IOException e) {
+                    // Handle Error
+                }
 
                 DataStore<Item> itemDS = new DataStore<Item>();
                 XMLAdapter<Item> itemXML = new XMLAdapter<Item>();

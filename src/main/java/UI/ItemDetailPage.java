@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import System.Inventory;
 import System.Item;
 
+import java.io.File;
+
 public class ItemDetailPage extends VBox {
     public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items){
         // Create HBox for header
@@ -50,6 +52,11 @@ public class ItemDetailPage extends VBox {
         deleteButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
 
         deleteButton.setOnAction(event -> {
+            // Delete Image
+            File fileToDelete = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
+            fileToDelete.delete();
+
+            // Delete Item
             items.removeElement(item);
 
             DataStore<Item> itemDS = new DataStore<Item>();
@@ -89,7 +96,8 @@ public class ItemDetailPage extends VBox {
         HBox others = new HBox();
 
         // Item Image
-        ImageView itemImage = new ImageView(new Image("/images/dummy2.png"));
+        HBox imageBox = new HBox();
+        ImageView itemImage = new ImageView(item.getImage());
 
         // Styling Item Image
         itemImage.setPreserveRatio(true);
@@ -97,6 +105,8 @@ public class ItemDetailPage extends VBox {
         itemImage.setCache(true);
         itemImage.setFitWidth(612);
         itemImage.setFitHeight(350);
+        imageBox.setPrefWidth(612);
+        imageBox.setAlignment(Pos.CENTER);
 
         // Create VBox for Others
         VBox detail = new VBox();
@@ -127,7 +137,8 @@ public class ItemDetailPage extends VBox {
 
         // Add nodes to layouts
         detail.getChildren().addAll(categoryDetail, sellPriceDetail, buyPriceDetail, stocksDetail);
-        others.getChildren().addAll(itemImage, detail);
+        imageBox.getChildren().add(itemImage);
+        others.getChildren().addAll(imageBox, detail);
 
         // Spacing Layouts
         detail.setSpacing(10);

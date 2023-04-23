@@ -9,16 +9,20 @@ import java.io.Serializable;
 
 @XmlRootElement
 public class Item implements Serializable {
+    protected int item_id;
     protected String name;
     protected int stock;
     protected double sell_price;
     protected double buy_price;
     protected String category;
     protected transient Image image;
+    protected static int itemIDCount;
 
     public Item(){}
 
     public Item(String name, int stock, double sell_price, double buy_price, String category, Image image){
+        itemIDCount++;
+        this.item_id = itemIDCount;
         this.name = name;
         this.stock = stock;
         this.sell_price = sell_price;
@@ -28,6 +32,10 @@ public class Item implements Serializable {
     }
 
     /* Setter */
+    public void setItemID(int id){
+        this.item_id = id;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -53,6 +61,10 @@ public class Item implements Serializable {
     }
 
     /* Getter */
+    public int getItemID(){
+        return this.item_id;
+    }
+
     public String getName(){
         return this.name;
     }
@@ -77,5 +89,9 @@ public class Item implements Serializable {
     @XmlTransient
     public Image getImage(){
         return this.image;
+    }
+
+    public static void setItemIDCount(int item_count){
+        itemIDCount = item_count;
     }
 }

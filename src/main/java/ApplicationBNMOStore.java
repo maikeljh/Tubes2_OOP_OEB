@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -29,6 +30,13 @@ public class ApplicationBNMOStore extends Application {
         XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
         itemDS.setAdapter(itemXML);
         items = itemDS.getDataAdapter().readData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class});
+        if(items.getNeff() > 0){
+            Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
+            for(int i = 0; i < items.getNeff(); i++){
+                Image image = new Image("/images/item/item" + items.getElement(i).getItemID() + ".png");
+                items.getElement(i).setImage(image);
+            }
+        }
 
         // Create Group and new Scene
         Group root = new Group();
@@ -168,6 +176,8 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
+            SettingsPage settingsTab = new SettingsPage(stage);
+            newTab.setContent(settingsTab);
         });
 
         // Add Menu Items to Menu

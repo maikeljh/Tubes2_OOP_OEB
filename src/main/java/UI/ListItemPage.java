@@ -56,13 +56,8 @@ public class ListItemPage extends VBox {
         grid.setVgap(40);
         grid.prefWidthProperty().bind(hBox.widthProperty());
 
-        // Create Dummy List of Items
         int row = 0;
         int col = 0;
-        for(int i = 0; i < items.getNeff(); i++){
-            Image image = new Image("/images/dummy.png");
-            items.getElement(i).setImage(image);
-        }
 
         // Display List Of Items
         for (Item item : items.getList()) {
@@ -90,6 +85,8 @@ public class ListItemPage extends VBox {
             itemDisplay.setAlignment(Pos.CENTER);
             itemDisplay.setPadding(new Insets(5));
             itemDisplay.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px;");
+            itemDisplay.setPrefWidth(170);
+            itemDisplay.setPrefHeight(150);
             itemDisplay.setSpacing(5);
 
             // Add onclick event

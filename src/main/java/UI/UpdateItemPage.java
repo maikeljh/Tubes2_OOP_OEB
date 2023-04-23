@@ -2,6 +2,7 @@ package UI;
 
 import DataStore.DataStore;
 import DataStore.XMLAdapter;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -16,10 +17,14 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import System.Inventory;
 import System.Item;
+
+import javax.imageio.ImageIO;
 
 public class UpdateItemPage extends VBox {
     private final ImageView itemImage;
@@ -65,7 +70,7 @@ public class UpdateItemPage extends VBox {
         VBox leftDetail = new VBox();
 
         // Image Input
-        itemImage = new ImageView(new Image("/images/dummy3.png"));
+        itemImage = new ImageView(item.getImage());
 
         // Styling Image Input
         itemImage.setPreserveRatio(true);
@@ -190,6 +195,7 @@ public class UpdateItemPage extends VBox {
             String sellPriceText = sellPrice.getText();
             String buyPriceText = buyPrice.getText();
             String newCategory = category.getText();
+            Image newImage = itemImage.getImage();
 
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
                 int newStock = Integer.parseInt(newStockText);
@@ -201,6 +207,18 @@ public class UpdateItemPage extends VBox {
                 item.setBuyPrice(buy_price);
                 item.setSellPrice(sell_price);
                 item.setStock(newStock);
+                item.setImage(newImage);
+
+                // Create Image File
+                File output = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
+                try {
+                    BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    SwingFXUtils.fromFXImage(newImage, awtImage);
+                    ImageIO.write(awtImage, "png", output);
+
+                } catch (IOException e) {
+                    // Handle Error
+                }
 
                 DataStore<Item> itemDS = new DataStore<Item>();
                 XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
