@@ -3,9 +3,13 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import Plugin.Plugin2;
+
+import java.io.File;
 
 
 public class ApplicationBNMOStore extends Application {
@@ -103,14 +107,20 @@ public class ApplicationBNMOStore extends Application {
         });
 
         // Plugins
-        MenuItem pluginsPage = new MenuItem("Plugins");
+        MenuItem pluginsPage = new MenuItem("Add Plugin");
         pluginsPage.setOnAction(event -> {
             // Handle open menu item click
-            Tab newTab = new Tab("Plugins");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-            newTab.setContent(new Plugin2());
+            FileChooser fileChooser = new FileChooser();
+
+            // Set the extension filters
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JAR Files", "*.jar"));
+
+            // Show the file chooser dialog
+            File selectedFile = fileChooser.showOpenDialog(stage);
+
+            if (selectedFile != null) {
+                System.out.println("KONTOL");
+            }
         });
 
         // Settings
