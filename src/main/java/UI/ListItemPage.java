@@ -56,6 +56,7 @@ public class ListItemPage extends VBox {
         grid.setVgap(40);
         grid.prefWidthProperty().bind(hBox.widthProperty());
 
+        // Create item display
         int row = 0;
         int col = 0;
 
@@ -109,7 +110,6 @@ public class ListItemPage extends VBox {
         // Styling Scroll Pane
         scrollPane.setPrefHeight(600);
         scrollPane.setStyle("-fx-background: #F3F9FB; -fx-background-color: #F3F9FB;");
-
 
         // Add contents
         getChildren().add(hBox);

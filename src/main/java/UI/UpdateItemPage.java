@@ -190,6 +190,7 @@ public class UpdateItemPage extends VBox {
 
         // Add event
         addButton.setOnAction(event -> {
+            // Getting inputs
             String newName = name.getText();
             String newStockText = stocks.getText();
             String sellPriceText = sellPrice.getText();
@@ -197,11 +198,13 @@ public class UpdateItemPage extends VBox {
             String newCategory = category.getText();
             Image newImage = itemImage.getImage();
 
+            // Check if all inputs not empty
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
                 int newStock = Integer.parseInt(newStockText);
                 double sell_price = Double.parseDouble(sellPriceText);
                 double buy_price = Double.parseDouble(buyPriceText);
 
+                // Set new attribute values
                 item.setName(newName);
                 item.setCategory(newCategory);
                 item.setBuyPrice(buy_price);
@@ -212,22 +215,28 @@ public class UpdateItemPage extends VBox {
                 // Create Image File
                 File output = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
                 try {
+                    // Create buffer image
                     BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TYPE_INT_RGB);
                     SwingFXUtils.fromFXImage(newImage, awtImage);
+
+                    // Write image to file
                     ImageIO.write(awtImage, "png", output);
 
                 } catch (IOException e) {
                     // Handle Error
                 }
 
+                // Save Data
                 DataStore<Item> itemDS = new DataStore<Item>();
                 XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
                 itemDS.setAdapter(itemXML);
                 itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
 
+                // Change page
                 ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
                 tab.setContent(detailItemContent);
             } else {
+                // Show alert
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
                 alert.setHeaderText("Fail to Add Item");

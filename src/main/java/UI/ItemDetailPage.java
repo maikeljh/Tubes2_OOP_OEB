@@ -59,11 +59,13 @@ public class ItemDetailPage extends VBox {
             // Delete Item
             items.removeElement(item);
 
+            // Save data
             DataStore<Item> itemDS = new DataStore<Item>();
             XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
             itemDS.setAdapter(itemXML);
             itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
 
+            // Change page
             ListItemPage listItemPage = new ListItemPage(stage, tab, items);
             tab.setContent(listItemPage);
         });

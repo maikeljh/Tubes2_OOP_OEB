@@ -25,7 +25,7 @@ public class ApplicationBNMOStore extends Application {
 
     @Override
     public void start(Stage stage) {
-        // Read Data
+        // Read Item Data
         DataStore<Item> itemDS = new DataStore<Item>();
         XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
         itemDS.setAdapter(itemXML);
@@ -140,6 +140,7 @@ public class ApplicationBNMOStore extends Application {
 
             if (selectedFile != null) {
                 try {
+                    // Try to load plugin from selected jar file
                     pluginManager.loadPlugin(selectedFile);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -151,6 +152,7 @@ public class ApplicationBNMOStore extends Application {
                     e.printStackTrace();
                 }
 
+                // Create New Menu from Plugin
                 int idx = pluginManager.getPlugins().size() - 1;
                 MenuItem newPage = new MenuItem(pluginManager.getPlugins().get(idx).getPluginName());
 
@@ -159,6 +161,8 @@ public class ApplicationBNMOStore extends Application {
                     BasePlugin newPlugin = pluginManager.getPlugins().get(idx);
                     Tab newTab = new Tab(newPlugin.getPluginName());
                     newTab.setStyle("-fx-background-color: #F3F9FB;");
+
+                    // Set plugin to tab's content
                     newTab.setContent(newPlugin.initialize());
                     tabPane.getTabs().add(newTab);
                     tabPane.getSelectionModel().select(newTab);

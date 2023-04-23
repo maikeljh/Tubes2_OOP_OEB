@@ -197,6 +197,7 @@ public class AddItemPage extends VBox{
 
         // Add Event
         addButton.setOnAction(event -> {
+            // Getting Inputs
             String newName = name.getText();
             String newStockText = stocks.getText();
             String sellPriceText = sellPrice.getText();
@@ -204,33 +205,43 @@ public class AddItemPage extends VBox{
             String newCategory = category.getText();
             Image newImage = itemImage.getImage();
 
+            // Check if all inputs are not empty
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
+                // Parse Numeric Input
                 int newStock = Integer.parseInt(newStockText);
                 double sell_price = Double.parseDouble(sellPriceText);
                 double buy_price = Double.parseDouble(buyPriceText);
 
+                // Create new Item
                 Item newItem = new Item(newName, newStock, sell_price, buy_price, newCategory, newImage);
+
+                // Add item to inventory
                 items.addElement(newItem);
 
                 // Create Image File
                 File output = new File("src/main/resources/images/item/item" + newItem.getItemID() + ".png");
                 try {
+                    // Create buffer image
                     BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TRANSLUCENT);
                     SwingFXUtils.fromFXImage(newImage, awtImage);
-                    ImageIO.write(awtImage, "png", output);
 
+                    // Write image to file
+                    ImageIO.write(awtImage, "png", output);
                 } catch (IOException e) {
                     // Handle Error
                 }
 
+                // Save data to file
                 DataStore<Item> itemDS = new DataStore<Item>();
                 XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
                 itemDS.setAdapter(itemXML);
                 itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
 
+                // Change page
                 ListItemPage listItemPage = new ListItemPage(stage, tab, items);
                 tab.setContent(listItemPage);
             } else {
+                // Show alert
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
                 alert.setHeaderText("Fail to Add Item");
