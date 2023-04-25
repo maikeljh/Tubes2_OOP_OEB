@@ -1,6 +1,7 @@
 import DataStore.DataStore;
 import Plugin.BasePlugin;
 import Plugin.PluginManager;
+import System.Member;
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -16,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import System.Inventory;
 import System.Item;
 import DataStore.XMLAdapter;
+import System.VIP;
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
@@ -38,6 +40,18 @@ public class ApplicationBNMOStore extends Application {
             }
         }
 
+        // Read members data
+        Inventory<Member> members = new Inventory<Member>();
+        for (int i = 0; i < 20; i++) {
+            members.addElement(new Member("Marcel", "500537"));
+        }
+
+        // Read VIP data
+        Inventory<VIP> vips = new Inventory<VIP>();
+        for (int i =0; i < 10; i++) {
+            vips.addElement(new VIP("Niggas Are Drunk", "696969"));
+        }
+
         // Create Group and new Scene
         Group root = new Group();
         Scene scene = new Scene(root, 1280, 720);
@@ -53,20 +67,8 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListMemberPage listMemberPage = new ListMemberPage(stage);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, members, vips);
             newTab.setContent(listMemberPage);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-        // Add Member
-        MenuItem addMember = new MenuItem("Add Member");
-        addMember.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("Add Member");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            AddMemberPage addMemberPage  = new AddMemberPage(stage);
-            newTab.setContent(addMemberPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -191,7 +193,6 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
-        menu.getItems().add(addMember);
         menu.getItems().add(updateMember);
         menu.getItems().add(cashierDetailPage);
 
