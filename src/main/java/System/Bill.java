@@ -16,6 +16,7 @@ public class Bill implements Serializable {
     public Bill(){
         items = new Inventory<PurchasedItem>();
     }
+    public Bill(String date, int customer_id) { this.date = date; this.customer_id = customer_id; }
 
     /* methods */
     public void setTotalPrice(double total_price){

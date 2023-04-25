@@ -3,18 +3,10 @@ package Plugin;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
-public class BasePlugin {
-    private String pluginName;
+public class BasePlugin extends Plugin {
 
     public Node initialize(){
         return new VBox();
     }
 
-    public void setPluginName(String pluginName){
-        this.pluginName = pluginName;
-    }
-
-    public String getPluginName() {
-        return this.pluginName;
-    }
 }

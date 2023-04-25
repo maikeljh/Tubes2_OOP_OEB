@@ -10,6 +10,8 @@ public class FixedBill extends Bill{
     public FixedBill(){
         super();
     }
+    public FixedBill(int bill_id) { super(); this.bill_id = bill_id; }
+    public FixedBill(int bill_id, String date, int customer_id) { super(date, customer_id); this.bill_id = bill_id; }
 
     /* methods */
     public int getBillID(){

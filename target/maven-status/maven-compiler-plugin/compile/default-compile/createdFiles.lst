@@ -1,3 +1,4 @@
+Plugin\Plugin.class
 UI\MainPage.class
 System\Inventory.class
 UI\UpdateMemberPage.class
@@ -16,6 +17,7 @@ UI\UpdateItemPage.class
 System\Item.class
 System\Bill.class
 DataStore\DataStore.class
+UI\HistoryPage.class
 UI\ListItemPage.class
 UI\ListMemberPage.class
 Plugin\BasePlugin.class
@@ -26,10 +28,7 @@ System\Member.class
 System\SalesReport.class
 DataStore\DataAdapter.class
 Controllers\MainPageController.class
-Plugin\Plugin2.class
 System\PurchasedItem.class
 System\RegisteredCustomer.class
 UI\CashierDetailPage.class
-ApplicationBNMOStore.class
 DataStore\OBJAdapter.class
-UI\AddItemPage.class

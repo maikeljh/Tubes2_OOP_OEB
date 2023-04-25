@@ -1,4 +1,5 @@
 import DataStore.DataStore;
+import Plugin.Plugin;
 import Plugin.BasePlugin;
 import Plugin.PluginManager;
 import System.Member;
@@ -72,6 +73,12 @@ public class ApplicationBNMOStore extends Application {
             }
         }
 
+        // Read transactions
+        Inventory<FixedBill> transactions = new Inventory<FixedBill>();
+        for (int i=0; i<20; i++){
+            transactions.addElement(new FixedBill(i+1, "25/04/2023 21:21", i+1));
+        }
+
         // Create Group and new Scene
         Group root = new Group();
         Scene scene = new Scene(root, 1280, 720);
@@ -93,6 +100,18 @@ public class ApplicationBNMOStore extends Application {
             tabPane.getSelectionModel().select(newTab);
         });
 
+
+        // History
+        MenuItem history = new MenuItem("History");
+        history.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("History");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            HistoryPage historyPage = new HistoryPage(stage, newTab, "Harry Potter", transactions);
+            newTab.setContent(historyPage);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
 
         // Items
         MenuItem itemsPage = new MenuItem("Items");
@@ -169,12 +188,13 @@ public class ApplicationBNMOStore extends Application {
 
                 newPage.setOnAction(e -> {
                     // Handle open menu item click
-                    BasePlugin newPlugin = pluginManager.getPlugins().get(idx);
+                    Plugin newPlugin = pluginManager.getPlugins().get(idx);
                     Tab newTab = new Tab(newPlugin.getPluginName());
                     newTab.setStyle("-fx-background-color: #F3F9FB;");
 
                     // Set plugin to tab's content
-                    newTab.setContent(newPlugin.initialize());
+                    BasePlugin newBasePlugin = (BasePlugin) newPlugin;
+                    newTab.setContent(newBasePlugin.initialize());
                     tabPane.getTabs().add(newTab);
                     tabPane.getSelectionModel().select(newTab);
                 });
@@ -202,6 +222,7 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
+        menu.getItems().add(history);
         menu.getItems().add(cashierDetailPage);
 
         // Main Menu Bar

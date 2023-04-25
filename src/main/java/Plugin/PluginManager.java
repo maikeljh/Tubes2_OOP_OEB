@@ -13,7 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class PluginManager {
-    private List<BasePlugin> plugins;
+    private List<Plugin> plugins;
 
     public PluginManager() {
         plugins = new ArrayList<>();
@@ -40,13 +40,13 @@ public class PluginManager {
 
             // Load class
             Class<?> clazz = classLoader.loadClass(className);
-            if (BasePlugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
+            if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
                 // Create Plugin Class
-                Class<? extends BasePlugin> pluginClass = clazz.asSubclass(BasePlugin.class);
+                Class<? extends Plugin> pluginClass = clazz.asSubclass(Plugin.class);
 
                 // Construct Plugin
-                Constructor<? extends BasePlugin> constructor = pluginClass.getDeclaredConstructor();
-                BasePlugin plugin = constructor.newInstance();
+                Constructor<? extends Plugin> constructor = pluginClass.getDeclaredConstructor();
+                Plugin plugin = constructor.newInstance();
 
                 // Add plugin to list of plugins
                 plugins.add(plugin);
@@ -57,7 +57,7 @@ public class PluginManager {
         jar.close();
     }
 
-    public List<BasePlugin> getPlugins(){
+    public List<Plugin> getPlugins(){
         return plugins;
     }
 }
