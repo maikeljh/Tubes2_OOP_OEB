@@ -40,13 +40,13 @@ public class PluginManager {
 
             // Load class
             Class<?> clazz = classLoader.loadClass(className);
-            if (BasePlugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
+            if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
                 // Create Plugin Class
-                Class<? extends BasePlugin> pluginClass = clazz.asSubclass(BasePlugin.class);
+                Class<? extends Plugin> pluginClass = clazz.asSubclass(Plugin.class);
 
                 // Construct Plugin
-                Constructor<? extends BasePlugin> constructor = pluginClass.getDeclaredConstructor();
-                BasePlugin plugin = constructor.newInstance();
+                Constructor<? extends Plugin> constructor = pluginClass.getDeclaredConstructor();
+                Plugin plugin = constructor.newInstance();
 
                 // Add plugin to list of plugins
                 plugins.add(plugin);

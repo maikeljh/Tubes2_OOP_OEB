@@ -1,4 +1,5 @@
 import DataStore.DataStore;
+import Plugin.Plugin;
 import Plugin.BasePlugin;
 import Plugin.PluginManager;
 import System.Member;
@@ -179,12 +180,13 @@ public class ApplicationBNMOStore extends Application {
 
                 newPage.setOnAction(e -> {
                     // Handle open menu item click
-                    BasePlugin newPlugin = pluginManager.getPlugins().get(idx);
+                    Plugin newPlugin = pluginManager.getPlugins().get(idx);
                     Tab newTab = new Tab(newPlugin.getPluginName());
                     newTab.setStyle("-fx-background-color: #F3F9FB;");
 
                     // Set plugin to tab's content
-                    newTab.setContent(newPlugin.initialize());
+                    BasePlugin newBasePlugin = (BasePlugin) newPlugin;
+                    newTab.setContent(newBasePlugin.initialize());
                     tabPane.getTabs().add(newTab);
                     tabPane.getSelectionModel().select(newTab);
                 });
