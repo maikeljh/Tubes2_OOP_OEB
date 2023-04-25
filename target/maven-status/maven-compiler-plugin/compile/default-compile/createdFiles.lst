@@ -28,6 +28,7 @@ DataStore\DataAdapter.class
 Controllers\MainPageController.class
 Plugin\Plugin2.class
 System\PurchasedItem.class
+System\RegisteredCustomer.class
 UI\CashierDetailPage.class
 ApplicationBNMOStore.class
 DataStore\OBJAdapter.class

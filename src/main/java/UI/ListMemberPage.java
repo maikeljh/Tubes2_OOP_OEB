@@ -18,11 +18,13 @@ import javafx.scene.text.TextAlignment;
 import System.Inventory;
 import System.Item;
 import System.VIP;
+import System.RegisteredCustomer;
+import System.Customer;
 import javafx.stage.Stage;
 
 
 public class ListMemberPage extends VBox {
-    public ListMemberPage(Stage stage, Tab tab, Inventory<Member> members, Inventory<VIP> vips) {
+    public ListMemberPage(Stage stage, Tab tab, Inventory<Customer> customers) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -30,7 +32,7 @@ public class ListMemberPage extends VBox {
         HBox addMemberButton = new HBox();
 
         // Create title
-        Label title = new Label("Members");
+        Label title = new Label("Customers");
         title.setFont(Font.font("Montserrat", FontWeight.BOLD, 28));
 
         // Create add button
@@ -39,7 +41,7 @@ public class ListMemberPage extends VBox {
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setCursor(Cursor.HAND);
         addButton.setOnAction(event -> {
-            AddMemberPage addMemberContent = new AddMemberPage(stage, tab, members, vips);
+            AddMemberPage addMemberContent = new AddMemberPage(stage, tab, customers);
             tab.setContent(addMemberContent);
         });
 
@@ -57,24 +59,30 @@ public class ListMemberPage extends VBox {
         vbox.prefWidthProperty().bind(hBox.widthProperty());
         vbox.setPadding(new Insets(0, 30,30,0));
 
+        // Display list of customers
         int i = 1;
+        for (Customer customer : customers.getList()) {
+            // Create HBox for every customer
+            HBox customerBox = new HBox();
 
-        // Display list of VIP
-        for (VIP vip : vips.getList()) {
-            // Create HBox for every Member
-            HBox memberBox = new HBox();
-
-            // Create HBox for displaying member id and name
-            HBox memberDetails = new HBox();
+            // Create HBox for displaying customer id and name
+            HBox customerDetails = new HBox();
 
             // Create HBox for buttons
-            HBox memberButtons = new HBox();
+            HBox customerButtons = new HBox();
 
-            // Set Label for every member
-            Label details = new Label(i + "   " + vip.getName());
+            // Set Label for every customer
+            Label details = new Label();
+            if (customer.getClass().getSimpleName().equals("Customer")) {
+                details.setText(i + "   UnknownGuest" + customer.getId());
+            }
+            else {
+                details.setText(i + "   " + ((RegisteredCustomer) customer).getName());
+            }
+
+            i++;
             details.setFont(Font.font("Montserrat", 20));
             details.setPadding(new Insets(10));
-            i++;
 
             // Set icon for history button
             ImageView historyIcon = new ImageView("/images/icon/historyButton.png");
@@ -110,8 +118,17 @@ public class ListMemberPage extends VBox {
             updateButton.setGraphic(updateIcon);
             updateButton.setCursor(Cursor.HAND);
 
+            // Add event handler for updateButton
+            updateButton.setOnAction(event -> {
+                UpdateMemberPage updateMemberPage = new UpdateMemberPage(stage, tab, customer, customers);
+                tab.setContent(updateMemberPage);
+            });
+
             // Set vip Logo for every VIP member
             ImageView vipLogo = new ImageView("/images/icon/vipLogo.png");
+
+            // Set member logo for every member
+            ImageView memberLogo = new ImageView("/images/icon/memberLogo.png");
 
             // Styling vip Logo
             vipLogo.setPreserveRatio(true);
@@ -120,112 +137,74 @@ public class ListMemberPage extends VBox {
             vipLogo.setFitWidth(39);
             vipLogo.setFitHeight(26);
 
-            // Set label to memberDetails
-            memberDetails.getChildren().add(details);
-            memberDetails.getChildren().add(vipLogo);
-
-            // memberDetails styling
-            memberDetails.setSpacing(3);
-            HBox.setHgrow(memberDetails, Priority.ALWAYS);
-            memberDetails.setAlignment(Pos.CENTER_LEFT);
-
-            // memberButtons styling
-            memberButtons.setAlignment(Pos.CENTER_RIGHT);
-
-            // Set buttons to memberButtons
-            memberButtons.getChildren().add(historyButton);
-            memberButtons.getChildren().add(updateButton);
-
-            // memberBox styling
-            memberBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
-            memberBox.minWidth(1194);
-            memberBox.minHeight(50);
-
-            // Set memberDetails and memberButtons to memberBox
-            memberBox.getChildren().add(memberDetails);
-            memberBox.getChildren().add(memberButtons);
-
-            // Set memberBox to vbox
-            vbox.getChildren().addAll(memberBox);
-        }
-
-        // Display list of Members
-        for (Member member : members.getList()) {
-            // Create HBox for every Member
-            HBox memberBox = new HBox();
-
-            // Create HBox for displaying member id and name
-            HBox memberDetails = new HBox();
-
-            // Create HBox for buttons
-            HBox memberButtons = new HBox();
-
-            // Set Label for every member
-            Label details = new Label(i + "   " + member.getName());
-            details.setFont(Font.font("Montserrat", 20));
-            details.setPadding(new Insets(10));
-            i++;
-
-            // Set icon for history button
-            ImageView historyIcon = new ImageView("/images/icon/historyButton.png");
-
-            // Set icon for update button
-            ImageView updateIcon = new ImageView("/images/icon/updateButton.png");
-
-            // Styling update button icon
-            updateIcon.setPreserveRatio(true);
-            updateIcon.setSmooth(true);
-            updateIcon.setCache(true);
-            updateIcon.setFitWidth(20);
-            updateIcon.setFitHeight(20);
-
-            // Styling history button icon
-            historyIcon.setPreserveRatio(true);
-            historyIcon.setSmooth(true);
-            historyIcon.setCache(true);
-            historyIcon.setFitWidth(27);
-            historyIcon.setFitHeight(27);
-
-            // Making a button for history
-            Button historyButton = new Button();
-            historyButton.setPrefSize(27,27);
-            historyButton.setStyle("-fx-background-color: #C8DFE8;");
-            historyButton.setGraphic(historyIcon);
-            historyButton.setCursor(Cursor.HAND);
-
-            // Making a button for update
-            Button updateButton = new Button();
-            updateButton.setPrefSize(27,27);
-            updateButton.setStyle("-fx-background-color: #C8DFE8;");
-            updateButton.setGraphic(updateIcon);
-            updateButton.setCursor(Cursor.HAND);
+            // Styling member Logo
+            memberLogo.setPreserveRatio(true);
+            memberLogo.setSmooth(true);
+            memberLogo.setCache(true);
+            memberLogo.setFitWidth(73);
+            memberLogo.setFitHeight(24);
 
             // Set label to memberDetails
-            memberDetails.getChildren().add(details);
+            customerDetails.getChildren().add(details);
+            if (customer.getClass().getSimpleName().equals("Member")) {
+                customerDetails.getChildren().add(memberLogo);
+            }
+            else if (customer.getClass().getSimpleName().equals("VIP")) {
+                customerDetails.getChildren().add(memberLogo);
+                customerDetails.getChildren().add(vipLogo);
+            }
 
-            // memberDetails styling
-            memberDetails.setSpacing(3);
-            HBox.setHgrow(memberDetails, Priority.ALWAYS);
-            memberDetails.setAlignment(Pos.CENTER_LEFT);
+            // customerDetails styling
+            customerDetails.setSpacing(3);
+            HBox.setHgrow(customerDetails, Priority.ALWAYS);
+            customerDetails.setAlignment(Pos.CENTER_LEFT);
 
-            // memberButtons styling
-            memberButtons.setAlignment(Pos.CENTER_RIGHT);
+            // historyButton styling
+            if (customer.getClass().getSimpleName().equals("Member") || customer.getClass().getSimpleName().equals("VIP")) {
+                if (((RegisteredCustomer) customer).getActiveStatus()) {
+                    historyButton.setStyle("-fx-background-color: #98CBDE");
+                }
+                else {
+                    historyButton.setStyle("-fx-background-color: #D9D9D9");
+                }
+            }
 
-            // Set buttons to memberButtons
-            memberButtons.getChildren().add(historyButton);
-            memberButtons.getChildren().add(updateButton);
+            // customerButtons styling
+            customerButtons.setAlignment(Pos.CENTER_RIGHT);
+
+            // Set buttons to customerButtons
+            customerButtons.getChildren().add(historyButton);
+            if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
+                if (((RegisteredCustomer) customer).getActiveStatus()) {
+                    updateButton.setStyle("-fx-background-color: #98CBDE");
+                }
+                else {
+                    updateButton.setStyle("-fx-background-color: #D9D9D9");
+                }
+                customerButtons.getChildren().add(updateButton);
+            }
 
             // memberBox styling
-            memberBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
-            memberBox.minWidth(1194);
-            memberBox.minHeight(50);
+            if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
+                if (((RegisteredCustomer) customer).getActiveStatus()) {
+                    customerBox.setStyle("-fx-background-color: #98CBDE; -fx-background-radius: 10px");
+                }
+                else {
+                    customerBox.setStyle("-fx-background-color: #D9D9D9; -fx-background-radius: 10px");
+                }
+            }
+            else {
+                customerBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
+            }
+            customerBox.minWidth(1194);
+            customerBox.minHeight(50);
 
             // Set memberDetails and memberButtons to memberBox
-            memberBox.getChildren().add(memberDetails);
-            memberBox.getChildren().add(memberButtons);
+            customerBox.getChildren().add(customerDetails);
+            customerBox.getChildren().add(customerButtons);
 
             // Set memberBox to vbox
-            vbox.getChildren().addAll(memberBox);
+            vbox.getChildren().addAll(customerBox);
         }
 
         // Create Scroll Pane for VBox

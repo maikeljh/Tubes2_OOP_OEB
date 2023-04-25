@@ -2,47 +2,12 @@ package System;
 
 import java.io.Serializable;
 
-public class Member extends Customer implements Payment, Serializable{
-    private String name;
-    private String phoneNumber;
-    private int point;
-
-    public Member(String name, String phoneNumber) {
-        super();
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.point = 0;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public int getPoint() {
-        return this.point;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
-    }
-
-    public int calculatePoint(int total_price){
-        return (int) 0.01*total_price;
+public class Member extends RegisteredCustomer {
+    public Member(int customerId, String name, String phoneNumber, FixedBill bill) {
+        super(customerId, name, phoneNumber, bill);
     }
 
     public double calculateDiscount(int total_price){
-        return (double) this.point;
+        return (double) total_price - (double) this.point;
     }
 }

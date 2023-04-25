@@ -17,7 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 import System.Inventory;
 import System.Item;
 import DataStore.XMLAdapter;
+import System.RegisteredCustomer;
+import System.Customer;
 import System.VIP;
+import System.FixedBill;
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
@@ -40,16 +43,33 @@ public class ApplicationBNMOStore extends Application {
             }
         }
 
-        // Read members data
-        Inventory<Member> members = new Inventory<Member>();
-        for (int i = 0; i < 20; i++) {
-            members.addElement(new Member("Marcel", "500537"));
-        }
+        FixedBill bill2 = new FixedBill();
+        bill2.setTotalPrice(100.00);
+        bill2.setDiscount(10.00);
+        bill2.setDate("2023-2-12");
+        bill2.setCustomerID(234);
+        bill2.setBillID(5679);
 
-        // Read VIP data
-        Inventory<VIP> vips = new Inventory<VIP>();
-        for (int i =0; i < 10; i++) {
-            vips.addElement(new VIP("Niggas Are Drunk", "696969"));
+        // Read customers data
+        Inventory<Customer> customers = new Inventory<Customer>();
+        for (int i = 0; i < 40; i++) {
+            if (i > 34) {
+                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
+                if (i % 3 == 0) {
+                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
+                }
+            }
+
+            else if (i <= 34 && i >= 25) {
+                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
+                if (i % 3 == 0) {
+                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
+                }
+            }
+
+            else {
+                customers.addElement(new Customer(bill2));
+            }
         }
 
         // Create Group and new Scene
@@ -67,23 +87,12 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, members, vips);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers);
             newTab.setContent(listMemberPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
 
-        // Update Member
-        MenuItem updateMember = new MenuItem("Update Member");
-        updateMember.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("Update Member");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            UpdateMemberPage updateMemberPage  = new UpdateMemberPage(stage);
-            newTab.setContent(updateMemberPage);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
 
         // Items
         MenuItem itemsPage = new MenuItem("Items");
@@ -193,7 +202,6 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
-        menu.getItems().add(updateMember);
         menu.getItems().add(cashierDetailPage);
 
         // Main Menu Bar

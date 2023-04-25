@@ -1,17 +1,19 @@
 package UI;
 
 import System.Customer;
+import System.RegisteredCustomer;
+import System.Inventory;
+import System.VIP;
+import System.Member;
+import System.FixedBill;
 import javafx.geometry.Insets;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -20,7 +22,8 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
 public class UpdateMemberPage extends VBox {
-    public UpdateMemberPage(Stage stage) {
+
+    public UpdateMemberPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -48,10 +51,25 @@ public class UpdateMemberPage extends VBox {
         saveButton.setPrefSize(87, 31);
         saveButton.setCursor(Cursor.HAND);
 
+        // Create cancel button
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+        cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white; -fx-background-radius: 30px;");
+        cancelButton.setPrefSize(97, 41);
+        cancelButton.setCursor(Cursor.HAND);
+
+        // Add event handler for cancel button
+        cancelButton.setOnAction(event -> {
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            tab.setContent(listMemberPage);
+        });
+
         // Set save button to HBox
+        rightButton.getChildren().add(cancelButton);
         rightButton.getChildren().add(saveButton);
         HBox.setHgrow(rightButton, Priority.ALWAYS);
         rightButton.setAlignment(Pos.CENTER_RIGHT);
+        rightButton.setSpacing(3);
 
         // Add header to HBox
         hBox.getChildren().addAll(title, rightButton);
@@ -64,12 +82,13 @@ public class UpdateMemberPage extends VBox {
         nameTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
         // Create textField for name
-        TextField inputName = new TextField("Harry Potter");
+        TextField inputName = new TextField();
         inputName.setPadding(new Insets(0, 0, 0, 10));
         inputName.setFont(Font.font("Montserrat", 20));
         inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: #8CAEBB");
         inputName.setMinWidth(1194);
         inputName.setMinHeight(50);
+        inputName.setText(((RegisteredCustomer) customer).getName());
 
         inputName.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
@@ -87,12 +106,13 @@ public class UpdateMemberPage extends VBox {
         phoneTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
         // Create textField for phone number
-        TextField inputNumber = new TextField("08XXXXXXXXXX");
+        TextField inputNumber = new TextField();
         inputNumber.setPadding(new Insets(0, 0, 0, 10));
         inputNumber.setFont(Font.font("Montserrat", 20));
         inputNumber.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: #8CAEBB");
         inputNumber.setMinWidth(1194);
         inputNumber.setMinHeight(50);
+        inputNumber.setText(((RegisteredCustomer) customer).getPhoneNumber());
 
         inputNumber.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             inputNumber.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
@@ -144,19 +164,31 @@ public class UpdateMemberPage extends VBox {
         memberToggle.setMinWidth(113);
         memberToggle.setMinHeight(31);
         memberToggle.setStyle("-fx-background-color: #F3F9FB;");
-        memberToggle.setSelected(true);
         memberToggle.setCursor(Cursor.HAND);
-        memberToggle.setGraphic(statusVIP);
 
-        // Handling Toggle Button event
-        memberToggle.setOnAction(event -> {
-            if (memberToggle.isSelected()) {
-                memberToggle.setGraphic(statusVIP);
-            }
-            else {
-                memberToggle.setGraphic(statusMember);
-            }
-        });
+        // Event for memberToggle
+        if (customer.getClass().getSimpleName().equals("Member")) {
+            memberToggle.setGraphic(statusMember);
+            memberToggle.setOnAction(event -> {
+                if (memberToggle.isSelected()) {
+                    memberToggle.setGraphic(statusVIP);
+                }
+                else {
+                    memberToggle.setGraphic(statusMember);
+                }
+            });
+        }
+        else {
+            memberToggle.setGraphic(statusVIP);
+            memberToggle.setOnAction(event -> {
+                if (memberToggle.isSelected()) {
+                    memberToggle.setGraphic(statusMember);
+                } else {
+                    memberToggle.setGraphic(statusVIP);
+                }
+            });
+        }
+
 
         // Set HBox for Membership status toggle button
         membershipToggle.setMinHeight(50);
@@ -185,7 +217,7 @@ public class UpdateMemberPage extends VBox {
 
         // Create Image View for Deactivate Membership toggle button
         ImageView deactivateMember = new ImageView("/images/icon/memberDeactivate.png");
-        ImageView deactivateVIP = new ImageView("/images/icon/vipDeactivate.png");
+        ImageView activateMember = new ImageView("/images/icon/memberActivate.png");
 
         // Styling Image View for Deactivate Membership toggle button
         deactivateMember.setPreserveRatio(true);
@@ -194,11 +226,11 @@ public class UpdateMemberPage extends VBox {
         deactivateMember.setFitWidth(113);
         deactivateMember.setFitHeight(31);
 
-        deactivateVIP.setPreserveRatio(true);
-        deactivateVIP.setSmooth(true);
-        deactivateVIP.setCache(true);
-        deactivateVIP.setFitWidth(113);
-        deactivateVIP.setFitHeight(31);
+        activateMember.setPreserveRatio(true);
+        activateMember.setSmooth(true);
+        activateMember.setCache(true);
+        activateMember.setFitWidth(113);
+        activateMember.setFitHeight(31);
 
         // Create label for Deactivate Membership title
         Label deactivateTitle = new Label("Deactivate Membership");
@@ -213,19 +245,30 @@ public class UpdateMemberPage extends VBox {
         deactToggle.setMinWidth(113);
         deactToggle.setMinHeight(31);
         deactToggle.setStyle("-fx-background-color: #F3F9FB;");
-        deactToggle.setSelected(true);
         deactToggle.setCursor(Cursor.HAND);
-        deactToggle.setGraphic(deactivateVIP);
 
-        // Handling Toggle Button event
-        deactToggle.setOnAction(event -> {
-            if (deactToggle.isSelected()) {
-                deactToggle.setGraphic(deactivateVIP);
-            }
-            else {
-                deactToggle.setGraphic(deactivateMember);
-            }
-        });
+        if (((RegisteredCustomer) customer).getActiveStatus()) {
+            deactToggle.setGraphic(activateMember);
+            deactToggle.setOnAction(event -> {
+                if (deactToggle.isSelected()) {
+                    deactToggle.setGraphic(deactivateMember);
+                }
+                else {
+                    deactToggle.setGraphic(activateMember);
+                }
+            });
+        }
+        else {
+            deactToggle.setGraphic(deactivateMember);
+            deactToggle.setOnAction(event -> {
+                if (deactToggle.isSelected()) {
+                    deactToggle.setGraphic(activateMember);
+                }
+                else {
+                    deactToggle.setGraphic(deactivateMember);
+                }
+            });
+        }
 
         // Set HBox for Deactivate Membership toggle button
         deactivateToggle.setMinHeight(50);
@@ -254,5 +297,54 @@ public class UpdateMemberPage extends VBox {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(20);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        // Set event handler for save button
+        saveButton.setOnAction(event -> {
+            if (customer.getClass().getSimpleName().equals("Member")) {
+                if (memberToggle.isSelected()) {
+                    int id = customer.getId();
+                    String name = inputName.getText();
+                    String phoneNumber = inputNumber.getText();
+                    FixedBill bill = customer.getTransaction().getElement(0);
+
+                    if (customers.getElement(id-1).getId() == id) {
+                        customers.setElement(id-1, new VIP(id, name, phoneNumber, bill));
+                    }
+                }
+            }
+            else {
+                if (memberToggle.isSelected()) {
+                    int id = customer.getId();
+                    String name = inputName.getText();
+                    String phoneNumber = inputNumber.getText();
+                    FixedBill bill = customer.getTransaction().getElement(0);
+
+                    if (customers.getElement(id-1).getId() == id) {
+                        customers.setElement(id-1, new Member(id, name, phoneNumber, bill));
+                    }
+                }
+            }
+
+            if (((RegisteredCustomer) customer).getActiveStatus()) {
+                if (deactToggle.isSelected()) {
+                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
+                }
+                else {
+                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(true);
+                }
+            }
+            else {
+                if (deactToggle.isSelected()) {
+                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(true);
+                }
+                else {
+                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
+                }
+            }
+
+            // Change page back to ListMemberPage
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            tab.setContent(listMemberPage);
+        });
     }
 }

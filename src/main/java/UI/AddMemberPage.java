@@ -4,6 +4,9 @@ import System.Customer;
 import System.Inventory;
 import System.Member;
 import System.VIP;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -17,9 +20,13 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import javafx.scene.image.ImageView;
+import System.FixedBill;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class AddMemberPage extends VBox {
-    public AddMemberPage(Stage stage, Tab tab, Inventory<Member> members, Inventory<VIP> vips) {
+    public AddMemberPage(Stage stage, Tab tab, Inventory<Customer> customers) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -56,7 +63,7 @@ public class AddMemberPage extends VBox {
 
         // Add event handler for cancel button
         cancelButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, members, vips);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
             tab.setContent(listMemberPage);
         });
 
@@ -74,21 +81,30 @@ public class AddMemberPage extends VBox {
         VBox customerField = new VBox();
 
         // Create label for CustomerID Field
-        Label customer = new Label("Customer ID");
-        customer.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+        Label customerTitle = new Label("Customer ID");
+        customerTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
-        // Create label for CustomerID Field
-        Label customerID = new Label(String.valueOf(Customer.getCustomerCount()));
+        // Listing all customerID that is available to turn to member
+        List<Integer> idList = new ArrayList<Integer>();
+        for (Customer customer : customers.getList()) {
+            if (customer.getClass().getSimpleName().equals("Customer")) {
+                idList.add(customer.getId());
+            }
+        }
+
+        // Create combobox for CustomerID Field
+        ComboBox<Integer> customerID = new ComboBox<Integer>();
+        ObservableList<Integer> observableId = FXCollections.observableList(idList);
+        customerID.setItems(observableId);
 
         // Styling customerID label
         customerID.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
-        customerID.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
         customerID.setPadding(new Insets(0, 0, 0, 10));
         customerID.setMinWidth(1194);
         customerID.setMinHeight(50);
 
         // set customerField
-        customerField.getChildren().add(customer);
+        customerField.getChildren().add(customerTitle);
         customerField.getChildren().add(customerID);
 
         // Create VBox for Name Field
@@ -102,7 +118,7 @@ public class AddMemberPage extends VBox {
         TextField inputName = new TextField();
         inputName.setPadding(new Insets(0, 0, 0, 10));
         inputName.setFont(Font.font("Montserrat", 20));
-        inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
+        inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black; -fx-font-style: Montserrat");
         inputName.setPromptText("Enter name...");
         inputName.setMinWidth(1194);
         inputName.setMinHeight(50);
@@ -144,18 +160,31 @@ public class AddMemberPage extends VBox {
 
         // Add event handler for save button
         saveButton.setOnAction(event -> {
+            int id = customerID.getValue();
             String name = inputName.getText();
             String phoneNumber = inputNumber.getText();
+            FixedBill bill = new FixedBill();
 
-            if (!name.isEmpty() && !phoneNumber.isEmpty()) {
+            for (Customer customer : customers.getList()) {
+                if (customer.getId() == id) {
+                    bill = customer.getTransaction().getElement(0);
+                }
+            }
+
+            if (!(customerID.getValue() == null) && !name.isEmpty() && !phoneNumber.isEmpty()) {
                 // Create new member
-                Member newMember = new Member(name, phoneNumber);
+                Member newMember = new Member(id, name, phoneNumber, bill);
 
-                // Add member to list
-                members.addElement(newMember);
+                // Change customer to member
+                if (customers.getElement(id-1).getId() == id) {
+                    customers.setElement(id-1, newMember);
+                }
+                else {
+                    throw new Error("Niggas are drunk up oop open it up");
+                }
 
                 // Change page back to ListMemberPage
-                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, members, vips);
+                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
                 tab.setContent(listMemberPage);
             }
             // If input is not completed
