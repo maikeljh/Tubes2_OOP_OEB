@@ -18,6 +18,7 @@ import System.Inventory;
 import System.Item;
 import DataStore.XMLAdapter;
 import System.VIP;
+import System.FixedBill;
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
@@ -52,6 +53,12 @@ public class ApplicationBNMOStore extends Application {
             vips.addElement(new VIP("Niggas Are Drunk", "696969"));
         }
 
+        // Read transactions
+        Inventory<FixedBill> transactions = new Inventory<FixedBill>();
+        for (int i=0; i<20; i++){
+            transactions.addElement(new FixedBill(i+1, "25/04/2023 21:21", i+1));
+        }
+
         // Create Group and new Scene
         Group root = new Group();
         Scene scene = new Scene(root, 1280, 720);
@@ -81,6 +88,18 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             UpdateMemberPage updateMemberPage  = new UpdateMemberPage(stage);
             newTab.setContent(updateMemberPage);
+            tabPane.getTabs().add(newTab);
+            tabPane.getSelectionModel().select(newTab);
+        });
+
+        // History
+        MenuItem history = new MenuItem("History");
+        history.setOnAction(event -> {
+            // Handle open menu item click
+            Tab newTab = new Tab("History");
+            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            HistoryPage historyPage = new HistoryPage(stage, newTab, "Harry Potter", transactions);
+            newTab.setContent(historyPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -194,6 +213,7 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
         menu.getItems().add(updateMember);
+        menu.getItems().add(history);
         menu.getItems().add(cashierDetailPage);
 
         // Main Menu Bar
