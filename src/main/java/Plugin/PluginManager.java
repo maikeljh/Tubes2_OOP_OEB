@@ -13,7 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class PluginManager {
-    private List<BasePlugin> plugins;
+    private List<Plugin> plugins;
 
     public PluginManager() {
         plugins = new ArrayList<>();
@@ -57,7 +57,7 @@ public class PluginManager {
         jar.close();
     }
 
-    public List<BasePlugin> getPlugins(){
+    public List<Plugin> getPlugins(){
         return plugins;
     }
 }
