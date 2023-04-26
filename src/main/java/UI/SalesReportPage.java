@@ -1,5 +1,6 @@
 package UI;
 
+import com.itextpdf.text.DocumentException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -15,9 +16,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import System.SalesReport;
+import System.Inventory;
+import System.PurchasedItem;
+
+import java.io.FileNotFoundException;
 
 public class SalesReportPage extends VBox {
-    public SalesReportPage(Stage stage, Tab tab) {
+    public SalesReportPage(Stage stage, Tab tab, Inventory<PurchasedItem> items) {
         // Create header (HBox)
         HBox hbox = new HBox();
 
@@ -33,10 +38,14 @@ public class SalesReportPage extends VBox {
         printButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         printButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         printButton.setCursor(Cursor.HAND);
-        /*printButton.setOnAction(event -> {
-            SalesReport salesReport = new SalesReport();
-            salesReport.printReport();
-        });*/
+        printButton.setOnAction(event -> {
+            SalesReport salesReport = new SalesReport(items);
+            try {
+                salesReport.printReport();
+            } catch (DocumentException | FileNotFoundException e){
+                e.printStackTrace();
+            }
+        });
 
         // Add print button to HBox
         printButtonHBox.getChildren().add(printButton);

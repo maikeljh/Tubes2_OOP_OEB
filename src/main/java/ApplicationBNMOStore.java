@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import System.Inventory;
 import System.Item;
+import System.PurchasedItem;
 import DataStore.XMLAdapter;
 import DataStore.Tutorial;
 import System.RegisteredCustomer;
@@ -86,6 +87,12 @@ public class ApplicationBNMOStore extends Application {
         for (int i=0; i<20; i++){
             transactions.addElement(new FixedBill(i+1, "25/04/2023 21:21", i+1));
         }
+
+        // Read sold items
+        Inventory<PurchasedItem> itemsSold = new Inventory<PurchasedItem>();
+        itemsSold.addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 5));
+        itemsSold.addElement(new PurchasedItem(new Item("Green Tea Latte", 10, 21000, 16500, "Non-Coffee", new Image("/images/item/item4.png")), 10));
+        itemsSold.addElement(new PurchasedItem(new Item("Fried Rice", 7, 30000, 23000, "Indonesian Dish", new Image("/images/item/item4.png")), 2));
 
         // Create Group and new Scene
         Group root = new Group();
@@ -160,7 +167,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("History");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            SalesReportPage reportPage = new SalesReportPage(stage, newTab);
+            SalesReportPage reportPage = new SalesReportPage(stage, newTab, itemsSold);
             newTab.setContent(reportPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);

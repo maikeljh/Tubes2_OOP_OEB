@@ -1,5 +1,13 @@
 package System;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import javafx.scene.text.FontWeight;
+import javafx.scene.image.Image;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 
 public class SalesReport implements Serializable {
@@ -7,6 +15,17 @@ public class SalesReport implements Serializable {
     private double total_gross_profit;
     private double total_net_profit;
     private Inventory<PurchasedItem> items;
+
+    /* ctor */
+    public SalesReport(Inventory<PurchasedItem> items){
+        this.items = items;
+        this.total_gross_profit = 0;
+        this.total_net_profit = 0;
+        for (PurchasedItem item : items.getList()) {
+            this.total_gross_profit += item.calculateGrossProfit();
+            this.total_net_profit += item.calculateNetProfit();
+        }
+    }
 
     /* methods */
     public int getElementIdx(String itemName){
@@ -53,7 +72,171 @@ public class SalesReport implements Serializable {
         */
     }
 
-    public void printReport(){
-        //
+    public void printReport() throws DocumentException, FileNotFoundException{
+        // Create PDF for sales report
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/files/Sales Report.pdf"));
+        document.open();
+
+        // Add title
+        Font titleFont = new Font(Font.FontFamily.HELVETICA, 28, Font.BOLD, BaseColor.BLACK);
+        Paragraph title = new Paragraph(new Phrase("Sales Report", titleFont));
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(30);
+        document.add(title);
+
+        // Add table
+        PdfPTable table = new PdfPTable(7);
+        table.setWidthPercentage(100);
+
+        // Table header
+        Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+        PdfPCell id = new PdfPCell(new Phrase("Product ID", headerFont));
+        PdfPCell name = new PdfPCell(new Phrase("Product Name", headerFont));
+        PdfPCell buy_price = new PdfPCell(new Phrase("Buy Price", headerFont));
+        PdfPCell sell_price = new PdfPCell(new Phrase("Sell Price", headerFont));
+        PdfPCell quantity = new PdfPCell(new Phrase("Quantity", headerFont));
+        PdfPCell gross_profit = new PdfPCell(new Phrase("Gross Profit", headerFont));
+        PdfPCell net_profit = new PdfPCell(new Phrase("Net Profit", headerFont));
+
+        // Style table header
+        id.setHorizontalAlignment(Element.ALIGN_CENTER);
+        id.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        id.setBackgroundColor(new BaseColor(140, 174, 187));
+        id.setPadding(5);
+
+        name.setHorizontalAlignment(Element.ALIGN_CENTER);
+        name.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        name.setBackgroundColor(new BaseColor(140, 174, 187));
+        name.setPadding(5);
+
+        buy_price.setHorizontalAlignment(Element.ALIGN_CENTER);
+        buy_price.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        buy_price.setBackgroundColor(new BaseColor(140, 174, 187));
+        buy_price.setPadding(5);
+
+        sell_price.setHorizontalAlignment(Element.ALIGN_CENTER);
+        sell_price.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        sell_price.setBackgroundColor(new BaseColor(140, 174, 187));
+        sell_price.setPadding(5);
+
+        quantity.setHorizontalAlignment(Element.ALIGN_CENTER);
+        quantity.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        quantity.setBackgroundColor(new BaseColor(140, 174, 187));
+        quantity.setPadding(5);
+
+        gross_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        gross_profit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        gross_profit.setBackgroundColor(new BaseColor(140, 174, 187));
+        gross_profit.setPadding(5);
+
+        net_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        net_profit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        net_profit.setBackgroundColor(new BaseColor(140, 174, 187));
+        net_profit.setPadding(5);
+
+        // Add header cells to table
+        table.addCell(id);
+        table.addCell(name);
+        table.addCell(buy_price);
+        table.addCell(sell_price);
+        table.addCell(quantity);
+        table.addCell(gross_profit);
+        table.addCell(net_profit);
+
+        // Iterate every item
+        int idx = 0;
+        for (PurchasedItem item : items.getList()) {
+            // Add cell
+            PdfPCell itemId = new PdfPCell(new Phrase(String.valueOf(item.getItemID())));
+            PdfPCell itemName = new PdfPCell(new Phrase(item.getName()));
+            PdfPCell itemBuyPrice = new PdfPCell(new Phrase(String.valueOf(item.getBuyPrice())));
+            PdfPCell itemSellPrice = new PdfPCell(new Phrase(String.valueOf(item.getSellPrice())));
+            PdfPCell itemQuantity = new PdfPCell(new Phrase(String.valueOf(item.getQuantity())));
+            PdfPCell itemGrossProfit = new PdfPCell(new Phrase(String.valueOf(item.calculateGrossProfit())));
+            PdfPCell itemNetProfit = new PdfPCell(new Phrase(String.valueOf(item.calculateNetProfit())));
+
+            // Style item's cells
+            itemId.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemId.setPadding(5);
+
+            itemName.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemName.setPadding(5);
+
+            itemBuyPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemBuyPrice.setPadding(5);
+
+            itemSellPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemSellPrice.setPadding(5);
+
+            itemQuantity.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemQuantity.setPadding(5);
+
+            itemGrossProfit.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemGrossProfit.setPadding(5);
+
+            itemNetProfit.setHorizontalAlignment(Element.ALIGN_CENTER);
+            itemNetProfit.setPadding(5);
+
+            // Style row background colors
+            if(idx % 2 != 0){
+                itemId.setBackgroundColor(new BaseColor(200, 223, 232));
+                itemName.setBackgroundColor(new BaseColor(200, 223, 232));
+                itemBuyPrice.setBackgroundColor(new BaseColor(200, 223, 232));
+                itemSellPrice.setBackgroundColor(new BaseColor(200, 223, 232));
+                itemQuantity.setBackgroundColor(new BaseColor(200, 223, 232));
+                itemGrossProfit.setBackgroundColor(new BaseColor(200, 223, 232));
+                itemNetProfit.setBackgroundColor(new BaseColor(200, 223, 232));
+            } else {
+                itemId.setBackgroundColor(new BaseColor(243, 249, 251));
+                itemName.setBackgroundColor(new BaseColor(243, 249, 251));
+                itemBuyPrice.setBackgroundColor(new BaseColor(243, 249, 251));
+                itemSellPrice.setBackgroundColor(new BaseColor(243, 249, 251));
+                itemQuantity.setBackgroundColor(new BaseColor(243, 249, 251));
+                itemGrossProfit.setBackgroundColor(new BaseColor(243, 249, 251));
+                itemNetProfit.setBackgroundColor(new BaseColor(243, 249, 251));
+            }
+            idx++;
+
+            // Add cells to table
+            table.addCell(itemId);
+            table.addCell(itemName);
+            table.addCell(itemBuyPrice);
+            table.addCell(itemSellPrice);
+            table.addCell(itemQuantity);
+            table.addCell(itemGrossProfit);
+            table.addCell(itemNetProfit);
+        }
+
+        // Create total row
+        PdfPCell totalLabelCell = new PdfPCell(new Phrase("Total", headerFont));
+        PdfPCell total_gross_profit = new PdfPCell(new Phrase(String.valueOf(this.total_gross_profit), headerFont));
+        PdfPCell total_net_profit = new PdfPCell(new Phrase(String.valueOf(this.total_net_profit), headerFont));
+
+        // Style total row
+        totalLabelCell.setColspan(5);
+        totalLabelCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        totalLabelCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        totalLabelCell.setBackgroundColor(new BaseColor(140, 174, 187));
+        totalLabelCell.setPadding(5);
+
+        total_gross_profit.setBackgroundColor(new BaseColor(140, 174, 187));
+        total_gross_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        total_gross_profit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+        total_net_profit.setBackgroundColor(new BaseColor(140, 174, 187));
+        total_net_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        total_net_profit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+        // Add total row cells to table
+        table.addCell(totalLabelCell);
+        table.addCell(total_gross_profit);
+        table.addCell(total_net_profit);
+
+        // Add table to document
+        document.add(table);
+
+        // Close document
+        document.close();
     }
 }
