@@ -21,4 +21,8 @@ public class FixedBill extends Bill{
     public void setBillID(int bill_id){
         this.bill_id = bill_id;
     }
+
+    public void printBill(){
+        //
+    }
 }

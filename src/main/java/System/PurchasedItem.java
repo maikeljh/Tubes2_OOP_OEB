@@ -26,4 +26,13 @@ public class PurchasedItem extends Item {
     public int getQuantity(){
         return this.quantity;
     }
+
+    /* Methods */
+
+    public double calculateGrossProfit(){
+        return this.quantity * this.sell_price;
+    }
+    public double calculateNetProfit(){
+        return this.calculateGrossProfit() - (this.quantity * this.buy_price);
+    }
 }

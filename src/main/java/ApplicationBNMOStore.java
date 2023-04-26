@@ -150,8 +150,10 @@ public class ApplicationBNMOStore extends Application {
         MenuItem salesReportPage = new MenuItem("Sales Report");
         salesReportPage.setOnAction(event -> {
             // Handle open menu item click
-            Tab newTab = new Tab("Sales Report");
+            Tab newTab = new Tab("History");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
+            SalesReportPage reportPage = new SalesReportPage(stage, newTab);
+            newTab.setContent(reportPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });

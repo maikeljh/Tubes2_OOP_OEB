@@ -6,13 +6,13 @@ public class SalesReport implements Serializable {
     /* attributes */
     private double total_gross_profit;
     private double total_net_profit;
-    private Inventory<ReportItem> items;
+    private Inventory<PurchasedItem> items;
 
     /* methods */
     public int getElementIdx(String itemName){
-        Boolean found = false;
+        boolean found = false;
         int idx = 0;
-        while (idx < items.getList().size() && !found){
+        while (idx < items.getNeff() && !found){
             if (itemName == items.getElement(idx).getName()){
                 found = true;
             } else {
@@ -26,6 +26,7 @@ public class SalesReport implements Serializable {
         }
     }
     public void calculateReport(Inventory<FixedBill> transactions){
+        /*
         for (FixedBill fixedBill : transactions.getList()){
             for (PurchasedItem purchasedItem : fixedBill.getItems().getList()){
                 ReportItem reportItem = new ReportItem(purchasedItem, purchasedItem.getQuantity()); // convert PurchasedItem to ReportItem
@@ -49,9 +50,10 @@ public class SalesReport implements Serializable {
             total_gross_profit += reportItem.getGrossProfit();
             total_net_profit += reportItem.getNetProfit();
         }
+        */
     }
 
-    public void printReport(Inventory<FixedBill> transactions){
-
+    public void printReport(){
+        //
     }
 }
