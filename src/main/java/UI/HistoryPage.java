@@ -1,5 +1,6 @@
 package UI;
 
+import com.itextpdf.text.DocumentException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -18,6 +19,7 @@ import System.FixedBill;
 import System.Inventory;
 import System.VIP;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 
 public class HistoryPage extends VBox {
@@ -73,6 +75,13 @@ public class HistoryPage extends VBox {
             previewButton.setStyle("-fx-background-color: #C8DFE8;");
             previewButton.setGraphic(previewIcon);
             previewButton.setCursor(Cursor.HAND);
+            previewButton.setOnAction(event -> {
+                try {
+                    transaction.printBill();
+                } catch (DocumentException | FileNotFoundException e){
+                    e.printStackTrace();
+                }
+            });
 
             // Add label detail (datetime) to transaction details
             transactionDetailHBox.getChildren().add(details);

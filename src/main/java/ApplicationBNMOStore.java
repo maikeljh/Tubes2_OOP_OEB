@@ -84,8 +84,13 @@ public class ApplicationBNMOStore extends Application {
 
         // Read transactions
         Inventory<FixedBill> transactions = new Inventory<FixedBill>();
-        for (int i=0; i<20; i++){
-            transactions.addElement(new FixedBill(i+1, "25/04/2023 21:21", i+1));
+        for (int i=0; i<5; i++){
+            FixedBill fixedBill = new FixedBill(i+1, "25/04/2023 21:21", i+1);
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 10, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
+            transactions.addElement(fixedBill);
         }
 
         // Read sold items
