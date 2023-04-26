@@ -29,7 +29,7 @@ import javax.imageio.ImageIO;
 public class AddItemPage extends VBox{
     private final ImageView itemImage;
 
-    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items){
+    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -50,7 +50,7 @@ public class AddItemPage extends VBox{
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
             tab.setContent(listItemPage);
         });
 
@@ -232,13 +232,10 @@ public class AddItemPage extends VBox{
                 }
 
                 // Save data to file
-                DataStore<Item> itemDS = new DataStore<Item>();
-                XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
-                itemDS.setAdapter(itemXML);
-                itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
+                itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ListItemPage listItemPage = new ListItemPage(stage, tab, items);
+                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
                 tab.setContent(listItemPage);
             } else {
                 // Show alert

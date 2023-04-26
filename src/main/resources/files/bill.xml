@@ -8,28 +8,49 @@
             <purchasedItem>
                 <buyPrice>1.0</buyPrice>
                 <category>Drinks</category>
+                <itemID>1</itemID>
                 <name>Cappucino</name>
-                <sellPrice>1.0</sellPrice>
+                <sellPrice>2.0</sellPrice>
                 <stock>1</stock>
                 <quantity>2</quantity>
             </purchasedItem>
             <purchasedItem>
-                <buyPrice>1.0</buyPrice>
+                <buyPrice>2.0</buyPrice>
                 <category>Drinks</category>
-                <name>Cappucino</name>
-                <sellPrice>1.0</sellPrice>
-                <stock>1</stock>
+                <itemID>2</itemID>
+                <name>Tea</name>
+                <sellPrice>3.0</sellPrice>
+                <stock>2</stock>
                 <quantity>3</quantity>
             </purchasedItem>
             <purchasedItem>
-                <buyPrice>1.0</buyPrice>
+                <buyPrice>3.0</buyPrice>
                 <category>Drinks</category>
-                <name>Cappucino</name>
-                <sellPrice>1.0</sellPrice>
-                <stock>1</stock>
+                <itemID>3</itemID>
+                <name>Sake</name>
+                <sellPrice>4.0</sellPrice>
+                <stock>3</stock>
                 <quantity>4</quantity>
             </purchasedItem>
-            <neff>0</neff>
+            <purchasedItem>
+                <buyPrice>4.0</buyPrice>
+                <category>Drinks</category>
+                <itemID>4</itemID>
+                <name>Whiskey</name>
+                <sellPrice>6.0</sellPrice>
+                <stock>4</stock>
+                <quantity>6</quantity>
+            </purchasedItem>
+            <purchasedItem>
+                <buyPrice>5.0</buyPrice>
+                <category>Drinks</category>
+                <itemID>5</itemID>
+                <name>Wine</name>
+                <sellPrice>8.0</sellPrice>
+                <stock>5</stock>
+                <quantity>10</quantity>
+            </purchasedItem>
+            <neff>5</neff>
         </items>
         <totalPrice>100.0</totalPrice>
         <billID>5678</billID>
@@ -42,31 +63,34 @@
             <purchasedItem>
                 <buyPrice>1.0</buyPrice>
                 <category>Drinks</category>
+                <itemID>1</itemID>
                 <name>Cappucino</name>
-                <sellPrice>1.0</sellPrice>
+                <sellPrice>2.0</sellPrice>
                 <stock>1</stock>
                 <quantity>2</quantity>
             </purchasedItem>
             <purchasedItem>
-                <buyPrice>1.0</buyPrice>
+                <buyPrice>2.0</buyPrice>
                 <category>Drinks</category>
-                <name>Cappucino</name>
-                <sellPrice>1.0</sellPrice>
-                <stock>1</stock>
+                <itemID>2</itemID>
+                <name>Tea</name>
+                <sellPrice>3.0</sellPrice>
+                <stock>2</stock>
                 <quantity>3</quantity>
             </purchasedItem>
             <purchasedItem>
-                <buyPrice>1.0</buyPrice>
+                <buyPrice>3.0</buyPrice>
                 <category>Drinks</category>
-                <name>Cappucino</name>
-                <sellPrice>1.0</sellPrice>
-                <stock>1</stock>
+                <itemID>3</itemID>
+                <name>Sake</name>
+                <sellPrice>4.0</sellPrice>
+                <stock>3</stock>
                 <quantity>4</quantity>
             </purchasedItem>
-            <neff>0</neff>
+            <neff>3</neff>
         </items>
         <totalPrice>100.0</totalPrice>
         <billID>5679</billID>
     </fixedBill>
-    <neff>0</neff>
+    <neff>2</neff>
 </inventory>

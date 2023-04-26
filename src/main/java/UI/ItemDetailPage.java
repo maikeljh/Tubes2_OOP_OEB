@@ -23,7 +23,7 @@ import System.Item;
 import java.io.File;
 
 public class ItemDetailPage extends VBox {
-    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items){
+    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -42,7 +42,7 @@ public class ItemDetailPage extends VBox {
 
         // Add event on update button
         updateButton.setOnAction(event -> {
-            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items);
+            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items, itemDS);
             tab.setContent(updateItemContent);
         });
 
@@ -60,13 +60,10 @@ public class ItemDetailPage extends VBox {
             items.removeElement(item);
 
             // Save data
-            DataStore<Item> itemDS = new DataStore<Item>();
-            XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
-            itemDS.setAdapter(itemXML);
-            itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
+            itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
 
             // Change page
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
             tab.setContent(listItemPage);
         });
         // Create back button
@@ -74,7 +71,7 @@ public class ItemDetailPage extends VBox {
         backButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         backButton.setStyle("-fx-background-color: #769295; -fx-text-fill: white;");
         backButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
             tab.setContent(listItemPage);
         });
 

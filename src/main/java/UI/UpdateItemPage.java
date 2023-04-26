@@ -29,7 +29,7 @@ import javax.imageio.ImageIO;
 public class UpdateItemPage extends VBox {
     private final ImageView itemImage;
 
-    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items){
+    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -50,7 +50,7 @@ public class UpdateItemPage extends VBox {
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
+            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS);
             tab.setContent(detailItemContent);
         });
 
@@ -227,13 +227,10 @@ public class UpdateItemPage extends VBox {
                 }
 
                 // Save Data
-                DataStore<Item> itemDS = new DataStore<Item>();
-                XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
-                itemDS.setAdapter(itemXML);
-                itemXML.writeData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class}, items);
+                itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS);
                 tab.setContent(detailItemContent);
             } else {
                 // Show alert

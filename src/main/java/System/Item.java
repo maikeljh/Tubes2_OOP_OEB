@@ -31,6 +31,16 @@ public class Item implements Serializable {
         this.image = image;
     }
 
+    public Item(Item other){
+        this.item_id = other.item_id;
+        this.name = other.name;
+        this.stock = other.stock;
+        this.sell_price = other.sell_price;
+        this.buy_price = other.buy_price;
+        this.category = other.category;
+        this.image = other.image;
+    }
+
     /* Setter */
     public void setItemID(int id){
         this.item_id = id;

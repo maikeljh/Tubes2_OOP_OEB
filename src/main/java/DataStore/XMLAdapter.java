@@ -3,8 +3,8 @@ import java.io.File;
 import jakarta.xml.bind.*;
 import System.Inventory;
 
-public class XMLAdapter<T> implements DataAdapter<T>{
-    public Inventory<T> readData(String filePath, Class<T> classT, Class<?>[] classTypes) {
+public class XMLAdapter implements DataAdapter{
+    public Object readData(String filePath, Class<?>[] classTypes) {
         try {
             // Creating a File object
             File file = new File(filePath);
@@ -16,16 +16,15 @@ public class XMLAdapter<T> implements DataAdapter<T>{
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
             // Reading from the XML File
-            Inventory<T> objectList = (Inventory<T>) unmarshaller.unmarshal(file);
-            return objectList;
+            Object object = unmarshaller.unmarshal(file);
+            return object;
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        Inventory<T> objectList = new Inventory<T>();
-        return objectList;
+        return null;
     }
     @Override
-    public void writeData(String filePath, Class<T> classT, Class<?>[] classTypes, Inventory<T> newData) {
+    public void writeData(String filePath, Class<?>[] classTypes, Object newData) {
         try {
             // Creating a File Object
             File file = new File(filePath);

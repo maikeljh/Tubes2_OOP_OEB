@@ -13,7 +13,7 @@ public class PurchasedItem extends Item {
     }
 
     public PurchasedItem(Item e, int quantity){
-        super(e.name, e.stock, e.sell_price, e.buy_price, e.category, e.image);
+        super(e);
         this.quantity = quantity;
     }
 
@@ -28,7 +28,6 @@ public class PurchasedItem extends Item {
     }
 
     /* Methods */
-
     public double calculateGrossProfit(){
         return this.quantity * this.sell_price;
     }

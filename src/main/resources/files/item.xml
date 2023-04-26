@@ -17,12 +17,12 @@
         <stock>123</stock>
     </item>
     <item>
-        <buyPrice>12313.0</buyPrice>
-        <category>Minuman</category>
-        <itemID>6</itemID>
-        <name>Tes 3</name>
-        <sellPrice>13213.0</sellPrice>
-        <stock>12</stock>
+        <buyPrice>321.0</buyPrice>
+        <category>Orang</category>
+        <itemID>7</itemID>
+        <name>Tes 4</name>
+        <sellPrice>123.0</sellPrice>
+        <stock>6969</stock>
     </item>
     <neff>3</neff>
 </inventory>

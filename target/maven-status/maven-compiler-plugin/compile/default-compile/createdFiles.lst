@@ -5,7 +5,7 @@ UI\UpdateMemberPage.class
 DataStore\JSONAdapter.class
 System\Payment.class
 System\Settings.class
-DataStore\Coba.class
+DataStore\Tutorial.class
 UI\ItemDetailPage.class
 UI\SettingsPage.class
 Plugin\PluginManager.class
@@ -27,7 +27,6 @@ System\VIP.class
 System\Member.class
 System\SalesReport.class
 DataStore\DataAdapter.class
-Controllers\MainPageController.class
 Plugin\Plugin2.class
 Plugin\PluginSystem.class
 System\PurchasedItem.class

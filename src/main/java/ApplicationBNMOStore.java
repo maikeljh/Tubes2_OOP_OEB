@@ -4,6 +4,7 @@ import Plugin.BasePlugin;
 import Plugin.PluginManager;
 import System.Member;
 import UI.*;
+import com.itextpdf.text.DocumentException;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -13,11 +14,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import System.Inventory;
 import System.Item;
 import DataStore.XMLAdapter;
+import DataStore.Tutorial;
 import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
@@ -28,14 +31,19 @@ public class ApplicationBNMOStore extends Application {
     private MainPage mainPage;
     private PluginManager pluginManager = new PluginManager();
     private Inventory<Item> items = new Inventory<Item>();
+    private DataStore<Item> itemDS = new DataStore<Item>();
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws DocumentException, FileNotFoundException {
+        // Testing Print PDF
+        Tutorial.tes();
+
         // Read Item Data
-        DataStore<Item> itemDS = new DataStore<Item>();
-        XMLAdapter<Item> itemXML = new XMLAdapter<Item>();
+        // Sementara XML dlu yak (Belum bikin setting)
+        XMLAdapter itemXML = new XMLAdapter();
         itemDS.setAdapter(itemXML);
-        items = itemDS.getDataAdapter().readData("src/main/resources/files/item.xml", Item.class, new Class<?>[]{Inventory.class, Item.class});
+        items = itemDS.loadData("item.xml", new Class<?>[]{Inventory.class, Item.class});
+
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
             for(int i = 0; i < items.getNeff(); i++){
@@ -119,7 +127,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage, newTab, items);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS);
             newTab.setContent(listItemPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);

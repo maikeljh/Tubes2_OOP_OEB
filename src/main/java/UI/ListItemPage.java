@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -14,11 +13,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import System.Inventory;
 import System.Item;
+import DataStore.DataStore;
 import javafx.stage.Stage;
 
 public class ListItemPage extends VBox {
 
-    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items){
+    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -35,7 +35,7 @@ public class ListItemPage extends VBox {
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setOnAction(event -> {
-            AddItemPage addItemContent = new AddItemPage(stage, tab, items);
+            AddItemPage addItemContent = new AddItemPage(stage, tab, items, itemDS);
             tab.setContent(addItemContent);
         });
 
@@ -92,7 +92,7 @@ public class ListItemPage extends VBox {
 
             // Add onclick event
             itemDisplay.setOnMouseClicked(event -> {
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS);
                 tab.setContent(detailItemContent);
             });
             // Add Item Display to Grid

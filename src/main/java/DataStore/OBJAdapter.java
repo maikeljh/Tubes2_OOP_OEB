@@ -3,13 +3,13 @@ import System.Inventory;
 
 import java.io.*;
 
-public class OBJAdapter<T> implements DataAdapter<T> {
+public class OBJAdapter implements DataAdapter {
     // Function to read data from a file
-    public Inventory<T> readData(String filePath, Class<T> classT, Class<?>[] classTypes){
+    public Object readData(String filePath, Class<?>[] classTypes){
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            Inventory<T> result = (Inventory<T>) objectInputStream.readObject();
+            Object result = objectInputStream.readObject();
             objectInputStream.close();
             return result;
         } catch (FileNotFoundException e) {
@@ -19,12 +19,11 @@ public class OBJAdapter<T> implements DataAdapter<T> {
         } catch (ClassNotFoundException e) {
             System.out.println("ERROR GAN");
         }
-        Inventory<T> result = new Inventory<T>();
-        return result;
+        return null;
     }
 
     // Function to write data to a file
-    public void writeData(String filePath, Class<T> classT, Class<?>[] classTypes, Inventory<T> newData){
+    public void writeData(String filePath, Class<?>[] classTypes, Object newData){
         try{
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);

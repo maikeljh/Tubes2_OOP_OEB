@@ -24,5 +24,13 @@
         <sellPrice>13213.0</sellPrice>
         <stock>12</stock>
     </item>
-    <neff>3</neff>
+    <item>
+        <buyPrice>321.0</buyPrice>
+        <category>Orang</category>
+        <itemID>7</itemID>
+        <name>Tes 4</name>
+        <sellPrice>123.0</sellPrice>
+        <stock>6969</stock>
+    </item>
+    <neff>4</neff>
 </inventory>
