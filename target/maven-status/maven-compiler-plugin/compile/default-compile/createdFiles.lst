@@ -18,6 +18,7 @@ System\Bill.class
 DataStore\DataStore.class
 UI\SalesReportPage.class
 UI\HistoryPage.class
+UI\CashierPage.class
 UI\ListItemPage.class
 UI\ListMemberPage.class
 Plugin\BasePlugin.class

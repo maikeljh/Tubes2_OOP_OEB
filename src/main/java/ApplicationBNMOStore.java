@@ -150,7 +150,9 @@ public class ApplicationBNMOStore extends Application {
         cashierPage.setOnAction(event -> {
             // Handle open menu item click
             Tab newTab = new Tab("Cashier");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
+            CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0);
+            newTab.setContent(cashierTab);
+            // newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
