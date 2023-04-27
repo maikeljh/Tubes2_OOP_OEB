@@ -4,10 +4,7 @@ import com.itextpdf.text.DocumentException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -41,8 +38,18 @@ public class SalesReportPage extends VBox {
         printButton.setOnAction(event -> {
             SalesReport salesReport = new SalesReport(items);
             try {
+                printButton.setDisable(true);
                 salesReport.printReport();
-            } catch (DocumentException | FileNotFoundException e){
+                Thread.sleep(1000);
+                printButton.setDisable(false);
+
+                // Show alert
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Successful");
+                alert.setHeaderText("Print Sales Report was successful!");
+                alert.setContentText("You can open it on resources/files/Sales Report.pdf");
+                alert.showAndWait();
+            } catch (DocumentException | FileNotFoundException | InterruptedException e){
                 e.printStackTrace();
             }
         });
