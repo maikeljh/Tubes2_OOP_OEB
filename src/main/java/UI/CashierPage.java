@@ -16,6 +16,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale.Category;
+
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
 import System.PurchasedItem;
 import System.Inventory;
 import System.Item;
@@ -23,8 +27,11 @@ import System.Customer;
 import System.RegisteredCustomer;
 import javafx.stage.Stage;
 import javafx.scene.control.CheckBox;
-import org.controlsfx.control.RangeSlider;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+// import org.controlsfx.control.RangeSlider;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.*;
 
 
 public class CashierPage extends VBox {
@@ -211,12 +218,6 @@ public class CashierPage extends VBox {
         filterIcon.setCache(true);
         filterIcon.setFitWidth(14);
         filterIcon.setFitHeight(14);
-        Button filterButton = new Button("", filterIcon);
-        filterButton.setAlignment(Pos.CENTER);
-        filterButton.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;");
-        filterButton.setOnAction(event -> {
-            // belom
-        });
 
         // Create member dropdown
         MenuButton filterDropDownButton = new MenuButton();
@@ -226,6 +227,8 @@ public class CashierPage extends VBox {
         VBox containerDropDownDetails = new VBox();
         VBox containerDropDownDetails2 = new VBox();
 
+        Label checkBoxTitle = new Label("Sort By:");
+        checkBoxTitle.setAlignment(Pos.CENTER_LEFT);
         
         VBox checkBoxBox = new VBox();
         CheckBox checkBox1 = new CheckBox("Sort by Price");
@@ -239,10 +242,31 @@ public class CashierPage extends VBox {
         radioButton1.setToggleGroup(group);
         radioButton2.setToggleGroup(group);
         radioButtonBox.getChildren().addAll(radioButton1, radioButton2);
+        group.selectToggle(radioButton2);
+
+
+        Label priceSliderTitle = new Label("Price Range: ");
+        priceSliderTitle.setAlignment(Pos.CENTER_LEFT);
+
+        HBox priceBox = new HBox();
+        Label minPrice = new Label("Min: ");
+        Spinner<Double> spinner = new Spinner<Double>();
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10000, 50));
+        spinner.setEditable(true);
+        Label maxPrice = new Label("Max: ");
+        Spinner<Double> spinner2 = new Spinner<Double>();
+        spinner2.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10000, 50));
+        spinner2.setEditable(true);
+
+        priceBox.getChildren().addAll(minPrice, spinner, maxPrice, spinner2);
+        priceBox.setSpacing(5);
 
         VBox priceSliderBox = new VBox();
-        RangeSlider slider = new RangeSlider(0, 100, 25, 75);
+        Slider slider = new Slider(0, 10000, 50);
         priceSliderBox.getChildren().add(slider);
+
+        Label dropDownCategoriesTitle = new Label("Category: ");
+        dropDownCategoriesTitle.setAlignment(Pos.CENTER_LEFT);
 
         // Create member dropdown
         VBox dropDownCategoriesBox = new VBox();
@@ -252,7 +276,7 @@ public class CashierPage extends VBox {
         for (Item item : items.getList() ){
             flag = false;
             for (String category : temp){
-                if(item.getCategory().equals(category)){
+                if(item.getCategory().equalsIgnoreCase(category)){
                     flag = true;
                     break;
                 }
@@ -271,60 +295,25 @@ public class CashierPage extends VBox {
         // Add drop down box to member box
         dropDownCategoriesBox.getChildren().add(choiceCategoriesBox);
 
-        containerDropDownDetails.getChildren().addAll(checkBoxBox, radioButtonBox);
+        containerDropDownDetails.getChildren().addAll(checkBoxTitle, checkBoxBox, radioButtonBox);
         containerDropDownDetails.setSpacing(10);
         containerDropDown.getChildren().addAll(containerDropDownDetails, containerDropDownDetails2);
         containerDropDown.setSpacing(20);
 
-        checkBox1.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                containerDropDownDetails2.getChildren().add(0,priceSliderBox);
-            } else {
-                containerDropDownDetails2.getChildren().remove(priceSliderBox);
-                slider.setMin(25);
-                slider.setMax(75);
-            }
-        });
-
-        checkBox2.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                containerDropDownDetails2.getChildren().add(dropDownCategoriesBox);
-            } else {
-                containerDropDownDetails2.getChildren().remove(dropDownCategoriesBox);
-                choiceCategoriesBox.setValue("Not Chosen");
-            }
-        });
-
         CustomMenuItem menuItem = new CustomMenuItem(containerDropDown,false);
         
-        // filterDropDownButton.getItems().addAll(item1, item2);
         filterDropDownButton.getItems().add(menuItem);
 
         filterDropDownButton.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;-fx-focus-color: transparent;");
-
-
-        // Create a search button
-        ImageView searchIcon = new ImageView("/images/icon/searchButton.png");
-        searchIcon.setPreserveRatio(true);
-        searchIcon.setSmooth(true);
-        searchIcon.setCache(true);
-        searchIcon.setFitWidth(14);
-        searchIcon.setFitHeight(14);
-        Button searchButton = new Button("", searchIcon);
-        searchButton.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;");
-        searchButton.setAlignment(Pos.CENTER);
-        searchButton.setOnAction(event -> {
-            // belom
-        });
+        
 
         // Add contents to searchBox
-        searchBox.getChildren().addAll(searchBar, filterDropDownButton, searchButton);
+        searchBox.getChildren().addAll(searchBar, filterDropDownButton);
         searchBox.prefWidthProperty().bind(leftVBox.widthProperty());
         searchBox.setStyle("-fx-background-color: white; -fx-text-fill: #8CAEBB;-fx-border-radius: 10;-fx-border-width: 0.2;-fx-border-color: black;-fx-background-radius: 10");
         searchBox.setAlignment(Pos.CENTER_LEFT);
         searchBox.setPadding(new Insets(4,4,4,4));
-        HBox.setMargin(filterButton, new Insets(0, 0, 0, 20));
-        HBox.setMargin(searchButton, new Insets(0, 0, 0, 20));
+        HBox.setMargin(filterDropDownButton, new Insets(0, 0, 0, 20));
 
         // Create VBox library
         VBox libraryBox = new VBox();
@@ -462,10 +451,23 @@ public class CashierPage extends VBox {
         libraryMainBox.setSpacing(20);
 
         backButton.setOnAction(event -> {
-            headLibraryTitleBox.getChildren().clear();
-            headLibraryBox.getChildren().clear();
-            bodyLibraryVBox.getChildren().clear();
-            libraryBox.getChildren().clear();
+
+            int countTemp = 0;
+
+            checkBox1.setSelected(false);
+            checkBox2.setSelected(false);
+            choiceCategoriesBox.setValue("Not Chosen");
+            spinner.getValueFactory().setValue(Double.valueOf(50));
+            spinner2.getValueFactory().setValue(Double.valueOf(50));
+            slider.setValue(spinner.getValue());
+            group.selectToggle(radioButton2);
+            searchBar.setText("");
+
+            containerDropDownDetails2.getChildren().remove(priceSliderTitle);
+            containerDropDownDetails2.getChildren().remove(priceBox);
+            containerDropDownDetails2.getChildren().remove(priceSliderBox);
+            containerDropDownDetails2.getChildren().remove(dropDownCategoriesTitle);
+            containerDropDownDetails2.getChildren().remove(dropDownCategoriesBox);
 
             int totalItem2 = items.getList().size();
             String totalItemString2 = String.valueOf(totalItem2) + " Items";
@@ -473,6 +475,10 @@ public class CashierPage extends VBox {
             totalItemLabel2.setFont(Font.font("Montserrat", FontWeight.BOLD, 10));
             totalItemLabel2.setStyle("-fx-text-fill: #C8DFE8;");
 
+            bodyLibraryVBox.getChildren().clear();
+
+            VBox bodyLibraryVBox2 = new VBox();
+            bodyLibraryVBox2.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
             // for loop item
             for (Item library : items.getList()) {
 
@@ -522,22 +528,115 @@ public class CashierPage extends VBox {
                 // Add onclick event
                 clickItem(stage, tab, tabPane, libraryDisplay);
 
-                bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
-                bodyLibraryVBox.setSpacing(5);
-                bodyLibraryVBox.setAlignment(Pos.CENTER);
+                bodyLibraryVBox2.getChildren().addAll(hLine4, libraryDisplay);
+                bodyLibraryVBox2.setSpacing(5);
+                bodyLibraryVBox2.setAlignment(Pos.CENTER);
+                countTemp++;
             }
 
+            int totalItem3 = countTemp;
+            String totalItemString3 = String.valueOf(totalItem3) + " Items";
+            Label totalItemLabel3 = new Label(totalItemString3);
+            totalItemLabel3.setFont(Font.font("Montserrat", FontWeight.BOLD, 10));
+            totalItemLabel3.setStyle("-fx-text-fill: #C8DFE8;");
+
             // Create scrollpane
-            ScrollPane scrollPane3 = new ScrollPane(bodyLibraryVBox);
-            scrollPane3.setMinHeight(370);
-            scrollPane3.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
-            scrollPane3.setStyle("-fx-background: white;-fx-background-color: white;-fx-text-fill: #C8DFE8;");
+            ScrollPane scrollPane4 = new ScrollPane(bodyLibraryVBox2);
+            scrollPane4.setMinHeight(350);
+            scrollPane4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+            scrollPane4.setStyle("-fx-background: white;-fx-background-color: white;-fx-text-fill: #C8DFE8;");
 
             // Add contents to library box
-            headLibraryTitleBox.getChildren().addAll(allItem, totalItemLabel);
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+
+            headLibraryTitleBox.getChildren().addAll(allItem, totalItemLabel3);
             headLibraryBox.getChildren().addAll(backButton, headLibraryTitleBox);
-            libraryBox.getChildren().addAll(headLibraryBox, scrollPane3);
+            libraryBox.getChildren().addAll(headLibraryBox, scrollPane4);
             
+        });
+
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, newValue, totalItemString, totalItem);
+        });
+
+        checkBox1.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            
+            String searchBarValue = searchBar.getText();
+            if (newValue) {
+                containerDropDownDetails2.getChildren().add(0,priceSliderTitle);
+                containerDropDownDetails2.getChildren().add(1,priceBox);
+                containerDropDownDetails2.getChildren().add(2,priceSliderBox);
+                VBox.setMargin(priceBox, new Insets(5,0,0,0));
+                VBox.setMargin(priceSliderBox, new Insets(5,0,10,0));
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            } else {
+                containerDropDownDetails2.getChildren().remove(priceSliderTitle);
+                containerDropDownDetails2.getChildren().remove(priceBox);
+                containerDropDownDetails2.getChildren().remove(priceSliderBox);
+                slider.setValue(50);
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            }
+        });
+
+        checkBox2.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                containerDropDownDetails2.getChildren().addAll(dropDownCategoriesTitle, dropDownCategoriesBox);
+                VBox.setMargin(dropDownCategoriesBox, new Insets(5,0,0,0));
+            } else {
+                containerDropDownDetails2.getChildren().remove(dropDownCategoriesTitle);
+                containerDropDownDetails2.getChildren().remove(dropDownCategoriesBox);
+                choiceCategoriesBox.setValue("Not Chosen");
+            }
+        });
+
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            String searchBarValue = searchBar.getText();
+            spinner.getValueFactory().setValue(Double.valueOf(Math.round((newValue.doubleValue() * 100.0) / 100.0)));
+            spinner2.getValueFactory().setValue(Double.valueOf(Math.round((newValue.doubleValue() * 100.0) / 100.0)));
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+        });
+
+        spinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            String searchBarValue = searchBar.getText();
+            slider.setValue(spinner.getValue());
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+        });
+
+        spinner2.valueProperty().addListener((obs, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            String searchBarValue = searchBar.getText();
+            // slider.setValue(spinner2.getValue());
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+        });
+
+        choiceCategoriesBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            String searchBarValue = searchBar.getText();
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
         });
         
 
@@ -622,7 +721,7 @@ public class CashierPage extends VBox {
         VBox dropDownBox = new VBox();
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         for (Customer customer : customers.getList() ){
-            if (customer.getClass().getSimpleName().equals("Customer")){;}
+            if (customer.getClass().getSimpleName().equalsIgnoreCase("Customer")){;}
             else {
                 RegisteredCustomer regisCustomer = (RegisteredCustomer) customer;
                 String regisCustomerName = regisCustomer.getName();
@@ -817,5 +916,328 @@ public class CashierPage extends VBox {
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
+    }
+
+    private void searchItem(VBox headLibraryTitleBox,HBox headLibraryBox, VBox bodyLibraryVBox, VBox libraryBox, Inventory<Item> items, VBox leftVBox, Stage stage, Tab tab, TabPane tabPane, Label allItem, Label totalItemLabel, Button backButton, CheckBox checkBox1, CheckBox checkBox2, Spinner<Double> spinner, Spinner<Double> spinner2, ChoiceBox<String> choiceCategoriesBox, ToggleGroup group, String newValue, String totalItemString, Integer totalItem ){
+
+        int mode = 0;
+        int count = 0;
+        boolean isPriceChecked = checkBox1.isSelected();
+        boolean isCategoriesChecked = checkBox2.isSelected();
+        Double minPrice = spinner.getValue();
+        Double maxPrice = spinner2.getValue();
+        String selectedCategories = choiceCategoriesBox.getValue();
+        Toggle selectedToggle = group.getSelectedToggle();
+        RadioButton selectedRadioButton = (RadioButton) selectedToggle;
+        String selectedValue = selectedRadioButton.getText();
+
+
+        if (isPriceChecked){
+            if(isCategoriesChecked){
+                if(selectedValue.equalsIgnoreCase("Descending")){
+                    mode = 1;
+                }
+                else {
+                    mode = 2;
+                }
+            }
+            else {
+                if(selectedValue.equalsIgnoreCase("Descending")){
+                    mode = 3;
+                }
+                else {
+                    mode = 4;
+                }
+            }
+        }
+        else {
+            if(isCategoriesChecked){
+                if(selectedValue.equalsIgnoreCase("Descending")){
+                    mode = 5;
+                }
+                else {
+                    mode = 6;
+                }
+            }
+            else {
+                if(selectedValue.equalsIgnoreCase("Descending")){
+                    mode = 7;
+                }
+            }
+        }
+
+        int totalItem2 = items.getList().size();
+        String totalItemString2 = String.valueOf(totalItem2) + " Items";
+        Label totalItemLabel2 = new Label(totalItemString2);
+        totalItemLabel2.setFont(Font.font("Montserrat", FontWeight.BOLD, 10));
+        totalItemLabel2.setStyle("-fx-text-fill: #C8DFE8;");
+
+        bodyLibraryVBox.getChildren().clear();
+        switch(mode){
+            case 1:
+            case 2:
+                // for loop item
+                for (Item library : items.getList()) {
+
+                    if(library.getSellPrice() >= minPrice && library.getSellPrice() <= maxPrice && library.getCategory().equalsIgnoreCase(selectedCategories) && library.getName().toLowerCase().contains(newValue.toLowerCase())){
+
+                        // HBox Display Item
+                        HBox libraryDisplay = new HBox();
+                        libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                        libraryDisplay.setPrefHeight(40);
+
+                        // Image View Item
+                        ImageView libraryImage = new ImageView(library.getImage());
+
+                        // Styling Item Image
+                        libraryImage.setPreserveRatio(true);
+                        libraryImage.setSmooth(true);
+                        libraryImage.setCache(true);
+                        libraryImage.setFitWidth(40);
+                        libraryImage.setFitHeight(40);
+
+                        // Item Name
+                        Label libraryName = new Label(library.getName());
+
+                        // Styling Item Name
+                        libraryName.setFont(Font.font("Montserrat", 14));
+
+                        // Item Price
+                        double libraryPrice = library.getSellPrice();
+                        NumberFormat formatter = NumberFormat.getInstance();
+                        formatter.setGroupingUsed(true);
+                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        Label libraryPriceBills = new Label(libraryPriceBill);
+                        libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+                        libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
+
+                        // Create HLine 4
+                        HBox hLine4 = new HBox();
+                        hLine4.setPrefHeight(4);
+                        hLine4.setStyle("-fx-background-color: #C8DFE8");
+                        hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+
+                        // Add to body library box
+                        libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
+                        libraryDisplay.setAlignment(Pos.CENTER_LEFT);
+                        HBox.setMargin(libraryImage, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryName, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
+
+                        // Add onclick event
+                        clickItem(stage, tab, tabPane, libraryDisplay);
+
+                        bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
+                        bodyLibraryVBox.setSpacing(5);
+                        bodyLibraryVBox.setAlignment(Pos.CENTER);
+                        count++;
+                    }
+                }
+                break;
+
+            case 3:
+            case 4:
+                // for loop item
+                for (Item library : items.getList()) {
+
+                    if(library.getSellPrice() >= minPrice && library.getSellPrice() <= maxPrice && library.getName().toLowerCase().contains(newValue.toLowerCase())){
+
+                        // HBox Display Item
+                        HBox libraryDisplay = new HBox();
+                        libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                        libraryDisplay.setPrefHeight(40);
+
+                        // Image View Item
+                        ImageView libraryImage = new ImageView(library.getImage());
+
+                        // Styling Item Image
+                        libraryImage.setPreserveRatio(true);
+                        libraryImage.setSmooth(true);
+                        libraryImage.setCache(true);
+                        libraryImage.setFitWidth(40);
+                        libraryImage.setFitHeight(40);
+
+                        // Item Name
+                        Label libraryName = new Label(library.getName());
+
+                        // Styling Item Name
+                        libraryName.setFont(Font.font("Montserrat", 14));
+
+                        // Item Price
+                        double libraryPrice = library.getSellPrice();
+                        NumberFormat formatter = NumberFormat.getInstance();
+                        formatter.setGroupingUsed(true);
+                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        Label libraryPriceBills = new Label(libraryPriceBill);
+                        libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+                        libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
+
+                        // Create HLine 4
+                        HBox hLine4 = new HBox();
+                        hLine4.setPrefHeight(4);
+                        hLine4.setStyle("-fx-background-color: #C8DFE8");
+                        hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+
+                        // Add to body library box
+                        libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
+                        libraryDisplay.setAlignment(Pos.CENTER_LEFT);
+                        HBox.setMargin(libraryImage, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryName, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
+
+                        // Add onclick event
+                        clickItem(stage, tab, tabPane, libraryDisplay);
+
+                        bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
+                        bodyLibraryVBox.setSpacing(5);
+                        bodyLibraryVBox.setAlignment(Pos.CENTER);
+                        count++;
+                    }
+                }
+                break;
+
+            case 5:
+            case 6:
+                // for loop item
+                for (Item library : items.getList()) {
+
+                    if(library.getCategory().equalsIgnoreCase(selectedCategories) && library.getName().toLowerCase().contains(newValue.toLowerCase())){
+
+                        // HBox Display Item
+                        HBox libraryDisplay = new HBox();
+                        libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                        libraryDisplay.setPrefHeight(40);
+
+                        // Image View Item
+                        ImageView libraryImage = new ImageView(library.getImage());
+
+                        // Styling Item Image
+                        libraryImage.setPreserveRatio(true);
+                        libraryImage.setSmooth(true);
+                        libraryImage.setCache(true);
+                        libraryImage.setFitWidth(40);
+                        libraryImage.setFitHeight(40);
+
+                        // Item Name
+                        Label libraryName = new Label(library.getName());
+
+                        // Styling Item Name
+                        libraryName.setFont(Font.font("Montserrat", 14));
+
+                        // Item Price
+                        double libraryPrice = library.getSellPrice();
+                        NumberFormat formatter = NumberFormat.getInstance();
+                        formatter.setGroupingUsed(true);
+                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        Label libraryPriceBills = new Label(libraryPriceBill);
+                        libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+                        libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
+
+                        // Create HLine 4
+                        HBox hLine4 = new HBox();
+                        hLine4.setPrefHeight(4);
+                        hLine4.setStyle("-fx-background-color: #C8DFE8");
+                        hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+
+                        // Add to body library box
+                        libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
+                        libraryDisplay.setAlignment(Pos.CENTER_LEFT);
+                        HBox.setMargin(libraryImage, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryName, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
+
+                        // Add onclick event
+                        clickItem(stage, tab, tabPane, libraryDisplay);
+
+                        bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
+                        bodyLibraryVBox.setSpacing(5);
+                        bodyLibraryVBox.setAlignment(Pos.CENTER);
+                        count++;
+                    }
+                }
+                break;
+
+            case 7:
+            default:
+                // for loop item
+                for (Item library : items.getList()) {
+                    if(library.getName().toLowerCase().contains(newValue.toLowerCase())){
+                    
+                        // HBox Display Item
+                        HBox libraryDisplay = new HBox();
+                        libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                        libraryDisplay.setPrefHeight(40);
+
+                        // Image View Item
+                        ImageView libraryImage = new ImageView(library.getImage());
+
+                        // Styling Item Image
+                        libraryImage.setPreserveRatio(true);
+                        libraryImage.setSmooth(true);
+                        libraryImage.setCache(true);
+                        libraryImage.setFitWidth(40);
+                        libraryImage.setFitHeight(40);
+
+                        // Item Name
+                        Label libraryName = new Label(library.getName());
+
+                        // Styling Item Name
+                        libraryName.setFont(Font.font("Montserrat", 14));
+
+                        // Item Price
+                        double libraryPrice = library.getSellPrice();
+                        NumberFormat formatter = NumberFormat.getInstance();
+                        formatter.setGroupingUsed(true);
+                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        Label libraryPriceBills = new Label(libraryPriceBill);
+                        libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+                        libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
+
+                        // Create HLine 4
+                        HBox hLine4 = new HBox();
+                        hLine4.setPrefHeight(4);
+                        hLine4.setStyle("-fx-background-color: #C8DFE8");
+                        hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+
+                        // Add to body library box
+                        libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
+                        libraryDisplay.setAlignment(Pos.CENTER_LEFT);
+                        HBox.setMargin(libraryImage, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryName, new Insets(0,0,0,20));
+                        HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
+
+                        // Add onclick event
+                        clickItem(stage, tab, tabPane, libraryDisplay);
+
+                        bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
+                        bodyLibraryVBox.setSpacing(5);
+                        bodyLibraryVBox.setAlignment(Pos.CENTER);
+                        count++;
+                    }
+                }
+                break;
+        }
+        
+        //belom disort
+
+        totalItem = count;
+        totalItemString = String.valueOf(totalItem) + " Items";
+        totalItemLabel.setText(totalItemString);
+        
+
+        // Create scrollpane
+        ScrollPane scrollPane3 = new ScrollPane(bodyLibraryVBox);
+        scrollPane3.setMinHeight(350);
+        scrollPane3.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+        scrollPane3.setStyle("-fx-background: white;-fx-background-color: white;-fx-text-fill: #C8DFE8;");
+
+        headLibraryTitleBox.getChildren().clear();
+        headLibraryBox.getChildren().clear();
+        libraryBox.getChildren().clear();
+
+        // Add contents to library box
+        headLibraryTitleBox.getChildren().addAll(allItem, totalItemLabel);
+        headLibraryBox.getChildren().addAll(backButton, headLibraryTitleBox);
+        libraryBox.getChildren().addAll(headLibraryBox, scrollPane3);
     }
 }
