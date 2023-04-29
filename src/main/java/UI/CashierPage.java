@@ -35,6 +35,7 @@ import javafx.scene.image.Image;
 import java.io.FileNotFoundException;
 import com.itextpdf.text.DocumentException;
 import java.lang.IndexOutOfBoundsException;
+import java.util.Comparator;
 
 
 public class CashierPage extends VBox {
@@ -664,6 +665,28 @@ public class CashierPage extends VBox {
             String searchBarValue = searchBar.getText();
             searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
         });
+
+        radioButton1.setOnAction(event -> {
+            if (radioButton1.isSelected()) {
+                headLibraryTitleBox.getChildren().clear();
+                headLibraryBox.getChildren().clear();
+                bodyLibraryVBox.getChildren().clear();
+                libraryBox.getChildren().clear();
+                String searchBarValue = searchBar.getText();
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            }
+        });
+
+        radioButton2.setOnAction(event -> {
+            if (radioButton2.isSelected()) {
+                headLibraryTitleBox.getChildren().clear();
+                headLibraryBox.getChildren().clear();
+                bodyLibraryVBox.getChildren().clear();
+                libraryBox.getChildren().clear();
+                String searchBarValue = searchBar.getText();
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            }
+        });
         
 
     // }
@@ -994,22 +1017,41 @@ public class CashierPage extends VBox {
         RadioButton selectedRadioButton = (RadioButton) selectedToggle;
         String selectedValue = selectedRadioButton.getText();
 
+        // compare
+        Comparator<Item> itemSellPrice = Comparator.comparingDouble(Item::getSellPrice);
+        Comparator<Item> itemSellPriceComparator = Comparator.comparingDouble(Item::getSellPrice).thenComparing(Item::getName);
+        Comparator<Item> itemSellPriceDescendingComparator = itemSellPrice.reversed().thenComparing(Item::getName);
+        Comparator<Item> itemNameComparator = Comparator.comparing(Item::getName);
+        Comparator<Item> itemNameDescendingComparator = itemNameComparator.reversed();
+
 
         if (isPriceChecked){
             if(isCategoriesChecked){
                 if(selectedValue.equalsIgnoreCase("Descending")){
                     mode = 1;
+
+                    // Sort 
+                    items.getList().sort(itemSellPriceDescendingComparator);
                 }
                 else {
                     mode = 2;
+
+                    // Sort 
+                    items.getList().sort(itemSellPriceComparator);
                 }
             }
             else {
                 if(selectedValue.equalsIgnoreCase("Descending")){
                     mode = 3;
+
+                    // Sort 
+                    items.getList().sort(itemSellPriceDescendingComparator);
                 }
                 else {
                     mode = 4;
+
+                    // Sort 
+                    items.getList().sort(itemSellPriceComparator);
                 }
             }
         }
@@ -1017,14 +1059,26 @@ public class CashierPage extends VBox {
             if(isCategoriesChecked){
                 if(selectedValue.equalsIgnoreCase("Descending")){
                     mode = 5;
+
+                    // Sort 
+                    items.getList().sort(itemNameDescendingComparator);
                 }
                 else {
                     mode = 6;
+
+                    // Sort 
+                    items.getList().sort(itemNameComparator);
                 }
             }
             else {
                 if(selectedValue.equalsIgnoreCase("Descending")){
                     mode = 7;
+                    // Sort 
+                    items.getList().sort(itemNameDescendingComparator);
+                }
+                else {
+                    // Sort 
+                    items.getList().sort(itemNameComparator);
                 }
             }
         }
@@ -1036,9 +1090,11 @@ public class CashierPage extends VBox {
         totalItemLabel2.setStyle("-fx-text-fill: #C8DFE8;");
 
         bodyLibraryVBox.getChildren().clear();
+
         switch(mode){
             case 1:
             case 2:
+                
                 // for loop item
                 for (Item library : items.getList()) {
 
@@ -1100,6 +1156,7 @@ public class CashierPage extends VBox {
 
             case 3:
             case 4:
+
                 // for loop item
                 for (Item library : items.getList()) {
 
@@ -1161,6 +1218,7 @@ public class CashierPage extends VBox {
 
             case 5:
             case 6:
+
                 // for loop item
                 for (Item library : items.getList()) {
 
@@ -1222,6 +1280,7 @@ public class CashierPage extends VBox {
 
             case 7:
             default:
+                
                 // for loop item
                 for (Item library : items.getList()) {
                     if(library.getName().toLowerCase().contains(newValue.toLowerCase())){
@@ -1280,8 +1339,6 @@ public class CashierPage extends VBox {
                 }
                 break;
         }
-        
-        //belom disort
 
         totalItem = count;
         totalItemString = String.valueOf(totalItem) + " Items";
