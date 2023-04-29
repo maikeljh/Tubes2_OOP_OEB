@@ -1,29 +1,34 @@
 package UI;
 
+
+import java.util.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import java.text.NumberFormat;
-import java.lang.reflect.Member;
+import java.util.ArrayList;
 import System.PurchasedItem;
 import System.Inventory;
 import System.Item;
 import System.Customer;
 import System.RegisteredCustomer;
 import javafx.stage.Stage;
+import javafx.scene.control.CheckBox;
+import org.controlsfx.control.RangeSlider;
+import javafx.scene.layout.VBox;
+
 
 public class CashierPage extends VBox {
+    
     
     private Inventory<PurchasedItem> purchasedItems  = new Inventory<PurchasedItem>();
 
@@ -198,6 +203,7 @@ public class CashierPage extends VBox {
         searchBar.setPrefWidth(600);
         searchBar.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;");
 
+
         // Create a filter button
         ImageView filterIcon = new ImageView("/images/icon/filterButton.png");
         filterIcon.setPreserveRatio(true);
@@ -211,6 +217,91 @@ public class CashierPage extends VBox {
         filterButton.setOnAction(event -> {
             // belom
         });
+
+        // Create member dropdown
+        MenuButton filterDropDownButton = new MenuButton();
+        filterDropDownButton.setGraphic(filterIcon);
+
+        HBox containerDropDown = new HBox();
+        VBox containerDropDownDetails = new VBox();
+        VBox containerDropDownDetails2 = new VBox();
+
+        
+        VBox checkBoxBox = new VBox();
+        CheckBox checkBox1 = new CheckBox("Sort by Price");
+        CheckBox checkBox2 = new CheckBox("Sort by Categories");
+        checkBoxBox.getChildren().addAll(checkBox1, checkBox2);
+
+        ToggleGroup group = new ToggleGroup();
+        VBox radioButtonBox = new VBox();
+        RadioButton radioButton1 = new RadioButton("Descending");
+        RadioButton radioButton2 = new RadioButton("Ascending");
+        radioButton1.setToggleGroup(group);
+        radioButton2.setToggleGroup(group);
+        radioButtonBox.getChildren().addAll(radioButton1, radioButton2);
+
+        VBox priceSliderBox = new VBox();
+        RangeSlider slider = new RangeSlider(0, 100, 25, 75);
+        priceSliderBox.getChildren().add(slider);
+
+        // Create member dropdown
+        VBox dropDownCategoriesBox = new VBox();
+        ChoiceBox<String> choiceCategoriesBox = new ChoiceBox<>();
+        List<String> temp = new ArrayList<String>();
+        boolean flag = false;
+        for (Item item : items.getList() ){
+            flag = false;
+            for (String category : temp){
+                if(item.getCategory().equals(category)){
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag){
+                choiceCategoriesBox.getItems().add(item.getCategory());
+                temp.add(item.getCategory());
+            }
+
+        }
+        choiceCategoriesBox.setValue("Not Chosen");
+
+        //styling choice box
+        choiceCategoriesBox.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #3B919B;-fx-font-size: 14;-fx-font-weight: bold;-fx-text-fill: #3B919B;");
+
+        // Add drop down box to member box
+        dropDownCategoriesBox.getChildren().add(choiceCategoriesBox);
+
+        containerDropDownDetails.getChildren().addAll(checkBoxBox, radioButtonBox);
+        containerDropDownDetails.setSpacing(10);
+        containerDropDown.getChildren().addAll(containerDropDownDetails, containerDropDownDetails2);
+        containerDropDown.setSpacing(20);
+
+        checkBox1.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                containerDropDownDetails2.getChildren().add(0,priceSliderBox);
+            } else {
+                containerDropDownDetails2.getChildren().remove(priceSliderBox);
+                slider.setMin(25);
+                slider.setMax(75);
+            }
+        });
+
+        checkBox2.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                containerDropDownDetails2.getChildren().add(dropDownCategoriesBox);
+            } else {
+                containerDropDownDetails2.getChildren().remove(dropDownCategoriesBox);
+                choiceCategoriesBox.setValue("Not Chosen");
+            }
+        });
+
+        CustomMenuItem menuItem = new CustomMenuItem(containerDropDown,false);
+        
+        // filterDropDownButton.getItems().addAll(item1, item2);
+        filterDropDownButton.getItems().add(menuItem);
+
+        filterDropDownButton.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;-fx-focus-color: transparent;");
+
 
         // Create a search button
         ImageView searchIcon = new ImageView("/images/icon/searchButton.png");
@@ -227,7 +318,7 @@ public class CashierPage extends VBox {
         });
 
         // Add contents to searchBox
-        searchBox.getChildren().addAll(searchBar, filterButton, searchButton);
+        searchBox.getChildren().addAll(searchBar, filterDropDownButton, searchButton);
         searchBox.prefWidthProperty().bind(leftVBox.widthProperty());
         searchBox.setStyle("-fx-background-color: white; -fx-text-fill: #8CAEBB;-fx-border-radius: 10;-fx-border-width: 0.2;-fx-border-color: black;-fx-background-radius: 10");
         searchBox.setAlignment(Pos.CENTER_LEFT);
@@ -355,7 +446,7 @@ public class CashierPage extends VBox {
         }
         // Create scrollpane
         ScrollPane scrollPane = new ScrollPane(bodyLibraryVBox);
-        scrollPane.setMinHeight(370);
+        scrollPane.setMinHeight(350);
         scrollPane.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
         scrollPane.setStyle("-fx-background: white;-fx-background-color: white;-fx-text-fill: #C8DFE8;");
 
