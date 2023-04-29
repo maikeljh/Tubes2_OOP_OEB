@@ -16,14 +16,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale.Category;
-
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
-
 import System.PurchasedItem;
 import System.Inventory;
 import System.Item;
 import System.Customer;
+import System.FixedBill;
 import System.RegisteredCustomer;
 import javafx.stage.Stage;
 import javafx.scene.control.CheckBox;
@@ -31,7 +28,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 // import org.controlsfx.control.RangeSlider;
 import javafx.scene.layout.VBox;
-import javafx.scene.input.*;
+import System.FixedBill;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javafx.scene.image.Image;
+import java.io.FileNotFoundException;
+import com.itextpdf.text.DocumentException;
+import java.lang.IndexOutOfBoundsException;
 
 
 public class CashierPage extends VBox {
@@ -39,7 +42,7 @@ public class CashierPage extends VBox {
     
     private Inventory<PurchasedItem> purchasedItems  = new Inventory<PurchasedItem>();
 
-    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode){
+    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions){
 
         // Create main VBox
         VBox mainVBox = new VBox();
@@ -251,19 +254,23 @@ public class CashierPage extends VBox {
         HBox priceBox = new HBox();
         Label minPrice = new Label("Min: ");
         Spinner<Double> spinner = new Spinner<Double>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10000, 50));
+        double initVal1 = getMinPrice(items);
+        double initVal2 = getMaxPrice(items);
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, initVal2, initVal1));
         spinner.setEditable(true);
         Label maxPrice = new Label("Max: ");
         Spinner<Double> spinner2 = new Spinner<Double>();
-        spinner2.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10000, 50));
+        spinner2.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, initVal2+100, initVal2));
         spinner2.setEditable(true);
 
         priceBox.getChildren().addAll(minPrice, spinner, maxPrice, spinner2);
         priceBox.setSpacing(5);
 
         VBox priceSliderBox = new VBox();
-        Slider slider = new Slider(0, 10000, 50);
-        priceSliderBox.getChildren().add(slider);
+        Slider slider1 = new Slider(0, initVal2, initVal1);
+        priceSliderBox.getChildren().add(slider1);
+        Slider slider2 = new Slider(1, initVal2+100, initVal2);
+        priceSliderBox.getChildren().add(slider2);
 
         Label dropDownCategoriesTitle = new Label("Category: ");
         dropDownCategoriesTitle.setAlignment(Pos.CENTER_LEFT);
@@ -459,7 +466,8 @@ public class CashierPage extends VBox {
             choiceCategoriesBox.setValue("Not Chosen");
             spinner.getValueFactory().setValue(Double.valueOf(50));
             spinner2.getValueFactory().setValue(Double.valueOf(50));
-            slider.setValue(spinner.getValue());
+            slider1.setValue(spinner.getValue());
+            slider2.setValue(spinner2.getValue());
             group.selectToggle(radioButton2);
             searchBar.setText("");
 
@@ -583,7 +591,8 @@ public class CashierPage extends VBox {
                 containerDropDownDetails2.getChildren().remove(priceSliderTitle);
                 containerDropDownDetails2.getChildren().remove(priceBox);
                 containerDropDownDetails2.getChildren().remove(priceSliderBox);
-                slider.setValue(50);
+                slider1.setValue(initVal1);
+                slider2.setValue(initVal2);
                 searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
             }
         });
@@ -599,14 +608,31 @@ public class CashierPage extends VBox {
             }
         });
 
-        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        slider1.valueProperty().addListener((observable, oldValue, newValue) -> {
             headLibraryTitleBox.getChildren().clear();
             headLibraryBox.getChildren().clear();
             bodyLibraryVBox.getChildren().clear();
             libraryBox.getChildren().clear();
             String searchBarValue = searchBar.getText();
             spinner.getValueFactory().setValue(Double.valueOf(Math.round((newValue.doubleValue() * 100.0) / 100.0)));
+            if(slider2.getValue() < slider1.getValue()){
+                slider2.setValue(slider1.getValue() + 1);
+                spinner2.getValueFactory().setValue(slider2.getValue());
+            }
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+        });
+
+        slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
+            headLibraryTitleBox.getChildren().clear();
+            headLibraryBox.getChildren().clear();
+            bodyLibraryVBox.getChildren().clear();
+            libraryBox.getChildren().clear();
+            String searchBarValue = searchBar.getText();
             spinner2.getValueFactory().setValue(Double.valueOf(Math.round((newValue.doubleValue() * 100.0) / 100.0)));
+            if(slider1.getValue() > slider2.getValue()){
+                slider1.setValue(slider2.getValue() - 1);
+                spinner.getValueFactory().setValue(slider1.getValue());
+            }
             searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
         });
 
@@ -616,7 +642,7 @@ public class CashierPage extends VBox {
             bodyLibraryVBox.getChildren().clear();
             libraryBox.getChildren().clear();
             String searchBarValue = searchBar.getText();
-            slider.setValue(spinner.getValue());
+            slider1.setValue(spinner.getValue());
             searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
         });
 
@@ -626,7 +652,7 @@ public class CashierPage extends VBox {
             bodyLibraryVBox.getChildren().clear();
             libraryBox.getChildren().clear();
             String searchBarValue = searchBar.getText();
-            // slider.setValue(spinner2.getValue());
+            slider2.setValue(spinner2.getValue());
             searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
         });
 
@@ -697,7 +723,7 @@ public class CashierPage extends VBox {
         addCustomerButton.setOnAction(event -> {
             Tab newTab = new Tab("Cashier");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0);
+            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0, transactions);
             newTab.setContent(cashierContent);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -720,12 +746,14 @@ public class CashierPage extends VBox {
         // Create member dropdown
         VBox dropDownBox = new VBox();
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        List<Integer> tempID = new ArrayList<Integer>();
         for (Customer customer : customers.getList() ){
             if (customer.getClass().getSimpleName().equalsIgnoreCase("Customer")){;}
             else {
                 RegisteredCustomer regisCustomer = (RegisteredCustomer) customer;
                 String regisCustomerName = regisCustomer.getName();
                 choiceBox.getItems().add(regisCustomerName);
+                tempID.add(customer.getId());
             }
         }
         choiceBox.getItems().add("Not Member");
@@ -822,26 +850,6 @@ public class CashierPage extends VBox {
         saveButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         saveButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
         saveButton.setAlignment(Pos.CENTER);
-        saveButton.setOnAction(event -> {
-            // belom
-        });
-
-        // // Create VLine2
-        // VBox vLine2 = new VBox();
-        // vLine2.setPrefWidth(4);
-        // vLine2.setStyle("-fx-background-color: #F3F9FB");
-        // vLine2.setOpacity(0.47);
-
-        // Create print Button
-        Button printButton = new Button("Print Bill");
-        printButton.setPrefWidth(308);
-        printButton.setPrefHeight(26);
-        printButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
-        printButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
-        printButton.setAlignment(Pos.CENTER);
-        printButton.setOnAction(event -> {
-            // belom
-        });
 
         // Add contents to billButton
         billButton.getChildren().addAll(saveButton);
@@ -872,6 +880,61 @@ public class CashierPage extends VBox {
         totalPriceBox.getChildren().add(totalPriceBills);
         totalPriceBox.setAlignment(Pos.CENTER);
         totalPriceBox.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
+
+        saveButton.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Successful");
+            alert.setHeaderText("Save bill was successful!");
+            alert.setContentText("Do you want to print the bill?");
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType yesButton = new ButtonType("Yes");
+            alert.getButtonTypes().setAll(noButton, yesButton);
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMMM YYYY\nHH:mm:ss");
+            final String timenow = sdf.format(new Date());
+
+
+            int nBill = transactions.getList().size();
+            int billID = transactions.getList().get(nBill-1).getBillID() + 1;
+
+            int selectedIndex = choiceBox.getSelectionModel().getSelectedIndex();
+            int custID = -1;
+            if(selectedIndex >= tempID.size()){
+                custID = customers.getList().size() - 1;
+            } else {
+                custID = tempID.get(selectedIndex);
+            }
+
+            FixedBill newBill = new FixedBill(billID, timenow, custID);
+
+            newBill.setTotalPrice(totalPrice);
+
+            newBill.setDiscount(0.10); // belom
+
+            // belom
+            newBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 5, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+            newBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 5, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
+            newBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 5, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
+            newBill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 5, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
+            transactions.addElement(newBill);
+        
+            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0, transactions);
+            tab.setContent(cashierContent);
+
+
+            if (result.isPresent() && result.get() == yesButton) {
+                try {
+                    newBill.printBill();
+                    alert.close();
+                } catch (DocumentException | FileNotFoundException | IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
+            } else {
+                alert.close();
+            }
+        });
 
         // Add right contents to right Box
         rightVBox.getChildren().addAll(addCustBox, memberItemsBox, billButton, hLine2, totalPriceBox);
@@ -1239,5 +1302,26 @@ public class CashierPage extends VBox {
         headLibraryTitleBox.getChildren().addAll(allItem, totalItemLabel);
         headLibraryBox.getChildren().addAll(backButton, headLibraryTitleBox);
         libraryBox.getChildren().addAll(headLibraryBox, scrollPane3);
+    }
+
+    private double getMaxPrice (Inventory<Item> items){
+        double max = 0;
+        for (Item itemElement : items.getList()){
+            if (itemElement.getSellPrice() > max){
+                max = itemElement.getSellPrice();
+            }
+        }
+        return max;
+    }
+
+    private double getMinPrice(Inventory<Item> items){
+        double min = getMaxPrice(items);
+        for (Item itemElement : items.getList()){
+            if (itemElement.getSellPrice() < min){
+                min = itemElement.getSellPrice();
+            }
+        }
+        return min;
+
     }
 }
