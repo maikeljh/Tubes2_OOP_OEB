@@ -1,6 +1,8 @@
 package UI;
 
 import com.itextpdf.text.DocumentException;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -69,71 +71,74 @@ public class SalesReportPage extends VBox {
         // Add title label to HBox header
         hbox.getChildren().addAll(title, printButtonHBox);
 
-        // Create a preview for sales report (VBox)
-        VBox vbox = new VBox(15); // spacing = 8
-        vbox.setAlignment(Pos.BASELINE_CENTER);
-        vbox.prefWidthProperty().bind(hbox.widthProperty());
-        vbox.setPadding(new Insets(0, 30,30,0));
-
         // Create a table
         TableView<PurchasedItem> table = new TableView();
         table.setEditable(true);
+        table.setStyle(".table-column {\n" +
+                "  -fx-alignment: CENTER-RIGHT;\n" +
+                "}");
+
+        //table.lookup(".column-header-background").setStyle("-fx-background-color: #3B919B;");
 
         // Set table columns
         TableColumn<PurchasedItem, Integer> idCol = new TableColumn("Product ID");
         idCol.setMinWidth(100);
-        idCol.setCellValueFactory(new PropertyValueFactory<PurchasedItem, Integer>("item_id"));
+        PropertyValueFactory<PurchasedItem, Integer> id = new PropertyValueFactory<PurchasedItem, Integer>("item_id");
+        idCol.setCellValueFactory(id);
+        idCol.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<PurchasedItem, String> nameCol = new TableColumn("Product Name");
-        nameCol.setMinWidth(245);
-        nameCol.setCellValueFactory(new PropertyValueFactory<PurchasedItem, String>("name"));
+        nameCol.setMinWidth(252);
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<PurchasedItem, Double> buyPriceCol = new TableColumn("Buy Price");
         buyPriceCol.setMinWidth(180);
-        buyPriceCol.setCellValueFactory(new PropertyValueFactory<PurchasedItem, Double>("buy_price"));
+        buyPriceCol.setCellValueFactory(new PropertyValueFactory<>("buy_price"));
+        buyPriceCol.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<PurchasedItem, Double> sellPriceCol = new TableColumn("Sell Price");
         sellPriceCol.setMinWidth(180);
-        sellPriceCol.setCellValueFactory(new PropertyValueFactory<PurchasedItem, Double>("sell_price"));
+        sellPriceCol.setCellValueFactory(new PropertyValueFactory<>("sell_price"));
+        sellPriceCol.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<PurchasedItem, Integer> qtyCol = new TableColumn("Quantity");
         qtyCol.setMinWidth(100);
-        qtyCol.setCellValueFactory(new PropertyValueFactory<PurchasedItem, Integer>("quantity"));
+        qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        qtyCol.setStyle("-fx-alignment: CENTER;");
 
-        //TableColumn grossProfitCol = new TableColumn("Gross Profit");
-        //grossProfitCol.setMinWidth(180);
-        //grossProfitCol.setCellValueFactory(new PropertyValueFactory<>("gross_profit"));
+        TableColumn<PurchasedItem, Double> grossProfitCol = new TableColumn("Gross Profit");
+        grossProfitCol.setMinWidth(180);
+        grossProfitCol.setCellValueFactory(cellData -> {
+            PurchasedItem item = cellData.getValue();
+            Double grossProfit = item.calculateGrossProfit();
+            return new SimpleDoubleProperty(grossProfit).asObject();
+        });
+        grossProfitCol.setStyle("-fx-alignment: CENTER;");
 
-        //TableColumn netProfitCol = new TableColumn("Net Profit");
-        //netProfitCol.setMinWidth(180);
-        //netProfitCol.setCellValueFactory(new PropertyValueFactory<>("net_profit"));
+        TableColumn<PurchasedItem, Double> netProfitCol = new TableColumn("Net Profit");
+        netProfitCol.setMinWidth(180);
+        netProfitCol.setCellValueFactory(cellData -> {
+            PurchasedItem item = cellData.getValue();
+            Double netProfit = item.calculateNetProfit();
+            return new SimpleDoubleProperty(netProfit).asObject();
+        });
+        netProfitCol.setStyle("-fx-alignment: CENTER;");
 
         // Add columns to table
-        table.getColumns().addAll(idCol, nameCol, buyPriceCol, sellPriceCol, qtyCol/*, grossProfitCol, netProfitCol*/);
+        table.getColumns().addAll(idCol, nameCol, buyPriceCol, sellPriceCol, qtyCol, grossProfitCol, netProfitCol);
 
         // Define a list (data) of items
         SalesReport salesReport = new SalesReport(items);
-        //ObservableList<PurchasedItem> data = FXCollections.observableArrayList();
-
-        for (PurchasedItem item : salesReport.getItems().getList()){
-            //data.add(item);
-            table.getItems().add(item);
-        }
+        ObservableList<PurchasedItem> tableItems = FXCollections.observableArrayList();
+        tableItems.addAll(salesReport.getItems().getList());
 
         // Set data to table
-        //table.getItems().addAll(data);
-        //table.setItems(data);
-        //table.refresh();
-
-
-
-
-
-        // Add table to VBox
-        vbox.getChildren().add(table);
+        table.setItems(tableItems);
+        table.refresh();
 
         // Create scroll pane for VBox
-        ScrollPane scrollPane = new ScrollPane(vbox);
+        ScrollPane scrollPane = new ScrollPane(table);
 
         // Style scroll pane
         scrollPane.setMaxHeight(640);
@@ -141,18 +146,13 @@ public class SalesReportPage extends VBox {
         scrollPane.setStyle("-fx-background-color: #F3F9FB;");
         scrollPane.setPadding(new Insets(0, 10, 20, 10));
 
-
-        // Style vbox
-        vbox.setStyle("-fx-background-color: #F3F9FB");
-
         // Add contents
         getChildren().add(hbox);
-        getChildren().add(vbox);
         getChildren().add(scrollPane);
 
         // Styling Layout
         setPadding(new Insets(20, 40, 0, 40));
-        setSpacing(8);
+        setSpacing(20);
         setStyle("-fx-background-color: #F3F9FB;");
     }
 }
