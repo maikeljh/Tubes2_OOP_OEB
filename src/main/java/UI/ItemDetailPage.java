@@ -189,5 +189,16 @@ public class ItemDetailPage extends VBox {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(40);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        tab.setOnSelectionChanged(event -> {
+            if (tab.isSelected()) {
+                itemImage.setImage(item.getImage());
+                name.setText(item.getName());
+                category.setText(item.getCategory());
+                sellPrice.setText(Double.toString(item.getSellPrice()));
+                buyPrice.setText(Double.toString(item.getBuyPrice()));
+                stocks.setText(Integer.toString(item.getStock()));
+            }
+        });
     }
 }
