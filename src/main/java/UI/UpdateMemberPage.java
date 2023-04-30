@@ -306,10 +306,19 @@ public class UpdateMemberPage extends VBox {
                     int id = customer.getId();
                     String name = inputName.getText();
                     String phoneNumber = inputNumber.getText();
-                    FixedBill bill = customer.getTransaction().getElement(0);
+                    int point = ((RegisteredCustomer) customer).getPoint();
+                    boolean activeStat = ((RegisteredCustomer) customer).getActiveStatus();
+                    Inventory<FixedBill> bills = customer.getTransaction();
 
                     if (customers.getElement(id-1).getId() == id) {
-                        customers.setElement(id-1, new VIP(id, name, phoneNumber, bill));
+                        customers.setElement(id-1, new VIP(id, name, phoneNumber, point, activeStat, bills));
+                    }
+                }
+                else {
+                    ((RegisteredCustomer) customer).setName(inputName.getText());
+                    ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
+                    if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
+                        customers.setElement(customer.getId()-1, customer);
                     }
                 }
             }
@@ -318,10 +327,19 @@ public class UpdateMemberPage extends VBox {
                     int id = customer.getId();
                     String name = inputName.getText();
                     String phoneNumber = inputNumber.getText();
-                    FixedBill bill = customer.getTransaction().getElement(0);
+                    int point = ((RegisteredCustomer) customer).getPoint();
+                    boolean activeStat = ((RegisteredCustomer) customer).getActiveStatus();
+                    Inventory<FixedBill> bills = customer.getTransaction();
 
                     if (customers.getElement(id-1).getId() == id) {
-                        customers.setElement(id-1, new Member(id, name, phoneNumber, bill));
+                        customers.setElement(id-1, new Member(id, name, phoneNumber, point, activeStat, bills));
+                    }
+                }
+                else {
+                    ((RegisteredCustomer) customer).setName(inputName.getText());
+                    ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
+                    if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
+                        customers.setElement(customer.getId()-1, customer);
                     }
                 }
             }
