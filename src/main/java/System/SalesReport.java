@@ -28,6 +28,10 @@ public class SalesReport implements Serializable {
     }
 
     /* methods */
+    public Inventory<PurchasedItem> getItems(){
+        return items;
+    }
+
     public int getElementIdx(String itemName){
         boolean found = false;
         int idx = 0;
@@ -43,6 +47,10 @@ public class SalesReport implements Serializable {
         } else {
             return -1;
         }
+    }
+
+    public void updateReport(FixedBill fixedBill){
+        //
     }
     public void calculateReport(Inventory<FixedBill> transactions){
         /*
