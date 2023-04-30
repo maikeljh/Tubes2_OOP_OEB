@@ -1,4 +1,5 @@
 package UI;
+import DataStore.DataStore;
 import System.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,7 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class DetailMemberPage extends VBox {
-    public DetailMemberPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers) {
+    public DetailMemberPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -38,7 +39,7 @@ public class DetailMemberPage extends VBox {
 
         // Add event handler for cancel button
         backButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(listMemberPage);
         });
 

@@ -1,5 +1,6 @@
 package UI;
 
+import DataStore.DataStore;
 import System.*;
 import com.itextpdf.text.DocumentException;
 import javafx.geometry.Insets;
@@ -18,7 +19,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 
 public class HistoryPage extends VBox {
-    public HistoryPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers) {
+    public HistoryPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create header (HBox)
         HBox hbox = new HBox();
 
@@ -44,7 +45,7 @@ public class HistoryPage extends VBox {
 
         // Add event handler for back button
         backButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(listMemberPage);
         });
 

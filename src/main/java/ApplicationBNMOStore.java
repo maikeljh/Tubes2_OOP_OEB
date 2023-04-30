@@ -26,17 +26,16 @@ import System.Customer;
 import System.VIP;
 import System.FixedBill;
 
-import javax.xml.crypto.Data;
-
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
     private Settings settings = new Settings();
+
     private Inventory<Item> items = new Inventory<Item>();
+    private Inventory<Customer> customers = new Inventory<Customer>();
+
     private DataStore<Item> itemDS = new DataStore<Item>();
     private DataStore<Settings> settingsDS = new DataStore<Settings>();
-
-    private Inventory<Customer> customers = new Inventory<Customer>();
     private DataStore<Customer> customerDS = new DataStore<Customer>();
 
     @Override
@@ -49,11 +48,18 @@ public class ApplicationBNMOStore extends Application {
             e.printStackTrace();
         }
 
-        // Read Data
+        // Read Items Data
         try {
             items = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
         } catch (Exception e){
-            // Do Nothing
+            e.printStackTrace();
+        }
+
+        // Read Customers Data
+        try {
+            customers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
         if(items.getNeff() > 0){
@@ -82,30 +88,6 @@ public class ApplicationBNMOStore extends Application {
             transactions.addElement(fixedBill);
         }
 
-        // Read customers data
-        Inventory<Customer> customers = new Inventory<Customer>();
-        for (int i = 0; i < 40; i++) {
-            if (i > 34) {
-                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-                }
-            }
-
-            else if (i <= 34 && i >= 25) {
-                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-                }
-            }
-
-            else {
-                customers.addElement(new Customer(bill2));
-            }
-
-            customers.getElement(i).setTransaction(transactions);
-        }
-
         // Read sold items
         Inventory<PurchasedItem> itemsSold = new Inventory<PurchasedItem>();
         itemsSold.addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 5));
@@ -127,7 +109,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers, customerDS, settings);
             newTab.setContent(listMemberPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
