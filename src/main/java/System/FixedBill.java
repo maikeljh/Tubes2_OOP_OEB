@@ -62,6 +62,7 @@ public class FixedBill extends Bill{
         // Add customer id
         Paragraph customerIDLabel = new Paragraph(new Phrase("Customer " + this.customer_id, textFont));
         customerIDLabel.setAlignment(Element.ALIGN_LEFT);
+        customerIDLabel.setSpacingAfter(10);
         document.add(customerIDLabel);
 
         // Add table
