@@ -1,6 +1,5 @@
 package UI;
 
-import System.Member;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -8,23 +7,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import System.Inventory;
-import System.Item;
-import System.VIP;
 import System.RegisteredCustomer;
 import System.Customer;
 import javafx.stage.Stage;
-
+import System.Settings;
+import DataStore.DataStore;
 
 public class ListMemberPage extends VBox {
-    public ListMemberPage(Stage stage, Tab tab, Inventory<Customer> customers) {
+    public ListMemberPage(Stage stage, Tab tab, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -41,7 +36,7 @@ public class ListMemberPage extends VBox {
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setCursor(Cursor.HAND);
         addButton.setOnAction(event -> {
-            AddMemberPage addMemberContent = new AddMemberPage(stage, tab, customers);
+            AddMemberPage addMemberContent = new AddMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(addMemberContent);
         });
 
@@ -127,7 +122,7 @@ public class ListMemberPage extends VBox {
 
             // Add event handler for historyButton
             historyButton.setOnAction(event-> {
-                HistoryPage historyPage = new HistoryPage(stage, tab, customer, customers);
+                HistoryPage historyPage = new HistoryPage(stage, tab, customer, customers, customerDS, settings);
                 tab.setContent(historyPage);
             });
 
@@ -140,7 +135,7 @@ public class ListMemberPage extends VBox {
 
             // Add event handler for updateButton
             updateButton.setOnAction(event -> {
-                UpdateMemberPage updateMemberPage = new UpdateMemberPage(stage, tab, customer, customers);
+                UpdateMemberPage updateMemberPage = new UpdateMemberPage(stage, tab, customer, customers, customerDS, settings);
                 tab.setContent(updateMemberPage);
             });
 
@@ -153,7 +148,7 @@ public class ListMemberPage extends VBox {
 
             // Add event handler for previewButton
             previewButton.setOnAction(event -> {
-                DetailMemberPage detailMemberPage = new DetailMemberPage(stage, tab, customer, customers);
+                DetailMemberPage detailMemberPage = new DetailMemberPage(stage, tab, customer, customers, customerDS, settings);
                 tab.setContent(detailMemberPage);
             });
 
