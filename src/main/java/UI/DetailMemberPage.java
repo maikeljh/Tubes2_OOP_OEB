@@ -201,5 +201,13 @@ public class DetailMemberPage extends VBox {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(20);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        tab.setOnSelectionChanged(event -> {
+            if (tab.isSelected()) {
+                nameLabel.setText(((RegisteredCustomer) customer).getName());
+                numberLabel.setText(((RegisteredCustomer) customer).getPhoneNumber());
+                pointsLabel.setText(Integer.toString(((RegisteredCustomer) customer).getPoint()));
+            }
+        });
     }
 }

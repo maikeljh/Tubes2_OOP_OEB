@@ -40,5 +40,13 @@
         <sellPrice>123.0</sellPrice>
         <stock>12</stock>
     </item>
-    <neff>5</neff>
+    <item>
+        <buyPrice>1.0</buyPrice>
+        <category>ini</category>
+        <itemID>449</itemID>
+        <name>cobadulu</name>
+        <sellPrice>12.0</sellPrice>
+        <stock>12</stock>
+    </item>
+    <neff>6</neff>
 </inventory>
