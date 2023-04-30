@@ -21,6 +21,14 @@ public abstract class RegisteredCustomer extends Customer {
         this.transaction.addElement(bill);
     }
 
+    public RegisteredCustomer(int customerId, String name, String phoneNumber, int point, boolean activeStatus) {
+        super(customerId);
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+        this.activeStatus = activeStatus;
+    }
+
     public String getName() {
         return this.name;
     }
