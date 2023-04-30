@@ -1,11 +1,17 @@
 package System;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public abstract class RegisteredCustomer extends Customer {
     protected String name;
     protected String phoneNumber;
     protected int point;
     protected boolean activeStatus;
 
+    public RegisteredCustomer() {
+        super();
+    }
     public RegisteredCustomer(int customerId, String name, String phoneNumber, FixedBill bill) {
         super(customerId);
         this.name = name;
@@ -13,6 +19,14 @@ public abstract class RegisteredCustomer extends Customer {
         this.point = 0;
         this.activeStatus = true;
         this.transaction.addElement(bill);
+    }
+
+    public RegisteredCustomer(int customerId, String name, String phoneNumber, int point, boolean activeStatus) {
+        super(customerId);
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+        this.activeStatus = activeStatus;
     }
 
     public String getName() {

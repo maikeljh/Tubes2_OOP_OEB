@@ -3,30 +3,29 @@ package UI;
 import System.Customer;
 import System.Inventory;
 import System.Member;
+import System.RegisteredCustomer;
 import System.VIP;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
+import System.Settings;
+import DataStore.DataStore;
 import javafx.scene.image.ImageView;
 import System.FixedBill;
+import System.PurchasedItem;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AddMemberPage extends VBox {
-    public AddMemberPage(Stage stage, Tab tab, Inventory<Customer> customers) {
+    public AddMemberPage(Stage stage, Tab tab, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -63,7 +62,7 @@ public class AddMemberPage extends VBox {
 
         // Add event handler for cancel button
         cancelButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(listMemberPage);
         });
 
@@ -183,8 +182,11 @@ public class AddMemberPage extends VBox {
                     throw new Error("Niggas are drunk up oop open it up");
                 }
 
+                // Save data
+                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+
                 // Change page back to ListMemberPage
-                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
                 tab.setContent(listMemberPage);
             }
             // If input is not completed

@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
     <item>
-        <buyPrice>12000.0</buyPrice>
-        <category>Makanan</category>
-        <itemID>4</itemID>
-        <name>Tes 1</name>
-        <sellPrice>10000.0</sellPrice>
+        <buyPrice>123.0</buyPrice>
+        <category>TES</category>
+        <itemID>64</itemID>
+        <name>TES</name>
+        <sellPrice>123.0</sellPrice>
         <stock>1</stock>
     </item>
-    <item>
-        <buyPrice>15000.0</buyPrice>
-        <category>Makanan</category>
-        <itemID>5</itemID>
-        <name>Tes 2</name>
-        <sellPrice>12000.0</sellPrice>
-        <stock>123</stock>
-    </item>
-    <item>
-        <buyPrice>321.0</buyPrice>
-        <category>Orang</category>
-        <itemID>7</itemID>
-        <name>Tes 4</name>
-        <sellPrice>123.0</sellPrice>
-        <stock>6969</stock>
-    </item>
-    <neff>3</neff>
+    <neff>1</neff>
 </inventory>

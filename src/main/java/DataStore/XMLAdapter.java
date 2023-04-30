@@ -3,7 +3,18 @@ import java.io.File;
 import jakarta.xml.bind.*;
 import System.Inventory;
 
-public class XMLAdapter implements DataAdapter{
+public class
+
+
+
+
+
+
+
+
+
+
+XMLAdapter implements DataAdapter{
     public Object readData(String filePath, Class<?>[] classTypes) {
         try {
             // Creating a File object

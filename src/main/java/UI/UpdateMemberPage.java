@@ -1,15 +1,16 @@
 package UI;
 
+import DataStore.DataStore;
+import System.PurchasedItem;
 import System.Customer;
 import System.RegisteredCustomer;
 import System.Inventory;
 import System.VIP;
 import System.Member;
 import System.FixedBill;
+import System.Settings;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
@@ -23,7 +24,7 @@ import javafx.scene.image.ImageView;
 
 public class UpdateMemberPage extends VBox {
 
-    public UpdateMemberPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers) {
+    public UpdateMemberPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -60,7 +61,7 @@ public class UpdateMemberPage extends VBox {
 
         // Add event handler for cancel button
         cancelButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(listMemberPage);
         });
 
@@ -305,10 +306,19 @@ public class UpdateMemberPage extends VBox {
                     int id = customer.getId();
                     String name = inputName.getText();
                     String phoneNumber = inputNumber.getText();
-                    FixedBill bill = customer.getTransaction().getElement(0);
+                    int point = ((RegisteredCustomer) customer).getPoint();
+                    boolean activeStat = ((RegisteredCustomer) customer).getActiveStatus();
+                    Inventory<FixedBill> bills = customer.getTransaction();
 
                     if (customers.getElement(id-1).getId() == id) {
-                        customers.setElement(id-1, new VIP(id, name, phoneNumber, bill));
+                        customers.setElement(id-1, new VIP(id, name, phoneNumber, point, activeStat, bills));
+                    }
+                }
+                else {
+                    ((RegisteredCustomer) customer).setName(inputName.getText());
+                    ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
+                    if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
+                        customers.setElement(customer.getId()-1, customer);
                     }
                 }
             }
@@ -317,10 +327,19 @@ public class UpdateMemberPage extends VBox {
                     int id = customer.getId();
                     String name = inputName.getText();
                     String phoneNumber = inputNumber.getText();
-                    FixedBill bill = customer.getTransaction().getElement(0);
+                    int point = ((RegisteredCustomer) customer).getPoint();
+                    boolean activeStat = ((RegisteredCustomer) customer).getActiveStatus();
+                    Inventory<FixedBill> bills = customer.getTransaction();
 
                     if (customers.getElement(id-1).getId() == id) {
-                        customers.setElement(id-1, new Member(id, name, phoneNumber, bill));
+                        customers.setElement(id-1, new Member(id, name, phoneNumber, point, activeStat, bills));
+                    }
+                }
+                else {
+                    ((RegisteredCustomer) customer).setName(inputName.getText());
+                    ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
+                    if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
+                        customers.setElement(customer.getId()-1, customer);
                     }
                 }
             }
@@ -342,8 +361,11 @@ public class UpdateMemberPage extends VBox {
                 }
             }
 
+            // Save data
+            customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+
             // Change page back to ListMemberPage
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(listMemberPage);
         });
     }

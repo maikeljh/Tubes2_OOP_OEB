@@ -1,6 +1,5 @@
 package UI;
 
-import System.Member;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -8,23 +7,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import System.Inventory;
-import System.Item;
-import System.VIP;
 import System.RegisteredCustomer;
 import System.Customer;
 import javafx.stage.Stage;
-
+import System.Settings;
+import DataStore.DataStore;
 
 public class ListMemberPage extends VBox {
-    public ListMemberPage(Stage stage, Tab tab, Inventory<Customer> customers) {
+    public ListMemberPage(Stage stage, Tab tab, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -41,7 +36,7 @@ public class ListMemberPage extends VBox {
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setCursor(Cursor.HAND);
         addButton.setOnAction(event -> {
-            AddMemberPage addMemberContent = new AddMemberPage(stage, tab, customers);
+            AddMemberPage addMemberContent = new AddMemberPage(stage, tab, customers, customerDS, settings);
             tab.setContent(addMemberContent);
         });
 
@@ -58,6 +53,7 @@ public class ListMemberPage extends VBox {
         vbox.setAlignment(Pos.BASELINE_CENTER);
         vbox.prefWidthProperty().bind(hBox.widthProperty());
         vbox.setPadding(new Insets(0, 30,30,0));
+        vbox.setStyle("-fx-background-color: #F3F9FB");
 
         // Display list of customers
         int i = 1;
@@ -78,6 +74,9 @@ public class ListMemberPage extends VBox {
             }
             else {
                 details.setText(i + "   " + ((RegisteredCustomer) customer).getName());
+                if (!((RegisteredCustomer) customer).getActiveStatus()) {
+                    details.setStyle("-fx-text-fill: #93A2A5");
+                }
             }
 
             i++;
@@ -89,6 +88,9 @@ public class ListMemberPage extends VBox {
 
             // Set icon for update button
             ImageView updateIcon = new ImageView("/images/icon/updateButton.png");
+
+            // Set icon for preview button
+            ImageView previewIcon = new ImageView("/images/icon/previewButton.png");
 
             // Styling update button icon
             updateIcon.setPreserveRatio(true);
@@ -104,12 +106,25 @@ public class ListMemberPage extends VBox {
             historyIcon.setFitWidth(27);
             historyIcon.setFitHeight(27);
 
+            // Styling preview button icon
+            previewIcon.setPreserveRatio(true);
+            previewIcon.setSmooth(true);
+            previewIcon.setCache(true);
+            previewIcon.setFitWidth(27);
+            previewIcon.setFitHeight(27);
+
             // Making a button for history
             Button historyButton = new Button();
             historyButton.setPrefSize(27,27);
             historyButton.setStyle("-fx-background-color: #C8DFE8;");
             historyButton.setGraphic(historyIcon);
             historyButton.setCursor(Cursor.HAND);
+
+            // Add event handler for historyButton
+            historyButton.setOnAction(event-> {
+                HistoryPage historyPage = new HistoryPage(stage, tab, customer, customers, customerDS, settings);
+                tab.setContent(historyPage);
+            });
 
             // Making a button for update
             Button updateButton = new Button();
@@ -120,8 +135,21 @@ public class ListMemberPage extends VBox {
 
             // Add event handler for updateButton
             updateButton.setOnAction(event -> {
-                UpdateMemberPage updateMemberPage = new UpdateMemberPage(stage, tab, customer, customers);
+                UpdateMemberPage updateMemberPage = new UpdateMemberPage(stage, tab, customer, customers, customerDS, settings);
                 tab.setContent(updateMemberPage);
+            });
+
+            // Making a button for preview
+            Button previewButton = new Button();
+            previewButton.setPrefSize(27,27);
+            previewButton.setStyle("-fx-background-color: #C8DFE8;");
+            previewButton.setGraphic(previewIcon);
+            previewButton.setCursor(Cursor.HAND);
+
+            // Add event handler for previewButton
+            previewButton.setOnAction(event -> {
+                DetailMemberPage detailMemberPage = new DetailMemberPage(stage, tab, customer, customers, customerDS, settings);
+                tab.setContent(detailMemberPage);
             });
 
             // Set vip Logo for every VIP member
@@ -177,10 +205,13 @@ public class ListMemberPage extends VBox {
             if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
                 if (((RegisteredCustomer) customer).getActiveStatus()) {
                     updateButton.setStyle("-fx-background-color: #98CBDE");
+                    previewButton.setStyle("-fx-background-color: #98CBDE");
                 }
                 else {
                     updateButton.setStyle("-fx-background-color: #D9D9D9");
+                    previewButton.setStyle("-fx-background-color: #D9D9D9");
                 }
+                customerButtons.getChildren().add(previewButton);
                 customerButtons.getChildren().add(updateButton);
             }
 
@@ -212,8 +243,9 @@ public class ListMemberPage extends VBox {
 
         // Styling Scroll Pane
         scrollPane.setMaxHeight(640);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background-color: #F3F9FB;");
-        scrollPane.setPadding(new Insets(0, 0, 0, 10));
+        scrollPane.setPadding(new Insets(0, 0, 20, 10));
 
 
         // Add contents

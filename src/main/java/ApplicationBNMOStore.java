@@ -1,7 +1,7 @@
 import DataStore.DataStore;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
-import Plugin.PluginManager;
+import System.Settings;
 import System.Member;
 import UI.*;
 import com.itextpdf.text.DocumentException;
@@ -17,11 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import System.Inventory;
 import System.Item;
 import System.PurchasedItem;
-import DataStore.XMLAdapter;
-import DataStore.Tutorial;
 import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
@@ -30,20 +29,38 @@ import System.FixedBill;
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
-    private PluginManager pluginManager = new PluginManager();
+    private Settings settings = new Settings();
+
     private Inventory<Item> items = new Inventory<Item>();
+    private Inventory<Customer> customers = new Inventory<Customer>();
+
     private DataStore<Item> itemDS = new DataStore<Item>();
+    private DataStore<Settings> settingsDS = new DataStore<Settings>();
+    private DataStore<Customer> customerDS = new DataStore<Customer>();
 
     @Override
     public void start(Stage stage) throws DocumentException, FileNotFoundException {
-        // Testing Print PDF
-        Tutorial.tes();
+        // Load settings
+        try {
+            Settings temp = new Settings();
+            settings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}).getElement(0);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
-        // Read Item Data
-        // Sementara XML dlu yak (Belum bikin setting)
-        XMLAdapter itemXML = new XMLAdapter();
-        itemDS.setAdapter(itemXML);
-        items = itemDS.loadData("item.xml", new Class<?>[]{Inventory.class, Item.class});
+        // Read Items Data
+        try {
+            items = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // Read Customers Data
+        try {
+            customers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
@@ -60,31 +77,9 @@ public class ApplicationBNMOStore extends Application {
         bill2.setCustomerID(234);
         bill2.setBillID(5679);
 
-        // Read customers data
-        Inventory<Customer> customers = new Inventory<Customer>();
-        for (int i = 0; i < 40; i++) {
-            if (i > 34) {
-                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-                }
-            }
-
-            else if (i <= 34 && i >= 25) {
-                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-                }
-            }
-
-            else {
-                customers.addElement(new Customer(bill2));
-            }
-        }
-
-        // Read transactions
+        // Read transaction data
         Inventory<FixedBill> transactions = new Inventory<FixedBill>();
-        for (int i=0; i<5; i++){
+        for (int i=0; i<15; i++){
             FixedBill fixedBill = new FixedBill(i+1, "25/04/2023 21:21", i+1);
             fixedBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
             fixedBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
@@ -114,21 +109,8 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers, customerDS, settings);
             newTab.setContent(listMemberPage);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-
-        // History
-        MenuItem history = new MenuItem("History");
-        history.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("History");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            HistoryPage historyPage = new HistoryPage(stage, newTab, "Harry Potter", transactions);
-            newTab.setContent(historyPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -139,7 +121,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS, settings);
             newTab.setContent(listItemPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -195,7 +177,7 @@ public class ApplicationBNMOStore extends Application {
             if (selectedFile != null) {
                 try {
                     // Try to load plugin from selected jar file
-                    pluginManager.loadPlugin(selectedFile);
+                    settings.getPluginManager().loadPlugin(selectedFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -207,12 +189,12 @@ public class ApplicationBNMOStore extends Application {
                 }
 
                 // Create New Menu from Plugin
-                int idx = pluginManager.getPlugins().size() - 1;
-                MenuItem newPage = new MenuItem(pluginManager.getPlugins().get(idx).getPluginName());
+                int idx =  settings.getPluginManager().getPlugins().size() - 1;
+                MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
 
                 newPage.setOnAction(e -> {
                     // Handle open menu item click
-                    Plugin newPlugin = pluginManager.getPlugins().get(idx);
+                    Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
                     Tab newTab = new Tab(newPlugin.getPluginName());
                     newTab.setStyle("-fx-background-color: #F3F9FB;");
 
@@ -235,7 +217,7 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
-            SettingsPage settingsTab = new SettingsPage(stage);
+            SettingsPage settingsTab = new SettingsPage(stage, settings, settingsDS);
             newTab.setContent(settingsTab);
         });
 
@@ -246,7 +228,6 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
-        menu.getItems().add(history);
         menu.getItems().add(cashierDetailPage);
 
         // Main Menu Bar

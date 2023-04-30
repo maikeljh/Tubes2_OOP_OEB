@@ -1,5 +1,7 @@
 package UI;
 
+import DataStore.DataStore;
+import System.*;
 import com.itextpdf.text.DocumentException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,24 +14,49 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import System.FixedBill;
-import System.Inventory;
-import System.VIP;
 
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 
 public class HistoryPage extends VBox {
-    public HistoryPage(Stage stage, Tab tab, String customer_name, Inventory<FixedBill> transactions) {
+    public HistoryPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
         // Create header (HBox)
         HBox hbox = new HBox();
 
         // Create title label
-        Label title = new Label("Transaction History Customer " + customer_name);
+        Label title = new Label();
+        if (customer.getClass().getSimpleName().equals("Customer")) {
+            title.setText("Transaction History Customer UnknownGuest" + customer.getId());
+        }
+        else {
+            title.setText("Transaction History Customer " + ((RegisteredCustomer) customer).getName());
+        }
         title.setFont(Font.font("Montserrat", FontWeight.BOLD, 28));
+
+        // Create hbox for back button
+        HBox backBox = new HBox();
+
+        // Create back button
+        Button backButton = new Button("Back");
+        backButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+        backButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white; -fx-background-radius: 30px;");
+        backButton.setPrefSize(77, 27);
+        backButton.setCursor(Cursor.HAND);
+
+        // Add event handler for back button
+        backButton.setOnAction(event -> {
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
+            tab.setContent(listMemberPage);
+        });
+
+        // Style backBox
+        backBox.setAlignment(Pos.CENTER_RIGHT);
+        backBox.getChildren().add(backButton);
+        HBox.setHgrow(backBox, Priority.ALWAYS);
 
         // Add title label to HBox header
         hbox.getChildren().addAll(title);
+        hbox.getChildren().add(backBox);
 
         // Create a list of history (VBox)
         VBox vbox = new VBox(15); // spacing = 8
@@ -40,7 +67,7 @@ public class HistoryPage extends VBox {
         int i = 1; // counter
 
         // Display list of transactions / history
-        for (FixedBill transaction : transactions.getList()) {
+        for (FixedBill transaction : customer.getTransaction().getList()) {
             // Create HBox for every transaction (fixed bill)
             HBox transactionHBox = new HBox();
 
@@ -57,7 +84,7 @@ public class HistoryPage extends VBox {
             i++;
 
             // Set image / icon for preview button
-            ImageView previewIcon = new ImageView("/images/icon/previewButton.png");
+            ImageView previewIcon = new ImageView("/images/icon/downloadLogo.png");
 
             // Style preview button icon
             previewIcon.setPreserveRatio(true);
@@ -122,8 +149,13 @@ public class HistoryPage extends VBox {
 
         // Style scroll pane
         scrollPane.setMaxHeight(640);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background-color: #F3F9FB;");
-        scrollPane.setPadding(new Insets(0, 0, 0, 10));
+        scrollPane.setPadding(new Insets(0, 10, 20, 10));
+
+
+        // Style vbox
+        vbox.setStyle("-fx-background-color: #F3F9FB");
 
         // Add contents
         getChildren().add(hbox);
