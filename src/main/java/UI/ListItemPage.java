@@ -15,10 +15,11 @@ import System.Inventory;
 import System.Item;
 import DataStore.DataStore;
 import javafx.stage.Stage;
+import System.Settings;
 
 public class ListItemPage extends VBox {
 
-    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS){
+    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -35,7 +36,7 @@ public class ListItemPage extends VBox {
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setOnAction(event -> {
-            AddItemPage addItemContent = new AddItemPage(stage, tab, items, itemDS);
+            AddItemPage addItemContent = new AddItemPage(stage, tab, items, itemDS, settings);
             tab.setContent(addItemContent);
         });
 
@@ -92,7 +93,7 @@ public class ListItemPage extends VBox {
 
             // Add onclick event
             itemDisplay.setOnMouseClicked(event -> {
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
                 tab.setContent(detailItemContent);
             });
             // Add Item Display to Grid

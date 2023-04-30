@@ -1,7 +1,7 @@
 import DataStore.DataStore;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
-import Plugin.PluginManager;
+import System.Settings;
 import System.Member;
 import UI.*;
 import com.itextpdf.text.DocumentException;
@@ -17,11 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
 import System.Inventory;
 import System.Item;
 import System.PurchasedItem;
-import DataStore.XMLAdapter;
-import DataStore.Tutorial;
 import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
@@ -30,20 +29,27 @@ import System.FixedBill;
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
-    private PluginManager pluginManager = new PluginManager();
+    private Settings settings = new Settings();
     private Inventory<Item> items = new Inventory<Item>();
     private DataStore<Item> itemDS = new DataStore<Item>();
+    private DataStore<Settings> settingsDS = new DataStore<Settings>();
 
     @Override
     public void start(Stage stage) throws DocumentException, FileNotFoundException {
-        // Testing Print PDF
-        Tutorial.tes();
+        // Load settings
+        try {
+            Settings temp = new Settings();
+            settings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}).getElement(0);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
-        // Read Item Data
-        // Sementara XML dlu yak (Belum bikin setting)
-        XMLAdapter itemXML = new XMLAdapter();
-        itemDS.setAdapter(itemXML);
-        items = itemDS.loadData("item.xml", new Class<?>[]{Inventory.class, Item.class});
+        // Read Data
+        try {
+            items = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
+        } catch (Exception e){
+            // Do Nothing
+        }
 
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
@@ -139,7 +145,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS, settings);
             newTab.setContent(listItemPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -195,7 +201,7 @@ public class ApplicationBNMOStore extends Application {
             if (selectedFile != null) {
                 try {
                     // Try to load plugin from selected jar file
-                    pluginManager.loadPlugin(selectedFile);
+                    settings.getPluginManager().loadPlugin(selectedFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -207,12 +213,12 @@ public class ApplicationBNMOStore extends Application {
                 }
 
                 // Create New Menu from Plugin
-                int idx = pluginManager.getPlugins().size() - 1;
-                MenuItem newPage = new MenuItem(pluginManager.getPlugins().get(idx).getPluginName());
+                int idx =  settings.getPluginManager().getPlugins().size() - 1;
+                MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
 
                 newPage.setOnAction(e -> {
                     // Handle open menu item click
-                    Plugin newPlugin = pluginManager.getPlugins().get(idx);
+                    Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
                     Tab newTab = new Tab(newPlugin.getPluginName());
                     newTab.setStyle("-fx-background-color: #F3F9FB;");
 
@@ -235,7 +241,7 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
-            SettingsPage settingsTab = new SettingsPage(stage);
+            SettingsPage settingsTab = new SettingsPage(stage, settings, settingsDS);
             newTab.setContent(settingsTab);
         });
 
