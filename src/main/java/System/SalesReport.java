@@ -50,7 +50,19 @@ public class SalesReport implements Serializable {
     }
 
     public void updateReport(FixedBill fixedBill){
-        //
+        // update items when a fixed bill is added
+        for (PurchasedItem item : fixedBill.getItems().getList()){
+            if (getElementIdx(item.getName()) == -1){
+                // if item not in items list, then add item to list
+                items.addElement(item);
+            } else {
+                // update item list
+                int newQty = items.getElement(getElementIdx(item.getName())).getQuantity() + item.getQuantity();
+                items.getElement(getElementIdx(item.getName())).setQuantity(newQty);
+                total_gross_profit += item.calculateGrossProfit();
+                total_net_profit += item.calculateNetProfit();
+            }
+        }
     }
     public void calculateReport(Inventory<FixedBill> transactions){
         /*
