@@ -183,12 +183,6 @@ public class AddMemberPage extends VBox {
                     throw new Error("Niggas are drunk up oop open it up");
                 }
 
-                // Save the data
-                DataStore<Customer> customerDS = new DataStore<Customer>();
-                XMLAdapter customerXML = new XMLAdapter();
-                customerDS.setAdapter(customerXML);
-                customerDS.saveData("customer.xml", new Class<?>[] {Inventory.class, Customer.class, FixedBill.class, PurchasedItem.class}, customers);
-
                 // Change page back to ListMemberPage
                 ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
                 tab.setContent(listMemberPage);

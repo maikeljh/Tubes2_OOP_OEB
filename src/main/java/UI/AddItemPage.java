@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import DataStore.XMLAdapter;
+import System.Settings;
 import System.Inventory;
 import System.Item;
 
@@ -29,7 +29,7 @@ import javax.imageio.ImageIO;
 public class AddItemPage extends VBox{
     private final ImageView itemImage;
 
-    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS){
+    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -50,7 +50,7 @@ public class AddItemPage extends VBox{
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
             tab.setContent(listItemPage);
         });
 
@@ -232,10 +232,10 @@ public class AddItemPage extends VBox{
                 }
 
                 // Save data to file
-                itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
+                itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
+                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
                 tab.setContent(listItemPage);
             } else {
                 // Show alert

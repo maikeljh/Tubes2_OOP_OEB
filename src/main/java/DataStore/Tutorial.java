@@ -73,10 +73,11 @@ public class Tutorial {
 
         // 3. Cara Read dan Write Data di XML
         // Buat Format masih manual karena belum ada settings
+        /*
         XMLAdapter testing = new XMLAdapter();
         ds.setAdapter(testing);
-        ds.saveData("bill.xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
-        Inventory<FixedBill> hasil = ds.loadData("bill.xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
+        ds.saveData("bill", "xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
+        Inventory<FixedBill> hasil = ds.loadData("bill", "xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
 
         XMLAdapter testCustomer = new XMLAdapter();
         dataCustomer.setAdapter(testCustomer);
@@ -86,14 +87,14 @@ public class Tutorial {
         // 4. Cara Read dan Write Data di JSON
         JSONAdapter testing1 = new JSONAdapter();
         ds.setAdapter(testing1);
-        ds.saveData("bill.json", new Class<?>[]{Inventory.class, FixedBill.class}, billList);
-        Inventory<FixedBill> hasil1 = ds.loadData("bill.json", new Class<?>[]{Inventory.class, FixedBill.class});
+        ds.saveData("bill", "json", new Class<?>[]{Inventory.class, FixedBill.class}, billList);
+        Inventory<FixedBill> hasil1 = ds.loadData("bill", "json", new Class<?>[]{Inventory.class, FixedBill.class});
 
         // 5. Cara Read dan Write Data di OBJ
         OBJAdapter testing2 = new OBJAdapter();
         ds.setAdapter(testing2);
-        ds.saveData("bill.txt", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
-        Inventory<FixedBill> hasil2 = ds.loadData("bill.txt", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
+        ds.saveData("bill", "txt", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
+        Inventory<FixedBill> hasil2 = ds.loadData("bill.txt", "txt", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
 
         // 6. Cara Print PDF
         Document document = new Document();
@@ -260,5 +261,6 @@ public class Tutorial {
 
         // Close dokumen
         document.close();
+        */
     }
 }

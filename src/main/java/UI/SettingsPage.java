@@ -1,24 +1,25 @@
 package UI;
 
+import DataStore.DataStore;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.Label;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Button;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.io.File;
+import System.Inventory;
+import System.Settings;
 
 public class SettingsPage extends HBox {
 
-    public SettingsPage(Stage stage) {
+    public SettingsPage(Stage stage, Settings settings, DataStore<Settings> settingsDS) {
         // Creating VBox for Sidebar
         VBox sidebar = new VBox();
 
@@ -27,22 +28,22 @@ public class SettingsPage extends HBox {
         sidebar.setSpacing(20);
         sidebar.setStyle("-fx-background-color: #FFFFFF");
 
-        // Creating V Box for contents
-        //VBox contents = new VBox();
-
         // Create title
         Label title = new Label("Settings");
         title.setFont(Font.font("Montserrat", FontWeight.BOLD, 36));
         title.setPadding(new Insets(30, 50, 10, 50));
         sidebar.getChildren().add(title);
+
         // Creating Setting Options
         // VBox for Options and Details
         VBox options = new VBox();
         VBox details = new VBox();
+
         // Setting Options layout
         options.setSpacing(20);
         options.setPrefWidth(500);
         options.setStyle("-fx-background-color: #FFFFFF");
+
         // Option 1
         // Option 1 Icon Image
         ImageView iconDirectorySave = new ImageView(new Image("/images/icon/directorySaveIcon.png"));
@@ -68,28 +69,95 @@ public class SettingsPage extends HBox {
             details.setPadding(new Insets(30, 50, 10, 50));
             details.setSpacing(35);
             details.getChildren().clear();
+
+            // VBox
+            VBox saveBox = new VBox();
+            saveBox.setSpacing(40);
+
             // Title
             Label detailTitle = new Label("Directory Save");
             detailTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 36));
 
             // Folder Directory
+            VBox folderBox = new VBox();
+            folderBox.setSpacing(20);
+
             Label folderTitle = new Label("Folder Directory");
             folderTitle.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 30));
 
             // Folder hbox for pick folder contents
             HBox folderDirectory = new HBox();
             folderDirectory.setSpacing(30);
+
+            // Folder Icon
             ImageView folderIcon = new ImageView(new Image("/images/icon/folderIcon.png"));
-            Button pickFolder = new Button("Pick a Folder");
-            pickFolder.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 20));
+
+            // Label showing current path
+            Label currentPath = new Label(settings.getSaveDirectory());
+            Tooltip tooltip = new Tooltip(settings.getSaveDirectory());
+            Tooltip.install(currentPath, tooltip);
+            currentPath.setTooltip(tooltip);
+
+            // Button to change path
+            Button pickFolder = new Button("Change path");
+            pickFolder.setOnAction(e -> {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                File selectedDirectory = directoryChooser.showDialog(stage);
+                if (selectedDirectory != null) {
+                    currentPath.setText(selectedDirectory.getAbsolutePath());
+                    settings.setSaveDirectory(selectedDirectory.getAbsolutePath());
+                    Settings temp = new Settings();
+                    Inventory<Settings> tempSettings = new Inventory<Settings>();
+                    tempSettings.addElement(settings);
+                    settingsDS.saveData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}, tempSettings);
+                }
+            });
+
+            // Styling
+            folderDirectory.setAlignment(Pos.CENTER);
+            pickFolder.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 14));
             pickFolder.setStyle("-fx-background-color: #C8DFE8");
-            folderDirectory.getChildren().addAll(folderIcon, pickFolder);
 
-            details.getChildren().addAll(detailTitle, folderTitle, folderDirectory);
+            // Format
+            VBox formatBox = new VBox();
+            formatBox.setSpacing(20);
+
+            Label formatTitle = new Label("Format");
+            formatTitle.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 30));
+
+            // Folder hbox for pick format
+            HBox formatDirectory = new HBox();
+            formatDirectory.setSpacing(30);
+
+            // Format Icon
+            ImageView formatIcon = new ImageView(new Image("/images/icon/folderIcon.png"));
+
+            // Create a combo box with some sample options
+            ComboBox<String> formatOptions = new ComboBox<>();
+            formatOptions.getItems().addAll("xml", "json", "obj");
+            formatOptions.setValue(settings.getFormat());
+            formatOptions.valueProperty().addListener((observable, oldValue, newValue) -> {
+                settings.setFormat(newValue);
+                Settings temp = new Settings();
+                Inventory<Settings> tempSettings = new Inventory<Settings>();
+                tempSettings.addElement(settings);
+                settingsDS.saveData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}, tempSettings);
+            });
+
+            // Styling
+            formatDirectory.setAlignment(Pos.CENTER_LEFT);
+
+            // Add elements to content
+            folderDirectory.getChildren().addAll(folderIcon, currentPath, pickFolder);
+            formatDirectory.getChildren().addAll(formatIcon, formatOptions);
+
+            folderBox.getChildren().addAll(folderTitle, folderDirectory);
+            formatBox.getChildren().addAll(formatTitle, formatDirectory);
+
+            saveBox.getChildren().addAll(folderBox, formatBox);
+            details.getChildren().addAll(detailTitle, saveBox);
+
             getChildren().add(details);
-
-
-
         });
 
         // Adding Option 1 to sidebar
@@ -124,11 +192,12 @@ public class SettingsPage extends HBox {
             details.getChildren().add(detailTitle2);
             getChildren().add(details);
         });
+
         // Adding Option 2 to sidebar
         options.getChildren().add(opt2);
 
-
         ScrollPane scrollPane = new ScrollPane(options);
+
         // Styling Scroll Pane
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPrefHeight(550);
@@ -136,14 +205,14 @@ public class SettingsPage extends HBox {
         scrollPane.setMaxHeight(600);
         scrollPane.setStyle("-fx-background: #FFFFFF; -fx-background-color: #FFFFFF;");
         scrollPane.getContent().setStyle(("-fx-background-color: #FFFFFF"));
+
         // Adding options to sidebar
         sidebar.getChildren().add(scrollPane);
+
         // Adding components to main tab
         getChildren().add(sidebar);
+
         // Styling main layout
         setStyle("-fx-background-color: #F3F9FB;");
-
-
     }
-
 }
