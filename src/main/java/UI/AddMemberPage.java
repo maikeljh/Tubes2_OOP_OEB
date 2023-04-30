@@ -11,14 +11,14 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
+import DataStore.*;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
+import System.PurchasedItem;
 import javafx.scene.image.ImageView;
 import System.FixedBill;
 import java.util.ArrayList;

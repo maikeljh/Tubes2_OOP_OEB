@@ -1,11 +1,17 @@
 package System;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public abstract class RegisteredCustomer extends Customer {
     protected String name;
     protected String phoneNumber;
     protected int point;
     protected boolean activeStatus;
 
+    public RegisteredCustomer() {
+        super();
+    }
     public RegisteredCustomer(int customerId, String name, String phoneNumber, FixedBill bill) {
         super(customerId);
         this.name = name;

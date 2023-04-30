@@ -26,6 +26,8 @@ import System.Customer;
 import System.VIP;
 import System.FixedBill;
 
+import javax.xml.crypto.Data;
+
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
@@ -33,6 +35,9 @@ public class ApplicationBNMOStore extends Application {
     private Inventory<Item> items = new Inventory<Item>();
     private DataStore<Item> itemDS = new DataStore<Item>();
     private DataStore<Settings> settingsDS = new DataStore<Settings>();
+
+    private Inventory<Customer> customers = new Inventory<Customer>();
+    private DataStore<Customer> customerDS = new DataStore<Customer>();
 
     @Override
     public void start(Stage stage) throws DocumentException, FileNotFoundException {
@@ -66,6 +71,17 @@ public class ApplicationBNMOStore extends Application {
         bill2.setCustomerID(234);
         bill2.setBillID(5679);
 
+        // Read transaction data
+        Inventory<FixedBill> transactions = new Inventory<FixedBill>();
+        for (int i=0; i<15; i++){
+            FixedBill fixedBill = new FixedBill(i+1, "25/04/2023 21:21", i+1);
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
+            fixedBill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 10, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
+            transactions.addElement(fixedBill);
+        }
+
         // Read customers data
         Inventory<Customer> customers = new Inventory<Customer>();
         for (int i = 0; i < 40; i++) {
@@ -86,17 +102,8 @@ public class ApplicationBNMOStore extends Application {
             else {
                 customers.addElement(new Customer(bill2));
             }
-        }
 
-        // Read transactions
-        Inventory<FixedBill> transactions = new Inventory<FixedBill>();
-        for (int i=0; i<5; i++){
-            FixedBill fixedBill = new FixedBill(i+1, "25/04/2023 21:21", i+1);
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 10, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
-            transactions.addElement(fixedBill);
+            customers.getElement(i).setTransaction(transactions);
         }
 
         // Read sold items
@@ -122,19 +129,6 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers);
             newTab.setContent(listMemberPage);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-
-        // History
-        MenuItem history = new MenuItem("History");
-        history.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("History");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            HistoryPage historyPage = new HistoryPage(stage, newTab, "Harry Potter", transactions);
-            newTab.setContent(historyPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -252,7 +246,6 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
-        menu.getItems().add(history);
         menu.getItems().add(cashierDetailPage);
 
         // Main Menu Bar
