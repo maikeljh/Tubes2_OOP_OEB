@@ -59,9 +59,9 @@ public class SalesReport implements Serializable {
                 // update item list
                 int newQty = items.getElement(getElementIdx(item.getName())).getQuantity() + item.getQuantity();
                 items.getElement(getElementIdx(item.getName())).setQuantity(newQty);
-                total_gross_profit += item.calculateGrossProfit();
-                total_net_profit += item.calculateNetProfit();
             }
+            total_gross_profit += item.calculateGrossProfit();
+            total_net_profit += item.calculateNetProfit();
         }
     }
     public void calculateReport(Inventory<FixedBill> transactions){
