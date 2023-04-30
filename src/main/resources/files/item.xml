@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
     <item>
-        <buyPrice>123.0</buyPrice>
-        <category>TES</category>
+        <buyPrice>621.0</buyPrice>
+        <category>AWDAW</category>
         <itemID>64</itemID>
-        <name>TES</name>
-        <sellPrice>123.0</sellPrice>
-        <stock>1</stock>
+        <name>DIUBAH GAN</name>
+        <sellPrice>624.0</sellPrice>
+        <stock>23</stock>
     </item>
     <item>
-        <buyPrice>1.0</buyPrice>
-        <category>aaa</category>
-        <itemID>128</itemID>
-        <name>aaaa</name>
-        <sellPrice>1.0</sellPrice>
-        <stock>1</stock>
-    </item>
-    <item>
-        <buyPrice>1.0</buyPrice>
-        <category>aaa</category>
-        <itemID>129</itemID>
-        <name>aaaa</name>
-        <sellPrice>1.0</sellPrice>
-        <stock>1</stock>
-    </item>
-    <item>
-        <buyPrice>1.0</buyPrice>
-        <category>coba</category>
+        <buyPrice>1234.0</buyPrice>
+        <category>TES</category>
         <itemID>193</itemID>
-        <name>coba</name>
-        <sellPrice>1.0</sellPrice>
-        <stock>1</stock>
+        <name>TESadwadwadwa</name>
+        <sellPrice>123.0</sellPrice>
+        <stock>12</stock>
     </item>
-    <neff>4</neff>
+    <item>
+        <buyPrice>41.0</buyPrice>
+        <category>AWDAWDWA</category>
+        <itemID>257</itemID>
+        <name>AWDAW</name>
+        <sellPrice>132.0</sellPrice>
+        <stock>2</stock>
+    </item>
+    <item>
+        <buyPrice>123.0</buyPrice>
+        <category>awdawdwa</category>
+        <itemID>321</itemID>
+        <name>ANJAYYY</name>
+        <sellPrice>2131.0</sellPrice>
+        <stock>12</stock>
+    </item>
+    <item>
+        <buyPrice>123.0</buyPrice>
+        <category>anjbaw</category>
+        <itemID>385</itemID>
+        <name>TESSSS COBAAA</name>
+        <sellPrice>123.0</sellPrice>
+        <stock>12</stock>
+    </item>
+    <neff>5</neff>
 </inventory>

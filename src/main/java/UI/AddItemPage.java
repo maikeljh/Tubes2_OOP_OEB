@@ -29,7 +29,7 @@ import System.Item;
 
 import javax.imageio.ImageIO;
 
-public class AddItemPage extends VBox{
+public class AddItemPage extends Page{
     private final ImageView itemImage;
 
     public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
@@ -253,12 +253,11 @@ public class AddItemPage extends VBox{
                 Text content = new Text("All fields must be filled!");
                 content.setTextAlignment(TextAlignment.LEFT);
 
-// Set the content text as a graphic
+                // Set the content text as a graphic
                 alert.getDialogPane().setContent(new VBox(header, content));
                 alert.setHeaderText("");
                 alert.showAndWait();
             }
-
         });
     }
 }
