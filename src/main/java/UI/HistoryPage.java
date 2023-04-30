@@ -148,8 +148,9 @@ public class HistoryPage extends VBox {
 
         // Style scroll pane
         scrollPane.setMaxHeight(640);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background-color: #F3F9FB;");
-        scrollPane.setPadding(new Insets(0, 10, 0, 10));
+        scrollPane.setPadding(new Insets(0, 10, 20, 10));
 
 
         // Style vbox

@@ -58,6 +58,7 @@ public class ListMemberPage extends VBox {
         vbox.setAlignment(Pos.BASELINE_CENTER);
         vbox.prefWidthProperty().bind(hBox.widthProperty());
         vbox.setPadding(new Insets(0, 30,30,0));
+        vbox.setStyle("-fx-background-color: #F3F9FB");
 
         // Display list of customers
         int i = 1;
@@ -247,8 +248,9 @@ public class ListMemberPage extends VBox {
 
         // Styling Scroll Pane
         scrollPane.setMaxHeight(640);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background-color: #F3F9FB;");
-        scrollPane.setPadding(new Insets(0, 0, 0, 10));
+        scrollPane.setPadding(new Insets(0, 0, 20, 10));
 
 
         // Add contents
