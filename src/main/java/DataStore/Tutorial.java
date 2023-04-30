@@ -1,15 +1,10 @@
 package DataStore;
-import System.PurchasedItem;
-import System.Item;
+import System.*;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.scene.image.Image;
-
-import System.FixedBill;
-import System.Inventory;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
@@ -34,6 +29,20 @@ public class Tutorial {
         Inventory<FixedBill> billList = new Inventory<FixedBill>();
         billList.addElement(bill);
         billList.addElement(bill2);
+
+        Inventory<FixedBill> customerBill = new Inventory<FixedBill>();
+        customerBill.addElement(bill2);
+
+        Customer customer1 = new Customer(bill);
+        Customer customer2 = new Customer(bill2);
+        Customer customer3 = new Customer(bill);
+        Customer customer4 = new Customer(bill2);
+
+        Inventory<Customer> customers = new Inventory<Customer>();
+        customers.addElement(customer1);
+        customers.addElement(customer2);
+        customers.addElement(customer3);
+        customers.addElement(customer4);
 
         Image image = new Image("/images/dummy.png");
         Item tes = new Item("Cappucino", 1, 2, 1, "Drinks", image);
@@ -60,6 +69,7 @@ public class Tutorial {
 
         // 2. Create DataStore (Ini buatnya di class ApplicationBNMOStore untuk setiap class yang diperlukan)
         DataStore<FixedBill> ds = new DataStore<FixedBill> ();
+        DataStore<Customer> dataCustomer = new DataStore<Customer>();
 
         // 3. Cara Read dan Write Data di XML
         // Buat Format masih manual karena belum ada settings
@@ -67,6 +77,11 @@ public class Tutorial {
         ds.setAdapter(testing);
         ds.saveData("bill.xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
         Inventory<FixedBill> hasil = ds.loadData("bill.xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
+
+        XMLAdapter testCustomer = new XMLAdapter();
+        dataCustomer.setAdapter(testCustomer);
+        dataCustomer.saveData("customer.xml", new Class<?>[] {Inventory.class, Customer.class, FixedBill.class, PurchasedItem.class}, customers);
+
 
         // 4. Cara Read dan Write Data di JSON
         JSONAdapter testing1 = new JSONAdapter();

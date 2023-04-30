@@ -27,12 +27,17 @@ import System.Customer;
 import System.VIP;
 import System.FixedBill;
 
+import javax.xml.crypto.Data;
+
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
     private PluginManager pluginManager = new PluginManager();
     private Inventory<Item> items = new Inventory<Item>();
     private DataStore<Item> itemDS = new DataStore<Item>();
+
+    private Inventory<Customer> customers = new Inventory<Customer>();
+    private DataStore<Customer> customerDS = new DataStore<Customer>();
 
     @Override
     public void start(Stage stage) throws DocumentException, FileNotFoundException {
@@ -44,6 +49,10 @@ public class ApplicationBNMOStore extends Application {
         XMLAdapter itemXML = new XMLAdapter();
         itemDS.setAdapter(itemXML);
         items = itemDS.loadData("item.xml", new Class<?>[]{Inventory.class, Item.class});
+
+        XMLAdapter customerXML = new XMLAdapter();
+        customerDS.setAdapter(customerXML);
+        customers = customerDS.loadData("customer.xml", new Class<?>[]{Inventory.class, Customer.class, FixedBill.class, PurchasedItem.class});
 
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
@@ -72,28 +81,28 @@ public class ApplicationBNMOStore extends Application {
         }
 
         // Read customers data
-        Inventory<Customer> customers = new Inventory<Customer>();
-        for (int i = 0; i < 40; i++) {
-            if (i > 34) {
-                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-                }
-            }
-
-            else if (i <= 34 && i >= 25) {
-                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-                }
-            }
-
-            else {
-                customers.addElement(new Customer(bill2));
-            }
-
-            customers.getElement(i).setTransaction(transactions);
-        }
+//        Inventory<Customer> customers = new Inventory<Customer>();
+//        for (int i = 0; i < 40; i++) {
+//            if (i > 34) {
+//                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
+//                if (i % 3 == 0) {
+//                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
+//                }
+//            }
+//
+//            else if (i <= 34 && i >= 25) {
+//                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
+//                if (i % 3 == 0) {
+//                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
+//                }
+//            }
+//
+//            else {
+//                customers.addElement(new Customer(bill2));
+//            }
+//
+//            customers.getElement(i).setTransaction(transactions);
+//        }
 
         // Read sold items
         Inventory<PurchasedItem> itemsSold = new Inventory<PurchasedItem>();
@@ -121,19 +130,6 @@ public class ApplicationBNMOStore extends Application {
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
-
-
-        // History
-//        MenuItem history = new MenuItem("History");
-//        history.setOnAction(event -> {
-//            // Handle open menu item click
-//            Tab newTab = new Tab("History");
-//            newTab.setStyle("-fx-background-color: #F3F9FB;");
-//            HistoryPage historyPage = new HistoryPage(stage, newTab, "Harry Potter", transactions);
-//            newTab.setContent(historyPage);
-//            tabPane.getTabs().add(newTab);
-//            tabPane.getSelectionModel().select(newTab);
-//        });
 
         // Items
         MenuItem itemsPage = new MenuItem("Items");

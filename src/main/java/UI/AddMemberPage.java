@@ -11,14 +11,14 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
+import DataStore.*;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
+import System.PurchasedItem;
 import javafx.scene.image.ImageView;
 import System.FixedBill;
 import java.util.ArrayList;
@@ -182,6 +182,12 @@ public class AddMemberPage extends VBox {
                 else {
                     throw new Error("Niggas are drunk up oop open it up");
                 }
+
+                // Save the data
+                DataStore<Customer> customerDS = new DataStore<Customer>();
+                XMLAdapter customerXML = new XMLAdapter();
+                customerDS.setAdapter(customerXML);
+                customerDS.saveData("customer.xml", new Class<?>[] {Inventory.class, Customer.class, FixedBill.class, PurchasedItem.class}, customers);
 
                 // Change page back to ListMemberPage
                 ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers);
