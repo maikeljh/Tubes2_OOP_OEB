@@ -56,10 +56,6 @@ public class ApplicationBNMOStore extends Application {
             // Do Nothing
         }
 
-        XMLAdapter customerXML = new XMLAdapter();
-        customerDS.setAdapter(customerXML);
-        customers = customerDS.loadData("customer.xml", new Class<?>[]{Inventory.class, Customer.class, FixedBill.class, PurchasedItem.class});
-
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
             for(int i = 0; i < items.getNeff(); i++){
@@ -87,28 +83,28 @@ public class ApplicationBNMOStore extends Application {
         }
 
         // Read customers data
-//        Inventory<Customer> customers = new Inventory<Customer>();
-//        for (int i = 0; i < 40; i++) {
-//            if (i > 34) {
-//                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
-//                if (i % 3 == 0) {
-//                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-//                }
-//            }
-//
-//            else if (i <= 34 && i >= 25) {
-//                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
-//                if (i % 3 == 0) {
-//                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
-//                }
-//            }
-//
-//            else {
-//                customers.addElement(new Customer(bill2));
-//            }
-//
-//            customers.getElement(i).setTransaction(transactions);
-//        }
+        Inventory<Customer> customers = new Inventory<Customer>();
+        for (int i = 0; i < 40; i++) {
+            if (i > 34) {
+                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
+                if (i % 3 == 0) {
+                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
+                }
+            }
+
+            else if (i <= 34 && i >= 25) {
+                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
+                if (i % 3 == 0) {
+                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(false);
+                }
+            }
+
+            else {
+                customers.addElement(new Customer(bill2));
+            }
+
+            customers.getElement(i).setTransaction(transactions);
+        }
 
         // Read sold items
         Inventory<PurchasedItem> itemsSold = new Inventory<PurchasedItem>();
