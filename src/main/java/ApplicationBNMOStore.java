@@ -1,4 +1,5 @@
 import DataStore.DataStore;
+import Plugin.Decorator.SettingsDecorator;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
 import System.Settings;
@@ -17,6 +18,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 
 import System.Inventory;
 import System.Item;
@@ -25,6 +28,7 @@ import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
 import System.FixedBill;
+import Plugin.PluginManager;
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
@@ -43,23 +47,23 @@ public class ApplicationBNMOStore extends Application {
         // Load settings
         try {
             Settings temp = new Settings();
-            settings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}).getElement(0);
+            settings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class, PluginManager.class, SettingsDecorator.class}).getElement(0);
         } catch (Exception e){
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         // Read Items Data
         try {
             items = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
         } catch (Exception e){
-            e.printStackTrace();
+            // Do Nothing
         }
 
         // Read Customers Data
         try {
             customers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
         } catch (Exception e){
-            e.printStackTrace();
+            // Do Nothing
         }
 
         if(items.getNeff() > 0){
@@ -188,24 +192,36 @@ public class ApplicationBNMOStore extends Application {
                     e.printStackTrace();
                 }
 
-                // Create New Menu from Plugin
+                // Create New Menu from BasePlugin if the plugin is derived from BasePlugin
                 int idx =  settings.getPluginManager().getPlugins().size() - 1;
-                MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
+                if(settings.getPluginManager().getPlugins().get(idx).getClass() == BasePlugin.class){
+                    MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
 
-                newPage.setOnAction(e -> {
-                    // Handle open menu item click
-                    Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
-                    Tab newTab = new Tab(newPlugin.getPluginName());
-                    newTab.setStyle("-fx-background-color: #F3F9FB;");
+                    newPage.setOnAction(e -> {
+                        // Handle open menu item click
+                        Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
+                        Tab newTab = new Tab(newPlugin.getPluginName());
+                        newTab.setStyle("-fx-background-color: #F3F9FB;");
 
-                    // Set plugin to tab's content
-                    BasePlugin newBasePlugin = (BasePlugin) newPlugin;
-                    newTab.setContent(newBasePlugin.initialize());
-                    tabPane.getTabs().add(newTab);
-                    tabPane.getSelectionModel().select(newTab);
-                });
+                        // Set plugin to tab's content
+                        BasePlugin newBasePlugin = (BasePlugin) newPlugin;
+                        newTab.setContent(newBasePlugin.initialize());
+                        tabPane.getTabs().add(newTab);
+                        tabPane.getSelectionModel().select(newTab);
+                    });
 
-                menu.getItems().add(newPage);
+                    menu.getItems().add(newPage);
+                }
+
+                List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
+                Class<?>[] classesArray = clazzes.toArray(new Class<?>[clazzes.size()]);
+                Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
+                Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+                System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+                Inventory<Settings> temp = new Inventory<Settings>();
+                temp.addElement(settings);
+                settingsDS.saveData("settings", settings, concatenated, temp);
             }
         });
 
@@ -217,8 +233,23 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
-            SettingsPage settingsTab = new SettingsPage(stage, settings, settingsDS);
-            newTab.setContent(settingsTab);
+            SettingsPage settingsTab = new SettingsPage(stage, settings, items, customers, itemDS, customerDS, settingsDS);
+            boolean found = false;
+            for(Plugin plugin : settings.getPluginManager().getPlugins()){
+                if(plugin instanceof SettingsDecorator){
+                    SettingsDecorator settingsDecorated = (SettingsDecorator) plugin;
+                    settingsDecorated.setPage(settingsTab);
+                    settingsDecorated.getPage().setStage(stage);
+                    settingsDecorated.getPage().setSettings(settings);
+                    settingsDecorated.getPage().setSettingsDS(settingsDS);
+                    settingsDecorated.execute();
+                    newTab.setContent(settingsDecorated.getPage());
+                    found = true;
+                }
+            }
+            if(!found) {
+                newTab.setContent(settingsTab);
+            }
         });
 
         // Add Menu Items to Menu

@@ -75,10 +75,6 @@ public class Item implements Serializable {
         return this.item_id;
     }
 
-    public int getItem_id(){
-        return this.item_id;
-    }
-
     public String getName(){
         return this.name;
     }
@@ -90,12 +86,10 @@ public class Item implements Serializable {
     public double getSellPrice(){
         return this.sell_price;
     }
-    public double getSell_price(){return this.sell_price;}
 
     public double getBuyPrice(){
         return this.buy_price;
     }
-    public double getBuy_price(){return this.buy_price;}
 
     public String getCategory(){
         return this.category;

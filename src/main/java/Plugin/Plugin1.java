@@ -15,12 +15,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
-import java.awt.*;
-
 public class Plugin1 extends BasePlugin {
     private Inventory<PurchasedItem> data1;
     private Inventory<PurchasedItem> data2;
-    public Plugin1(Stage stage){
+    public Plugin1(){
         this.setPluginName("Line & Bar Chart");
     }
 

@@ -26,7 +26,7 @@ public class Plugin2 extends BasePlugin {
     private Inventory<PurchasedItem> data;
     private List<String> cat;
     private List<Double> profit;
-    public Plugin2(Stage stage){
+    public Plugin2(){
         // Create Name
         this.setPluginName("Pie Chart");
     }

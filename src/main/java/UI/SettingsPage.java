@@ -1,6 +1,8 @@
 package UI;
 
 import DataStore.DataStore;
+import Plugin.PluginManager;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,14 +14,47 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
 import System.Inventory;
 import System.Settings;
+import System.Item;
+import System.Customer;
+import System.FixedBill;
+import System.PurchasedItem;
+import System.RegisteredCustomer;
+import System.Member;
+import System.VIP;
+import Plugin.Plugin;
 
 public class SettingsPage extends HBox {
+    protected final VBox options;
+    protected final VBox details;
+    protected Stage stage;
+    protected Settings settings;
+    protected ComboBox<String> formatOptions = new ComboBox<>(FXCollections.observableArrayList("xml", "json", "obj"));
+    protected Button pickFolder = new Button();
+    protected Label currentPath;
 
-    public SettingsPage(Stage stage, Settings settings, DataStore<Settings> settingsDS) {
+    /* Inventories */
+    protected Inventory<Item> items;
+    protected Inventory<Customer> customers;
+
+    /* DataStores */
+    protected DataStore<Item> itemDS;
+    protected DataStore<Settings> settingsDS;
+    protected DataStore<Customer> customerDS;
+
+    public SettingsPage(Stage stage, Settings settings, Inventory<Item> items, Inventory<Customer> customers, DataStore<Item> itemDS, DataStore<Customer> customerDS, DataStore<Settings> settingsDS) {
+        /* Set Attributes */
+        this.items = items;
+        this.customers = customers;
+        this.itemDS = itemDS;
+        this.customerDS = customerDS;
+        this.settings = settings;
+
         // Creating VBox for Sidebar
         VBox sidebar = new VBox();
 
@@ -36,8 +71,8 @@ public class SettingsPage extends HBox {
 
         // Creating Setting Options
         // VBox for Options and Details
-        VBox options = new VBox();
-        VBox details = new VBox();
+        options = new VBox();
+        details = new VBox();
 
         // Setting Options layout
         options.setSpacing(20);
@@ -62,6 +97,76 @@ public class SettingsPage extends HBox {
         opt1.setGraphicTextGap(20);
         opt1.setContentDisplay(ContentDisplay.LEFT);
         opt1.setAlignment(Pos.CENTER_LEFT);
+
+        // Format Options
+        // Create a combo box with some sample options
+        formatOptions.getItems().clear();
+        formatOptions.getItems().addAll("xml", "json", "obj");
+        formatOptions.setValue(settings.getFormat());
+        formatOptions.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Change format and save settings
+            settings.setFormat(newValue);
+            Settings temp = new Settings();
+            temp.setFormat(newValue);
+            temp.setSaveDirectory(settings.getSaveDirectory());
+            Inventory<Settings> tempSettings = new Inventory<Settings>();
+            tempSettings.addElement(settings);
+
+            // Remove old files and save with new format
+            File directory = new File(settings.getSaveDirectory());
+            File[] files = directory.listFiles();
+            for (File file : files) {
+                if (file.isFile() && (file.getName().startsWith("item") || file.getName().startsWith("customer") || file.getName().startsWith("settings"))){
+                    file.delete();
+                }
+            }
+
+            List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
+            Class<?>[] classesArray = clazzes.toArray(new Class<?>[clazzes.size()]);
+            Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
+            Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+            System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+            settingsDS.saveData("settings", temp, concatenated, tempSettings);
+            itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
+            customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+        });
+
+        // Pick Folder
+        // Button to change path
+        pickFolder = new Button("Change path");
+        pickFolder.setOnAction(e -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File selectedDirectory = directoryChooser.showDialog(stage);
+            if (selectedDirectory != null) {
+                currentPath.setText(selectedDirectory.getAbsolutePath());
+                settings.setSaveDirectory(selectedDirectory.getAbsolutePath());
+                Settings temp = new Settings();
+                temp.setSaveDirectory(settings.getSaveDirectory());
+                temp.setFormat(settings.getFormat());
+                Inventory<Settings> tempSettings = new Inventory<Settings>();
+                tempSettings.addElement(settings);
+
+                // Remove old files and save with new format
+                File directory = new File(settings.getSaveDirectory());
+                File[] files = directory.listFiles();
+                for (File file : files) {
+                    if (file.isFile() && (file.getName().startsWith("item") || file.getName().startsWith("customer") || file.getName().startsWith("settings"))){
+                        file.delete();
+                    }
+                }
+
+                List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
+                Class<?>[] classesArray = clazzes.toArray(new Class<?>[clazzes.size()]);
+                Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
+                Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+                System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+                settingsDS.saveData("settings", temp, concatenated, tempSettings);
+                itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
+                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+            }
+        });
 
         // Button on pressed functionalities (Option 1)
         opt1.setOnAction(event ->{
@@ -93,25 +198,10 @@ public class SettingsPage extends HBox {
             ImageView folderIcon = new ImageView(new Image("/images/icon/folderIcon.png"));
 
             // Label showing current path
-            Label currentPath = new Label(settings.getSaveDirectory());
+            currentPath = new Label(settings.getSaveDirectory());
             Tooltip tooltip = new Tooltip(settings.getSaveDirectory());
             Tooltip.install(currentPath, tooltip);
             currentPath.setTooltip(tooltip);
-
-            // Button to change path
-            Button pickFolder = new Button("Change path");
-            pickFolder.setOnAction(e -> {
-                DirectoryChooser directoryChooser = new DirectoryChooser();
-                File selectedDirectory = directoryChooser.showDialog(stage);
-                if (selectedDirectory != null) {
-                    currentPath.setText(selectedDirectory.getAbsolutePath());
-                    settings.setSaveDirectory(selectedDirectory.getAbsolutePath());
-                    Settings temp = new Settings();
-                    Inventory<Settings> tempSettings = new Inventory<Settings>();
-                    tempSettings.addElement(settings);
-                    settingsDS.saveData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}, tempSettings);
-                }
-            });
 
             // Styling
             folderDirectory.setAlignment(Pos.CENTER);
@@ -131,18 +221,6 @@ public class SettingsPage extends HBox {
 
             // Format Icon
             ImageView formatIcon = new ImageView(new Image("/images/icon/folderIcon.png"));
-
-            // Create a combo box with some sample options
-            ComboBox<String> formatOptions = new ComboBox<>();
-            formatOptions.getItems().addAll("xml", "json", "obj");
-            formatOptions.setValue(settings.getFormat());
-            formatOptions.valueProperty().addListener((observable, oldValue, newValue) -> {
-                settings.setFormat(newValue);
-                Settings temp = new Settings();
-                Inventory<Settings> tempSettings = new Inventory<Settings>();
-                tempSettings.addElement(settings);
-                settingsDS.saveData("settings", temp, new Class<?>[]{Inventory.class, Settings.class}, tempSettings);
-            });
 
             // Styling
             formatDirectory.setAlignment(Pos.CENTER_LEFT);
@@ -214,5 +292,57 @@ public class SettingsPage extends HBox {
 
         // Styling main layout
         setStyle("-fx-background-color: #F3F9FB;");
+    }
+
+    public VBox getOptions(){
+        return this.options;
+    }
+
+    public VBox getDetails(){
+        return this.details;
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    public void setSettings(Settings settings){
+        this.settings = settings;
+    }
+
+    public void setSettingsDS(DataStore<Settings> settingsDS){
+        this.settingsDS = settingsDS;
+    }
+
+    public Inventory<Item> getItems(){
+        return this.items;
+    }
+
+    public Inventory<Customer> getCustomers(){
+        return this.customers;
+    }
+
+    public Settings getSettings(){
+        return this.settings;
+    }
+
+    public DataStore<Item> getItemDS(){
+        return this.itemDS;
+    }
+
+    public DataStore<Customer> getCustomerDS(){
+        return this.customerDS;
+    }
+
+    public DataStore<Settings> getSettingsDS(){
+        return this.settingsDS;
+    }
+
+    public ComboBox<String> getFormatOptions(){
+        return this.formatOptions;
+    }
+
+    public Button getPickFolder(){
+        return this.pickFolder;
     }
 }
