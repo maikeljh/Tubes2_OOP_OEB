@@ -2,6 +2,7 @@ Plugin\Plugin.class
 UI\MainPage.class
 System\Inventory.class
 UI\UpdateMemberPage.class
+UI\DetailMemberPage.class
 DataStore\JSONAdapter.class
 System\Payment.class
 System\Settings.class

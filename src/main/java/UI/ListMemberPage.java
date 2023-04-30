@@ -78,6 +78,9 @@ public class ListMemberPage extends VBox {
             }
             else {
                 details.setText(i + "   " + ((RegisteredCustomer) customer).getName());
+                if (!((RegisteredCustomer) customer).getActiveStatus()) {
+                    details.setStyle("-fx-text-fill: #93A2A5");
+                }
             }
 
             i++;
@@ -89,6 +92,9 @@ public class ListMemberPage extends VBox {
 
             // Set icon for update button
             ImageView updateIcon = new ImageView("/images/icon/updateButton.png");
+
+            // Set icon for preview button
+            ImageView previewIcon = new ImageView("/images/icon/previewButton.png");
 
             // Styling update button icon
             updateIcon.setPreserveRatio(true);
@@ -104,12 +110,25 @@ public class ListMemberPage extends VBox {
             historyIcon.setFitWidth(27);
             historyIcon.setFitHeight(27);
 
+            // Styling preview button icon
+            previewIcon.setPreserveRatio(true);
+            previewIcon.setSmooth(true);
+            previewIcon.setCache(true);
+            previewIcon.setFitWidth(27);
+            previewIcon.setFitHeight(27);
+
             // Making a button for history
             Button historyButton = new Button();
             historyButton.setPrefSize(27,27);
             historyButton.setStyle("-fx-background-color: #C8DFE8;");
             historyButton.setGraphic(historyIcon);
             historyButton.setCursor(Cursor.HAND);
+
+            // Add event handler for historyButton
+            historyButton.setOnAction(event-> {
+                HistoryPage historyPage = new HistoryPage(stage, tab, customer, customers);
+                tab.setContent(historyPage);
+            });
 
             // Making a button for update
             Button updateButton = new Button();
@@ -122,6 +141,19 @@ public class ListMemberPage extends VBox {
             updateButton.setOnAction(event -> {
                 UpdateMemberPage updateMemberPage = new UpdateMemberPage(stage, tab, customer, customers);
                 tab.setContent(updateMemberPage);
+            });
+
+            // Making a button for preview
+            Button previewButton = new Button();
+            previewButton.setPrefSize(27,27);
+            previewButton.setStyle("-fx-background-color: #C8DFE8;");
+            previewButton.setGraphic(previewIcon);
+            previewButton.setCursor(Cursor.HAND);
+
+            // Add event handler for previewButton
+            previewButton.setOnAction(event -> {
+                DetailMemberPage detailMemberPage = new DetailMemberPage(stage, tab, customer, customers);
+                tab.setContent(detailMemberPage);
             });
 
             // Set vip Logo for every VIP member
@@ -177,10 +209,13 @@ public class ListMemberPage extends VBox {
             if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
                 if (((RegisteredCustomer) customer).getActiveStatus()) {
                     updateButton.setStyle("-fx-background-color: #98CBDE");
+                    previewButton.setStyle("-fx-background-color: #98CBDE");
                 }
                 else {
                     updateButton.setStyle("-fx-background-color: #D9D9D9");
+                    previewButton.setStyle("-fx-background-color: #D9D9D9");
                 }
+                customerButtons.getChildren().add(previewButton);
                 customerButtons.getChildren().add(updateButton);
             }
 

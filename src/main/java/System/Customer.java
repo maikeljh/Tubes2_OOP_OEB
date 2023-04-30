@@ -27,4 +27,8 @@ public class Customer {
     public Inventory<FixedBill> getTransaction() {
         return transaction;
     }
+
+    public void setTransaction(Inventory<FixedBill> transactions) {
+        this.transaction = transactions;
+    }
 }
