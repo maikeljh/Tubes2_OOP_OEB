@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
     <item>
-        <buyPrice>123.0</buyPrice>
+        <buyPrice>18.2</buyPrice>
         <category>TES</category>
         <itemID>64</itemID>
         <name>TES</name>
-        <sellPrice>123.0</sellPrice>
-        <stock>1</stock>
+        <sellPrice>9.1</sellPrice>
+        <stock>12</stock>
     </item>
     <neff>1</neff>
 </inventory>

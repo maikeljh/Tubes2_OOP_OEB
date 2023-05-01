@@ -1,7 +1,14 @@
 package Plugin;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
-public class Plugin {
-    private String pluginName;
+import java.io.Serializable;
+
+@XmlRootElement
+public class Plugin implements Serializable {
+    protected String pluginName;
+
+    public Plugin(){}
+
     public void setPluginName(String pluginName){
         this.pluginName = pluginName;
     }

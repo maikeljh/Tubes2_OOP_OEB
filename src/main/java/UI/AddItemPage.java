@@ -1,6 +1,7 @@
 package UI;
 
 import DataStore.DataStore;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,6 +13,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.embed.swing.SwingFXUtils;
@@ -26,7 +29,7 @@ import System.Item;
 
 import javax.imageio.ImageIO;
 
-public class AddItemPage extends VBox{
+public class AddItemPage extends Page{
     private final ImageView itemImage;
 
     public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
@@ -241,11 +244,20 @@ public class AddItemPage extends VBox{
                 // Show alert
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
-                alert.setHeaderText("Fail to Add Item");
-                alert.setContentText("All fields must not empty!");
+                // Center the header and content text
+                Label header = new Label("Fail to Add Item");
+                header.setStyle("-fx-font-size: 1.5em;");
+                header.setStyle("-fx-font-weight: bold;");
+                header.setAlignment(Pos.CENTER);
+
+                Text content = new Text("All fields must be filled!");
+                content.setTextAlignment(TextAlignment.LEFT);
+
+                // Set the content text as a graphic
+                alert.getDialogPane().setContent(new VBox(header, content));
+                alert.setHeaderText("");
                 alert.showAndWait();
             }
-
         });
     }
 }

@@ -3,6 +3,8 @@ package DataStore;
 import System.Inventory;
 import System.Settings;
 
+import java.util.Objects;
+
 public class DataStore<T> {
     private DataAdapter adapter;
 
@@ -19,14 +21,15 @@ public class DataStore<T> {
     }
 
     public void checkAdapter(String format){
-        if(format == "xml" && adapter.getClass() != XMLAdapter.class){
+        if(Objects.equals(format, "xml") && adapter.getClass() != XMLAdapter.class){
             setAdapter(new XMLAdapter());
-        } else if(format == "json" && adapter.getClass() != JSONAdapter.class){
+        } else if(Objects.equals(format, "json") && adapter.getClass() != JSONAdapter.class){
             setAdapter(new JSONAdapter());
-        } else if(format == "obj" && adapter.getClass() != OBJAdapter.class) {
+        } else if(Objects.equals(format, "obj") && adapter.getClass() != OBJAdapter.class) {
             setAdapter(new OBJAdapter());
         }
     }
+
     public void saveData(String fileName, Settings settings, Class<?>[] classTypes, Object newData){
         checkAdapter(settings.getFormat());
         this.adapter.writeData(settings.getSaveDirectory() + "/" + fileName + "." + settings.getFormat(), classTypes, newData);

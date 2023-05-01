@@ -17,7 +17,7 @@ import DataStore.DataStore;
 import javafx.stage.Stage;
 import System.Settings;
 
-public class ListItemPage extends VBox {
+public class ListItemPage extends Page {
 
     public ListItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
@@ -120,5 +120,62 @@ public class ListItemPage extends VBox {
         setPadding(new Insets(20, 40, 0, 40));
         setSpacing(20);
         setStyle("-fx-background-color: #F3F9FB;");
+        setMaxWidth(1280);
+
+        tab.setOnSelectionChanged(event -> {
+            if(tab.isSelected()){
+                grid.getChildren().clear();
+                grid.getColumnConstraints().clear();
+                grid.getRowConstraints().clear();
+
+                // Create item display
+                int row1 = 0;
+                int col1 = 0;
+
+                // Display List Of Items
+                for (Item item : items.getList()) {
+                    // VBox Display Item
+                    VBox itemDisplay = new VBox();
+
+                    // Image View Item
+                    ImageView itemImage = new ImageView(item.getImage());
+
+                    // Styling Item Image
+                    itemImage.setPreserveRatio(true);
+                    itemImage.setSmooth(true);
+                    itemImage.setCache(true);
+                    itemImage.setFitWidth(149);
+                    itemImage.setFitHeight(121);
+
+                    // Item Name
+                    Text itemName = new Text(item.getName());
+
+                    // Styling Item Name
+                    itemName.setFont(Font.font("Montserrat", 14));
+
+                    // Styling Item Display
+                    itemDisplay.getChildren().addAll(itemImage, itemName);
+                    itemDisplay.setAlignment(Pos.CENTER);
+                    itemDisplay.setPadding(new Insets(5));
+                    itemDisplay.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px;");
+                    itemDisplay.setPrefWidth(170);
+                    itemDisplay.setPrefHeight(150);
+                    itemDisplay.setSpacing(5);
+
+                    // Add onclick event
+                    itemDisplay.setOnMouseClicked(e -> {
+                        ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
+                        tab.setContent(detailItemContent);
+                    });
+                    // Add Item Display to Grid
+                    grid.add(itemDisplay, col1, row1);
+                    col1++;
+                    if (col1 == 6) {
+                        col1 = 0;
+                        row1++;
+                    }
+                }
+            }
+        });
     }
 }
