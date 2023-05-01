@@ -17,7 +17,7 @@ public class JSONAdapter implements DataAdapter {
             Object result = mapper.readValue(new File(filePath), type);
             return result;
         } catch (IOException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
         return null;
     }
@@ -28,7 +28,7 @@ public class JSONAdapter implements DataAdapter {
         try {
             mapper.writeValue(new File(filePath), newData);
         } catch (IOException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
     }
 }

@@ -1,11 +1,16 @@
 package DataStore;
 
 import System.Inventory;
+import System.Settings;
+
+import java.util.Objects;
 
 public class DataStore<T> {
     private DataAdapter adapter;
 
-    public DataStore(){}
+    public DataStore(){
+        this.adapter = new XMLAdapter();
+    }
 
     public void setAdapter(DataAdapter adapter){
         this.adapter = adapter;
@@ -15,13 +20,25 @@ public class DataStore<T> {
         return this.adapter;
     }
 
-    public void saveData(String fileName, Class<?>[] classTypes, Object newData){
-        this.adapter.writeData("src/main/resources/files/" + fileName, classTypes, newData);
+    public void checkAdapter(String format){
+        if(Objects.equals(format, "xml") && adapter.getClass() != XMLAdapter.class){
+            setAdapter(new XMLAdapter());
+        } else if(Objects.equals(format, "json") && adapter.getClass() != JSONAdapter.class){
+            setAdapter(new JSONAdapter());
+        } else if(Objects.equals(format, "obj") && adapter.getClass() != OBJAdapter.class) {
+            setAdapter(new OBJAdapter());
+        }
     }
 
-    public Inventory<T> loadData(String fileName, Class<?>[] classTypes){
+    public void saveData(String fileName, Settings settings, Class<?>[] classTypes, Object newData){
+        checkAdapter(settings.getFormat());
+        this.adapter.writeData(settings.getSaveDirectory() + "/" + fileName + "." + settings.getFormat(), classTypes, newData);
+    }
+
+    public Inventory<T> loadData(String fileName, Settings settings, Class<?>[] classTypes){
+        checkAdapter(settings.getFormat());
         @SuppressWarnings("unchecked")
-        Inventory<T> result = (Inventory<T>) this.adapter.readData("src/main/resources/files/" + fileName, classTypes);
+        Inventory<T> result = (Inventory<T>) this.adapter.readData(settings.getSaveDirectory() + "/" + fileName + "." + settings.getFormat(), classTypes);
         return result;
     }
 }

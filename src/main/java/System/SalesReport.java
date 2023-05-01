@@ -4,12 +4,13 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import javafx.scene.text.FontWeight;
-import javafx.scene.image.Image;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 
+@XmlRootElement
 public class SalesReport implements Serializable {
     /* attributes */
     private double total_gross_profit;
@@ -17,17 +18,38 @@ public class SalesReport implements Serializable {
     private Inventory<PurchasedItem> items;
 
     /* ctor */
-    public SalesReport(Inventory<PurchasedItem> items){
-        this.items = items;
+    public SalesReport(){
         this.total_gross_profit = 0;
         this.total_net_profit = 0;
-        for (PurchasedItem item : items.getList()) {
-            this.total_gross_profit += item.calculateGrossProfit();
-            this.total_net_profit += item.calculateNetProfit();
-        }
+        items = new Inventory<PurchasedItem>();
     }
 
     /* methods */
+
+    public void setItems(Inventory<PurchasedItem> items) {
+        this.items = items;
+    }
+
+    public void setTotalGrossProfit(double total_gross_profit) {
+        this.total_gross_profit = total_gross_profit;
+    }
+
+    public void setTotalNetProfit(double total_net_profit) {
+        this.total_net_profit = total_net_profit;
+    }
+
+    public double getTotalGrossProfit() {
+        return total_gross_profit;
+    }
+
+    public double getTotalNetProfit() {
+        return total_net_profit;
+    }
+
+    public Inventory<PurchasedItem> getItems(){
+        return items;
+    }
+
     public int getElementIdx(String itemName){
         boolean found = false;
         int idx = 0;
@@ -44,6 +66,13 @@ public class SalesReport implements Serializable {
             return -1;
         }
     }
+
+    public void updateReport(FixedBill fixedBill){
+        for(PurchasedItem item : fixedBill.getItems().getList()){
+            items.addElement(item);
+        }
+    }
+
     public void calculateReport(Inventory<FixedBill> transactions){
         /*
         for (FixedBill fixedBill : transactions.getList()){

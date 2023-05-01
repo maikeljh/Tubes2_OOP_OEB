@@ -1,10 +1,18 @@
 package System;
 
-public class Customer {
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.io.Serializable;
+
+@XmlRootElement
+public class Customer implements Serializable {
     protected int id;
     private static int customerCount = 1;
     protected Inventory<FixedBill> transaction;
 
+    public Customer() {
+
+    }
     public Customer(int id) {
         this.id = id;
         this.transaction = new Inventory<FixedBill>();
@@ -31,5 +39,9 @@ public class Customer {
 
     public Inventory<FixedBill> getTransaction() {
         return transaction;
+    }
+
+    public void setTransaction(Inventory<FixedBill> transactions) {
+        this.transaction = transactions;
     }
 }

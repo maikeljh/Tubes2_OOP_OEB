@@ -13,11 +13,11 @@ public class OBJAdapter implements DataAdapter {
             objectInputStream.close();
             return result;
         } catch (FileNotFoundException e) {
-            System.out.println("ERROR GAN");
+            // Do Nothing
         } catch (IOException e) {
-            System.out.println("ERROR GAN");
+            // Do Nothing
         } catch (ClassNotFoundException e) {
-            System.out.println("ERROR GAN");
+            // Do Nothing
         }
         return null;
     }

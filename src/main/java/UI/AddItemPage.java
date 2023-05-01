@@ -1,6 +1,7 @@
 package UI;
 
 import DataStore.DataStore;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,6 +13,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.embed.swing.SwingFXUtils;
@@ -20,16 +23,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import DataStore.XMLAdapter;
+import System.Settings;
 import System.Inventory;
 import System.Item;
 
 import javax.imageio.ImageIO;
 
-public class AddItemPage extends VBox{
+public class AddItemPage extends Page{
     private final ImageView itemImage;
 
-    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS){
+    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -50,7 +53,7 @@ public class AddItemPage extends VBox{
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
             tab.setContent(listItemPage);
         });
 
@@ -232,20 +235,29 @@ public class AddItemPage extends VBox{
                 }
 
                 // Save data to file
-                itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
+                itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
+                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
                 tab.setContent(listItemPage);
             } else {
                 // Show alert
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
-                alert.setHeaderText("Fail to Add Item");
-                alert.setContentText("All fields must not empty!");
+                // Center the header and content text
+                Label header = new Label("Fail to Add Item");
+                header.setStyle("-fx-font-size: 1.5em;");
+                header.setStyle("-fx-font-weight: bold;");
+                header.setAlignment(Pos.CENTER);
+
+                Text content = new Text("All fields must be filled!");
+                content.setTextAlignment(TextAlignment.LEFT);
+
+                // Set the content text as a graphic
+                alert.getDialogPane().setContent(new VBox(header, content));
+                alert.setHeaderText("");
                 alert.showAndWait();
             }
-
         });
     }
 }

@@ -1,10 +1,10 @@
 import DataStore.DataStore;
+import Plugin.Decorator.SettingsDecorator;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
-import Plugin.PluginManager;
+import System.Settings;
 import System.Member;
 import UI.*;
-import com.itextpdf.text.DocumentException;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,36 +14,77 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
+
 import System.Inventory;
 import System.Item;
 import System.PurchasedItem;
-import DataStore.XMLAdapter;
-import DataStore.Tutorial;
 import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
 import System.FixedBill;
+import System.SalesReport;
+import Plugin.PluginManager;
+
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
-    private PluginManager pluginManager = new PluginManager();
+    private Settings settings = new Settings();
+    private SalesReport report = new SalesReport();
     private Inventory<Item> items = new Inventory<Item>();
-    private DataStore<Item> itemDS = new DataStore<Item>();
+    private Inventory<Customer> customers = new Inventory<Customer>();
+
+    private final DataStore<Item> itemDS = new DataStore<Item>();
+    private final DataStore<Settings> settingsDS = new DataStore<Settings>();
+    private final DataStore<Customer> customerDS = new DataStore<Customer>();
+    private final DataStore<SalesReport> reportDS = new DataStore<SalesReport>();
 
     @Override
-    public void start(Stage stage) throws DocumentException, FileNotFoundException {
-        // Testing Print PDF
-        Tutorial.tes();
+    public void start(Stage stage) {
+        // Load settings
+        try {
+            Settings temp = new Settings();
+            Settings loadedSettings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class, PluginManager.class, SettingsDecorator.class}).getElement(0);
+            if(loadedSettings != null){
+                settings = loadedSettings;
+            } else {
+                settings.setFormat("xml");
+            }
+        } catch (Exception e){
+            settings.setFormat("xml");
+        }
 
-        // Read Item Data
-        // Sementara XML dlu yak (Belum bikin setting)
-        XMLAdapter itemXML = new XMLAdapter();
-        itemDS.setAdapter(itemXML);
-        items = itemDS.loadData("item.xml", new Class<?>[]{Inventory.class, Item.class});
+        // Read Items Data
+        try {
+            Inventory<Item> loadedItems = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
+            if(loadedItems != null){
+                items = loadedItems;
+            }
+        } catch (Exception e){
+            // Do Nothing
+        }
+
+        // Read Customers Data
+        try {
+            Inventory<Customer> loadedCustomers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
+            if(loadedCustomers != null){
+                customers = loadedCustomers;
+            }
+        } catch (Exception e){
+            // Do Nothing
+        }
+
+        // Read Sales Report Data
+        try {
+            SalesReport loadedReport = reportDS.loadData("report", settings, new Class<?>[]{Inventory.class, SalesReport.class, PurchasedItem.class}).getElement(0);
+            if(loadedReport != null){
+                report = loadedReport;
+            }
+        } catch (Exception e){
+            // Do Nothing
+        }
 
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
@@ -59,6 +100,8 @@ public class ApplicationBNMOStore extends Application {
         bill2.setDate("2023-2-12");
         bill2.setCustomerID(234);
         bill2.setBillID(5679);
+        bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+        bill2.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
 
         // Read customers data
         Inventory<Customer> customers = new Inventory<Customer>();
@@ -109,28 +152,14 @@ public class ApplicationBNMOStore extends Application {
         Menu menu = new Menu("Menu");
 
         /* Menu Items */
-
         // Members
         MenuItem membersPage = new MenuItem("Members");
         membersPage.setOnAction(event -> {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers, customerDS, settings);
             newTab.setContent(listMemberPage);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
-        });
-
-
-        // History
-        MenuItem history = new MenuItem("History");
-        history.setOnAction(event -> {
-            // Handle open menu item click
-            Tab newTab = new Tab("History");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            HistoryPage historyPage = new HistoryPage(stage, newTab, "Harry Potter", transactions);
-            newTab.setContent(historyPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
@@ -141,7 +170,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS, settings);
             newTab.setContent(listItemPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -176,7 +205,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("History");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            SalesReportPage reportPage = new SalesReportPage(stage, newTab, itemsSold);
+            SalesReportPage reportPage = new SalesReportPage(stage, newTab, report);
             newTab.setContent(reportPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -197,35 +226,44 @@ public class ApplicationBNMOStore extends Application {
             if (selectedFile != null) {
                 try {
                     // Try to load plugin from selected jar file
-                    pluginManager.loadPlugin(selectedFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                    settings.getPluginManager().loadPlugin(selectedFile);
+
+                    // Create New Menu from BasePlugin if the plugin is derived from BasePlugin
+                    int idx =  settings.getPluginManager().getPlugins().size() - 1;
+                    if(settings.getPluginManager().getPlugins().get(idx) instanceof BasePlugin){
+                        MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
+
+                        newPage.setOnAction(e -> {
+                            // Handle open menu item click
+                            Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
+                            Tab newTab = new Tab(newPlugin.getPluginName());
+                            newTab.setStyle("-fx-background-color: #F3F9FB;");
+
+                            // Set plugin to tab's content
+                            BasePlugin newBasePlugin = (BasePlugin) newPlugin;
+                            newBasePlugin.setItems(report.getItems());
+                            newTab.setContent(newBasePlugin.initialize());
+                            tabPane.getTabs().add(newTab);
+                            tabPane.getSelectionModel().select(newTab);
+                        });
+
+                        menu.getItems().add(newPage);
+                    }
+
+                    List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
+                    Class<?>[] classesArray = clazzes.toArray(new Class<?>[0]);
+                    Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class, BasePlugin.class};
+                    Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+                    System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+                    Inventory<Settings> temp = new Inventory<Settings>();
+                    temp.addElement(settings);
+
+                    Settings template = new Settings();
+                    settingsDS.saveData("settings", template, concatenated, temp);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // Create New Menu from Plugin
-                int idx = pluginManager.getPlugins().size() - 1;
-                MenuItem newPage = new MenuItem(pluginManager.getPlugins().get(idx).getPluginName());
-
-                newPage.setOnAction(e -> {
-                    // Handle open menu item click
-                    Plugin newPlugin = pluginManager.getPlugins().get(idx);
-                    Tab newTab = new Tab(newPlugin.getPluginName());
-                    newTab.setStyle("-fx-background-color: #F3F9FB;");
-
-                    // Set plugin to tab's content
-                    BasePlugin newBasePlugin = (BasePlugin) newPlugin;
-                    newTab.setContent(newBasePlugin.initialize());
-                    tabPane.getTabs().add(newTab);
-                    tabPane.getSelectionModel().select(newTab);
-                });
-
-                menu.getItems().add(newPage);
             }
         });
 
@@ -237,8 +275,22 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
-            SettingsPage settingsTab = new SettingsPage(stage);
-            newTab.setContent(settingsTab);
+            SettingsPage settingsTab = new SettingsPage(stage, newTab, menu, settings, items, customers, report, itemDS, customerDS, settingsDS, reportDS);
+            boolean found = false;
+            for(Plugin plugin : settings.getPluginManager().getPlugins()){
+                if(plugin instanceof SettingsDecorator settingsDecorated){
+                    settingsDecorated.setPage(settingsTab);
+                    settingsDecorated.getPage().setStage(stage);
+                    settingsDecorated.getPage().setSettings(settings);
+                    settingsDecorated.getPage().setSettingsDS(settingsDS);
+                    settingsDecorated.execute();
+                    newTab.setContent(settingsDecorated.getPage());
+                    found = true;
+                }
+            }
+            if(!found) {
+                newTab.setContent(settingsTab);
+            }
         });
 
         // Add Menu Items to Menu
@@ -248,8 +300,26 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(salesReportPage);
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
-        menu.getItems().add(history);
-        // menu.getItems().add(cashierDetailPage);
+
+        // Add BasePlugins to Menu
+        for(Plugin plugin : settings.getPluginManager().getPlugins()){
+            if(plugin instanceof BasePlugin){
+                MenuItem newPage = new MenuItem(plugin.getPluginName());
+                newPage.setOnAction(e -> {
+                    // Handle open menu item click
+                    Tab newTab = new Tab(plugin.getPluginName());
+                    newTab.setStyle("-fx-background-color: #F3F9FB;");
+
+                    // Set plugin to tab's content
+                    BasePlugin newBasePlugin = (BasePlugin) plugin;
+                    newBasePlugin.setItems(report.getItems());
+                    newTab.setContent(newBasePlugin.initialize());
+                    tabPane.getTabs().add(newTab);
+                    tabPane.getSelectionModel().select(newTab);
+                });
+                menu.getItems().add(newPage);
+            }
+        }
 
         // Main Menu Bar
         MenuBar menuBar = new MenuBar();

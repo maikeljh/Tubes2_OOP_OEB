@@ -23,13 +23,14 @@ import java.io.IOException;
 
 import System.Inventory;
 import System.Item;
+import System.Settings;
 
 import javax.imageio.ImageIO;
 
 public class UpdateItemPage extends VBox {
     private final ImageView itemImage;
 
-    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS){
+    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -50,7 +51,7 @@ public class UpdateItemPage extends VBox {
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS);
+            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
             tab.setContent(detailItemContent);
         });
 
@@ -227,10 +228,10 @@ public class UpdateItemPage extends VBox {
                 }
 
                 // Save Data
-                itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
+                itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
                 tab.setContent(detailItemContent);
             } else {
                 // Show alert

@@ -19,11 +19,12 @@ import javafx.stage.Stage;
 
 import System.Inventory;
 import System.Item;
+import System.Settings;
 
 import java.io.File;
 
 public class ItemDetailPage extends VBox {
-    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS){
+    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -42,7 +43,7 @@ public class ItemDetailPage extends VBox {
 
         // Add event on update button
         updateButton.setOnAction(event -> {
-            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items, itemDS);
+            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items, itemDS, settings);
             tab.setContent(updateItemContent);
         });
 
@@ -60,10 +61,10 @@ public class ItemDetailPage extends VBox {
             items.removeElement(item);
 
             // Save data
-            itemDS.saveData("item.xml", new Class<?>[]{Inventory.class, Item.class}, items);
+            itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
             // Change page
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
             tab.setContent(listItemPage);
         });
         // Create back button
@@ -71,7 +72,7 @@ public class ItemDetailPage extends VBox {
         backButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         backButton.setStyle("-fx-background-color: #769295; -fx-text-fill: white;");
         backButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
             tab.setContent(listItemPage);
         });
 
@@ -188,5 +189,16 @@ public class ItemDetailPage extends VBox {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(40);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        tab.setOnSelectionChanged(event -> {
+            if (tab.isSelected()) {
+                itemImage.setImage(item.getImage());
+                name.setText(item.getName());
+                category.setText(item.getCategory());
+                sellPrice.setText(Double.toString(item.getSellPrice()));
+                buyPrice.setText(Double.toString(item.getBuyPrice()));
+                stocks.setText(Integer.toString(item.getStock()));
+            }
+        });
     }
 }
