@@ -7,7 +7,18 @@ public class Member extends RegisteredCustomer {
         super(customerId, name, phoneNumber, bill);
     }
 
-    public double calculateDiscount(int total_price){
-        return (double) total_price - (double) this.point;
+    public double calculateDiscount(double total_price, boolean point){
+        double result = 0;
+        if(point){
+            if ( this.point > total_price){
+                this.point -= total_price;
+            } else {
+                result = total_price - (double) this.point;
+                this.point = 0;
+            }
+        } else {
+            result = total_price;
+        }
+        return result;
     }
 }

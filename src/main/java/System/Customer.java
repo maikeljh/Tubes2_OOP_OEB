@@ -14,6 +14,7 @@ public class Customer {
         this.transaction = new Inventory<FixedBill>();
         this.transaction.addElement(bill);
         customerCount++;
+        bill.setCustomerID(this.id);
     }
 
     public static int getCustomerCount() {
@@ -22,6 +23,10 @@ public class Customer {
 
     public int getId() {
         return id;
+    }
+
+    public void setId( int id){
+        this.id = id;
     }
 
     public Inventory<FixedBill> getTransaction() {

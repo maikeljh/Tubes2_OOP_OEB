@@ -14,6 +14,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import System.PurchasedItem;
@@ -23,6 +25,7 @@ import System.Customer;
 import System.FixedBill;
 import System.RegisteredCustomer;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
@@ -35,16 +38,28 @@ import javafx.scene.image.Image;
 import java.io.FileNotFoundException;
 import com.itextpdf.text.DocumentException;
 import java.lang.IndexOutOfBoundsException;
+import java.math.RoundingMode;
 import java.util.Comparator;
+import System.Member;
 
 
 public class CashierPage extends VBox {
     
-    
-    private Inventory<PurchasedItem> purchasedItems  = new Inventory<PurchasedItem>();
+    private Inventory<PurchasedItem> purchasedItems;
+    private double totalPrice = 0;
+    private RegisteredCustomer regisCust = null;
+    private double finalTotalPrice = 0;
+    private boolean isUsePoint = false;
+    private ChoiceBox<RegisteredCustomer> choiceBox;
+    private List<Integer> tempID;
+    private int selectionIndex;
 
-    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions){
-
+    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust){
+        
+        this.selectionIndex = -1;
+        this.regisCust = registeredCust;
+        this.isUsePoint = usePoint;
+        this.purchasedItems = purchasedItems;
         // Create main VBox
         VBox mainVBox = new VBox();
         
@@ -84,7 +99,6 @@ public class CashierPage extends VBox {
     
         // Create two tabs
         Tab tab1 = new Tab("Favorites");
-        // tab1.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         tab1.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;-fx-background-radius: 10;-fx-focus-color: transparent;");
         Tab tab2 = new Tab("Library");
         tab2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: white;-fx-background-radius: 10;-fx-focus-color: transparent;");
@@ -115,7 +129,7 @@ public class CashierPage extends VBox {
         // Display List Of Items
         for (Item item : items.getList()) {
 
-            if (count < 9){
+            if (count < 9 && item.getStock() > 0){
 
                 // VBox Display Item
                 VBox itemDisplay = new VBox();
@@ -147,12 +161,9 @@ public class CashierPage extends VBox {
 
                 // Add onclick event
                 itemDisplay.setOnMouseClicked(event -> {
-                    Tab newTab = new Tab("Cashier Detail");
-                    newTab.setStyle("-fx-background-color: #F3F9FB;");
-                    CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab);
-                    newTab.setContent(detailCashierContent);
-                    tabPane.getTabs().add(newTab);
-                    tabPane.getSelectionModel().select(newTab);
+                    setRegCust(customers);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab, item, this.purchasedItems, items, tabPane, customers, mode, transactions, this.isUsePoint, this.regisCust);
+                    tab.setContent(detailCashierContent);
                 });
                 
                 // Add Item Display to Grid
@@ -178,12 +189,6 @@ public class CashierPage extends VBox {
             itemDisplay.setPrefWidth(153);
             itemDisplay.setPrefHeight(135);
             itemDisplay.setSpacing(5);
-
-            // Add onclick event
-            itemDisplay.setOnMouseClicked(event -> {
-                CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab);
-                tab.setContent(detailCashierContent);
-            });
 
             // Add Item Display to Grid
             grid.add(itemDisplay, col, row);
@@ -354,7 +359,14 @@ public class CashierPage extends VBox {
         allItem.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         allItem.setStyle("-fx-text-fill: #3B919B;");
 
-        int totalItem = items.getList().size();
+
+        int tempItem = 0;
+        for (Item item : items.getList()){
+            if (item.getStock() > 0){
+                tempItem++;
+            }
+        }
+        int totalItem = tempItem;
         String totalItemString = String.valueOf(totalItem) + " Items";
         Label totalItemLabel = new Label(totalItemString);
         totalItemLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 10));
@@ -384,62 +396,62 @@ public class CashierPage extends VBox {
         // for loop item
         for (Item library : items.getList()) {
 
-            // HBox Display Item
-            HBox libraryDisplay = new HBox();
-            libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
-            libraryDisplay.setPrefHeight(40);
+            if(library.getStock()>0){
 
-            // Image View Item
-            ImageView libraryImage = new ImageView(library.getImage());
+                // HBox Display Item
+                HBox libraryDisplay = new HBox();
+                libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                libraryDisplay.setPrefHeight(40);
 
-            // Styling Item Image
-            libraryImage.setPreserveRatio(true);
-            libraryImage.setSmooth(true);
-            libraryImage.setCache(true);
-            libraryImage.setFitWidth(40);
-            libraryImage.setFitHeight(40);
+                // Image View Item
+                ImageView libraryImage = new ImageView(library.getImage());
 
-            // Item Name
-            Label libraryName = new Label(library.getName());
+                // Styling Item Image
+                libraryImage.setPreserveRatio(true);
+                libraryImage.setSmooth(true);
+                libraryImage.setCache(true);
+                libraryImage.setFitWidth(40);
+                libraryImage.setFitHeight(40);
 
-            // Styling Item Name
-            libraryName.setFont(Font.font("Montserrat", 14));
+                // Item Name
+                Label libraryName = new Label(library.getName());
 
-            // Item Price
-            double libraryPrice = library.getSellPrice();
-            NumberFormat formatter = NumberFormat.getInstance();
-            formatter.setGroupingUsed(true);
-            String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
-            Label libraryPriceBills = new Label(libraryPriceBill);
-            libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
-            libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
+                // Styling Item Name
+                libraryName.setFont(Font.font("Montserrat", 14));
 
-            // Create HLine 4
-            HBox hLine4 = new HBox();
-            hLine4.setPrefHeight(4);
-            hLine4.setStyle("-fx-background-color: #C8DFE8");
-            hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                // Item Price
+                double libraryPrice = library.getSellPrice();
+                NumberFormat formatter = NumberFormat.getInstance();
+                formatter.setGroupingUsed(true);
+                String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                Label libraryPriceBills = new Label(libraryPriceBill);
+                libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+                libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
 
-            // Add to body library box
-            libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
-            libraryDisplay.setAlignment(Pos.CENTER_LEFT);
-            HBox.setMargin(libraryImage, new Insets(0,0,0,20));
-            HBox.setMargin(libraryName, new Insets(0,0,0,20));
-            HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
+                // Create HLine 4
+                HBox hLine4 = new HBox();
+                hLine4.setPrefHeight(4);
+                hLine4.setStyle("-fx-background-color: #C8DFE8");
+                hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
 
-            // Add onclick event
-            libraryDisplay.setOnMouseClicked(event -> {
-                Tab newTab = new Tab("Cashier Detail");
-                newTab.setStyle("-fx-background-color: #F3F9FB;");
-                CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab);
-                newTab.setContent(detailCashierContent);
-                tabPane.getTabs().add(newTab);
-                tabPane.getSelectionModel().select(newTab);
-            });
+                // Add to body library box
+                libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
+                libraryDisplay.setAlignment(Pos.CENTER_LEFT);
+                HBox.setMargin(libraryImage, new Insets(0,0,0,20));
+                HBox.setMargin(libraryName, new Insets(0,0,0,20));
+                HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
 
-            bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
-            bodyLibraryVBox.setSpacing(5);
-            bodyLibraryVBox.setAlignment(Pos.CENTER);
+                // Add onclick event
+                libraryDisplay.setOnMouseClicked(event -> {
+                    setRegCust(customers);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab, library, this.purchasedItems, items, tabPane, customers, mode, transactions, this.isUsePoint, this.regisCust);
+                    tab.setContent(detailCashierContent);
+                });
+
+                bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
+                bodyLibraryVBox.setSpacing(5);
+                bodyLibraryVBox.setAlignment(Pos.CENTER);
+            }
         }
         // Create scrollpane
         ScrollPane scrollPane = new ScrollPane(bodyLibraryVBox);
@@ -490,59 +502,61 @@ public class CashierPage extends VBox {
             bodyLibraryVBox2.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
             // for loop item
             for (Item library : items.getList()) {
+                
+                if(library.getStock()>0){
 
-                // HBox Display Item
-                HBox libraryDisplay = new HBox();
-                libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
-                libraryDisplay.setPrefHeight(40);
+                    // HBox Display Item
+                    HBox libraryDisplay = new HBox();
+                    libraryDisplay.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                    libraryDisplay.setPrefHeight(40);
 
-                // Image View Item
-                ImageView libraryImage = new ImageView(library.getImage());
+                    // Image View Item
+                    ImageView libraryImage = new ImageView(library.getImage());
 
-                // Styling Item Image
-                libraryImage.setPreserveRatio(true);
-                libraryImage.setSmooth(true);
-                libraryImage.setCache(true);
-                libraryImage.setFitWidth(40);
-                libraryImage.setFitHeight(40);
+                    // Styling Item Image
+                    libraryImage.setPreserveRatio(true);
+                    libraryImage.setSmooth(true);
+                    libraryImage.setCache(true);
+                    libraryImage.setFitWidth(40);
+                    libraryImage.setFitHeight(40);
 
-                // Item Name
-                Label libraryName = new Label(library.getName());
+                    // Item Name
+                    Label libraryName = new Label(library.getName());
 
-                // Styling Item Name
-                libraryName.setFont(Font.font("Montserrat", 14));
+                    // Styling Item Name
+                    libraryName.setFont(Font.font("Montserrat", 14));
 
-                // Item Price
-                double libraryPrice = library.getSellPrice();
-                NumberFormat formatter = NumberFormat.getInstance();
-                formatter.setGroupingUsed(true);
-                String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
-                Label libraryPriceBills = new Label(libraryPriceBill);
-                libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
-                libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
+                    // Item Price
+                    double libraryPrice = library.getSellPrice();
+                    NumberFormat formatter = NumberFormat.getInstance();
+                    formatter.setGroupingUsed(true);
+                    String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                    Label libraryPriceBills = new Label(libraryPriceBill);
+                    libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+                    libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
 
-                // Create HLine 4
-                HBox hLine4 = new HBox();
-                hLine4.setPrefHeight(4);
-                hLine4.setStyle("-fx-background-color: #C8DFE8");
-                hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
+                    // Create HLine 4
+                    HBox hLine4 = new HBox();
+                    hLine4.setPrefHeight(4);
+                    hLine4.setStyle("-fx-background-color: #C8DFE8");
+                    hLine4.prefWidthProperty().bind(leftVBox.widthProperty().subtract(60));
 
-                // Add to body library box
-                libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
-                libraryDisplay.setAlignment(Pos.CENTER_LEFT);
-                HBox.setMargin(libraryImage, new Insets(0,0,0,20));
-                HBox.setMargin(libraryName, new Insets(0,0,0,20));
-                HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
+                    // Add to body library box
+                    libraryDisplay.getChildren().addAll(libraryImage, libraryName, libraryPriceBills);
+                    libraryDisplay.setAlignment(Pos.CENTER_LEFT);
+                    HBox.setMargin(libraryImage, new Insets(0,0,0,20));
+                    HBox.setMargin(libraryName, new Insets(0,0,0,20));
+                    HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
 
-                // Add onclick event
-                clickItem(stage, tab, tabPane, libraryDisplay);
+                    // Add onclick event
+                    clickItem(stage, tab, libraryDisplay, library, items, tabPane, customers, mode, transactions);
 
-                bodyLibraryVBox2.getChildren().addAll(hLine4, libraryDisplay);
-                bodyLibraryVBox2.setSpacing(5);
-                bodyLibraryVBox2.setAlignment(Pos.CENTER);
-                countTemp++;
+                    bodyLibraryVBox2.getChildren().addAll(hLine4, libraryDisplay);
+                    bodyLibraryVBox2.setSpacing(5);
+                    bodyLibraryVBox2.setAlignment(Pos.CENTER);
+                    countTemp++;
+                }
             }
-
             int totalItem3 = countTemp;
             String totalItemString3 = String.valueOf(totalItem3) + " Items";
             Label totalItemLabel3 = new Label(totalItemString3);
@@ -563,7 +577,6 @@ public class CashierPage extends VBox {
             headLibraryTitleBox.getChildren().addAll(allItem, totalItemLabel3);
             headLibraryBox.getChildren().addAll(backButton, headLibraryTitleBox);
             libraryBox.getChildren().addAll(headLibraryBox, scrollPane4);
-            
         });
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -571,7 +584,7 @@ public class CashierPage extends VBox {
             headLibraryBox.getChildren().clear();
             bodyLibraryVBox.getChildren().clear();
             libraryBox.getChildren().clear();
-            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, newValue, totalItemString, totalItem);
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, newValue, totalItemString, totalItem, customers, transactions);
         });
 
         checkBox1.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -587,14 +600,14 @@ public class CashierPage extends VBox {
                 containerDropDownDetails2.getChildren().add(2,priceSliderBox);
                 VBox.setMargin(priceBox, new Insets(5,0,0,0));
                 VBox.setMargin(priceSliderBox, new Insets(5,0,10,0));
-                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
             } else {
                 containerDropDownDetails2.getChildren().remove(priceSliderTitle);
                 containerDropDownDetails2.getChildren().remove(priceBox);
                 containerDropDownDetails2.getChildren().remove(priceSliderBox);
                 slider1.setValue(initVal1);
                 slider2.setValue(initVal2);
-                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
             }
         });
 
@@ -620,7 +633,7 @@ public class CashierPage extends VBox {
                 slider2.setValue(slider1.getValue() + 1);
                 spinner2.getValueFactory().setValue(slider2.getValue());
             }
-            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
         });
 
         slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -634,7 +647,7 @@ public class CashierPage extends VBox {
                 slider1.setValue(slider2.getValue() - 1);
                 spinner.getValueFactory().setValue(slider1.getValue());
             }
-            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
         });
 
         spinner.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -644,7 +657,7 @@ public class CashierPage extends VBox {
             libraryBox.getChildren().clear();
             String searchBarValue = searchBar.getText();
             slider1.setValue(spinner.getValue());
-            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
         });
 
         spinner2.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -654,7 +667,7 @@ public class CashierPage extends VBox {
             libraryBox.getChildren().clear();
             String searchBarValue = searchBar.getText();
             slider2.setValue(spinner2.getValue());
-            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
         });
 
         choiceCategoriesBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -663,7 +676,7 @@ public class CashierPage extends VBox {
             bodyLibraryVBox.getChildren().clear();
             libraryBox.getChildren().clear();
             String searchBarValue = searchBar.getText();
-            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+            searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
         });
 
         radioButton1.setOnAction(event -> {
@@ -673,7 +686,7 @@ public class CashierPage extends VBox {
                 bodyLibraryVBox.getChildren().clear();
                 libraryBox.getChildren().clear();
                 String searchBarValue = searchBar.getText();
-                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
             }
         });
 
@@ -684,7 +697,7 @@ public class CashierPage extends VBox {
                 bodyLibraryVBox.getChildren().clear();
                 libraryBox.getChildren().clear();
                 String searchBarValue = searchBar.getText();
-                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem);
+                searchItem(headLibraryTitleBox,headLibraryBox,bodyLibraryVBox, libraryBox, items, leftVBox, stage, tab, tabPane, allItem, totalItemLabel, backButton, checkBox1, checkBox2, spinner, spinner2, choiceCategoriesBox, group, searchBarValue, totalItemString, totalItem, customers, transactions);
             }
         });
         
@@ -746,7 +759,7 @@ public class CashierPage extends VBox {
         addCustomerButton.setOnAction(event -> {
             Tab newTab = new Tab("Cashier");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0, transactions);
+            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0, transactions, new Inventory<PurchasedItem>(), false, null);
             newTab.setContent(cashierContent);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -768,25 +781,57 @@ public class CashierPage extends VBox {
 
         // Create member dropdown
         VBox dropDownBox = new VBox();
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        List<Integer> tempID = new ArrayList<Integer>();
+        this.choiceBox = new ChoiceBox<>();
+        this.tempID = new ArrayList<Integer>();
+        RegisteredCustomer tempRegisCust = null;
         for (Customer customer : customers.getList() ){
             if (customer.getClass().getSimpleName().equalsIgnoreCase("Customer")){;}
             else {
                 RegisteredCustomer regisCustomer = (RegisteredCustomer) customer;
-                String regisCustomerName = regisCustomer.getName();
-                choiceBox.getItems().add(regisCustomerName);
-                tempID.add(customer.getId());
+                this.choiceBox.getItems().add(regisCustomer);
+                this.tempID.add(customer.getId());
+                if (tempRegisCust == null){
+                    Customer tempCust = new Member(-1, "Not Member", "000000", null);
+                    tempRegisCust = (RegisteredCustomer) tempCust;
+                    tempRegisCust.setActiveStatus(true);
+                }
             }
         }
-        choiceBox.getItems().add("Not Member");
-        choiceBox.setValue("Not Member");
+        this.choiceBox.getItems().add(tempRegisCust);
+        
+        // create a string converter to display the name of the customer
+        StringConverter<RegisteredCustomer> converter = new StringConverter<RegisteredCustomer>() {
+            @Override
+            public String toString(RegisteredCustomer customer) {
+                return customer.getName();
+            }
+            @Override
+            public RegisteredCustomer fromString(String string) {
+                // implement this method if needed
+                return null;
+            }
+        };
+
+        // set the converter for the choiceBox
+        this.choiceBox.setConverter(converter);
+
+        if (this.regisCust != null) {
+            this.selectionIndex = getCustIndex(customers);
+        }
+    
+        setRegCust(customers);
+        int index = getCustIndex(customers);
+        if (this.regisCust != null && index != -1){
+            this.choiceBox.setValue(this.choiceBox.getItems().get(index));
+        } else {
+            this.choiceBox.setValue(tempRegisCust);
+        }
 
         //styling choice box
-        choiceBox.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #3B919B;-fx-font-size: 14;-fx-font-weight: bold;-fx-text-fill: #3B919B;");
+        this.choiceBox.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #3B919B;-fx-font-size: 14;-fx-font-weight: bold;-fx-text-fill: #3B919B;");
 
         // Add drop down box to member box
-        dropDownBox.getChildren().add(choiceBox);
+        dropDownBox.getChildren().add(this.choiceBox);
         memberBox.getChildren().add(dropDownBox);
         memberBox.setAlignment(Pos.CENTER);
 
@@ -801,42 +846,53 @@ public class CashierPage extends VBox {
 
         // Display items bill
         int countBill = 0;
-        for (PurchasedItem itemBill : purchasedItems.getList()){
+        for (PurchasedItem itemBill : this.purchasedItems.getList()){
 
             // Create HBox Display Item in Bill
             HBox billDisplay  = new HBox();
             billDisplay.prefWidthProperty().bind(rightVBox.widthProperty().subtract(10));
 
+            HBox quantityNameBox = new HBox();
+            quantityNameBox.setMinWidth(270);
             // Quantity Item
             int quantityItem = itemBill.getQuantity();
             String quantityItemBill = String.valueOf(quantityItem) + "x";
-            Text quantityItemBills = new Text(quantityItemBill);
+            Label quantityItemBills = new Label(quantityItemBill);
             quantityItemBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
-            quantityItemBills.setStyle("-fx-text-fill: #3B919B;");
+            quantityItemBills.setStyle("-fx-text-fill: black;");
             quantityItemBills.setTextAlignment(TextAlignment.CENTER);
+            quantityItemBills.setMinWidth(80);
 
             // Item Name
-            Text itemNameBill = new Text(itemBill.getName());
+            Label itemNameBill = new Label(itemBill.getName());
             itemNameBill.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
-            itemNameBill.setStyle("-fx-text-fill: #3B919B;");
+            itemNameBill.setStyle("-fx-text-fill: black;");
             itemNameBill.setTextAlignment(TextAlignment.CENTER);
+            itemNameBill.setMinWidth(170);
 
+            HBox itemPriceBox = new HBox();
+            itemPriceBox.setMinWidth(200);
             // Item Price
-            double itemPrice = itemBill.getSellPrice();
+            double itemPrice = itemBill.getSellPrice() * quantityItem;
             NumberFormat formatter = NumberFormat.getInstance();
             formatter.setGroupingUsed(true);
             String itemPriceBill = "Rp" + formatter.format(itemPrice);
-            Text itemPriceBills = new Text(itemPriceBill);
+            Label itemPriceBills = new Label(itemPriceBill);
             itemPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
-            itemPriceBills.setStyle("-fx-text-fill: #3B919B;");
+            itemPriceBills.setStyle("-fx-text-fill: black;");
             itemPriceBills.setTextAlignment(TextAlignment.CENTER);
 
-            billDisplay.getChildren().addAll(quantityItemBills, itemNameBill, itemPriceBills);
-            HBox.setMargin(itemNameBill, new Insets(0, 0, 0, 20));
-            HBox.setMargin(itemPriceBills, new Insets(0, 0, 0, 340));
+            quantityNameBox.getChildren().addAll(quantityItemBills, itemNameBill);
+            itemPriceBox.getChildren().add(itemPriceBills);
+            billDisplay.getChildren().addAll(quantityNameBox, itemPriceBox);
+            quantityNameBox.setSpacing(20);
+            quantityNameBox.setAlignment(Pos.CENTER_LEFT);
+            itemPriceBox.setAlignment(Pos.CENTER_RIGHT);
+            billDisplay.setSpacing(50);
             
             itemsVBox.getChildren().add(billDisplay);
             countBill++;
+            this.totalPrice += itemPrice;
         }
 
         if(countBill == 0){
@@ -853,7 +909,7 @@ public class CashierPage extends VBox {
 
         // Create scrollpane
         ScrollPane scrollPane2 = new ScrollPane(itemsVBox);
-        scrollPane2.setPrefHeight(372);
+        scrollPane2.setPrefHeight(350);
         scrollPane2.prefWidthProperty().bind(rightVBox.widthProperty().subtract(40));
         scrollPane2.setStyle("-fx-background: white;-fx-background-color: white;-fx-text-fill: #C8DFE8;");
         
@@ -868,14 +924,28 @@ public class CashierPage extends VBox {
 
         // Create save Button
         Button saveButton = new Button("Save Bill");
-        saveButton.setPrefWidth(616);
+        saveButton.setPrefWidth(280);
         saveButton.setPrefHeight(26);
         saveButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         saveButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
         saveButton.setAlignment(Pos.CENTER);
 
+        // Create VLine2
+        VBox vLine2 = new VBox();
+        vLine2.setPrefWidth(4);
+        vLine2.setStyle("-fx-background-color: #F3F9FB");
+        vLine2.setOpacity(0.47);
+
+        // Create print Button
+        ToggleButton usePointButton = new ToggleButton("Use Point");
+        usePointButton.setPrefWidth(280);
+        usePointButton.setPrefHeight(26);
+        usePointButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
+        usePointButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
+        usePointButton.setAlignment(Pos.CENTER);
+
         // Add contents to billButton
-        billButton.getChildren().addAll(saveButton);
+        billButton.getChildren().addAll(usePointButton, vLine2, saveButton);
 
         // Create HLine2
         HBox hLine2 = new HBox();
@@ -885,24 +955,65 @@ public class CashierPage extends VBox {
 
         // Create HBox for total Price
         HBox totalPriceBox = new HBox();
-        totalPriceBox.setMaxHeight(45);
+        totalPriceBox.setPrefHeight(50);
 
+        // Create Text Discount
+        if(this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){
+            setRegCust(customers);
+            if (this.regisCust.getActiveStatus()){
+                this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+            } else {
+                this.finalTotalPrice = this.totalPrice;
+            }
+        } else {
+            this.finalTotalPrice = this.totalPrice;
+        }
         // Create Text Total price
-        int totalPrice = 30000;
         NumberFormat formatter = NumberFormat.getInstance();
         formatter.setGroupingUsed(true);
-        String totalPriceBill = "Charge Rp" + formatter.format(totalPrice);
-        Label totalPriceBills = new Label(totalPriceBill);
+        String totalPriceBill = formatter.format(this.totalPrice);
+        Label totalPriceBills;
+        String fixTotalPrice = formatter.format(this.finalTotalPrice);
+        Label fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
+        if(this.finalTotalPrice == this.totalPrice){
+            totalPriceBills = new Label("Charge Rp" + totalPriceBill);
+            totalPriceBox.getChildren().add(totalPriceBills);
+        } else {
+            Text totalPriceBillLabel = new Text("Rp" + totalPriceBill);
+            totalPriceBills = new Label("Charge");
+            totalPriceBox.getChildren().addAll(totalPriceBills, totalPriceBillLabel, fixTotalPriceBill);
+            HBox.setMargin(fixTotalPriceBill, new Insets(0,0,0,10));
+            totalPriceBox.setSpacing(10);
+            totalPriceBillLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+            totalPriceBillLabel.setTextAlignment(TextAlignment.CENTER);
+            totalPriceBillLabel.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;-fx-strikethrough-width: 2px;");
+            totalPriceBillLabel.setStrikethrough(true);
+        }
         totalPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
         totalPriceBills.setTextAlignment(TextAlignment.CENTER);
-        totalPriceBills.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
+        totalPriceBills.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+
+        fixTotalPriceBill.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+        fixTotalPriceBill.setTextAlignment(TextAlignment.CENTER);
+        fixTotalPriceBill.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+
 
         // Add contents to total price box
         totalPriceBox.prefWidthProperty().bind(rightVBox.widthProperty().subtract(10));
         totalPriceBox.setPadding(new Insets(5, 0, 0, 0));
-        totalPriceBox.getChildren().add(totalPriceBills);
         totalPriceBox.setAlignment(Pos.CENTER);
         totalPriceBox.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
+
+        this.choiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if(usePointButton.isSelected()){
+                usePointButton.fire();
+                this.isUsePoint = false;
+            }
+            this.selectionIndex = (Integer) newValue;
+            if(this.selectionIndex >= this.tempID.size() || this.selectionIndex == -1){
+                this.regisCust = this.choiceBox.getItems().get(selectionIndex);
+            }
+        });
 
         saveButton.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -917,35 +1028,39 @@ public class CashierPage extends VBox {
 
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMMM YYYY\nHH:mm:ss");
             final String timenow = sdf.format(new Date());
-
-
-            int nBill = transactions.getList().size();
-            int billID = transactions.getList().get(nBill-1).getBillID() + 1;
-
-            int selectedIndex = choiceBox.getSelectionModel().getSelectedIndex();
+            
             int custID = -1;
-            if(selectedIndex >= tempID.size()){
-                custID = customers.getList().size() - 1;
-            } else {
-                custID = tempID.get(selectedIndex);
+            FixedBill newBill;
+
+            double discount = (this.totalPrice - this.finalTotalPrice) / this.totalPrice;
+            DecimalFormat df = new DecimalFormat("#.##");
+            df.setRoundingMode(RoundingMode.DOWN);
+            double formattedDiscount = Double.parseDouble(df.format(discount));
+
+            if(this.selectionIndex >= this.tempID.size() || this.selectionIndex == -1){
+                newBill = new FixedBill(timenow, this.totalPrice, formattedDiscount);
+                Customer newCust = new Customer(newBill);
+                customers.addElement(newCust);
+            } else  {
+                for (Customer cust : customers.getList()) {
+                    if(this.tempID.get(this.selectionIndex) == cust.getId()){
+                        this.regisCust = (RegisteredCustomer) cust;
+                    }
+                }
+                custID = this.tempID.get(this.selectionIndex);
+                this.regisCust.calculatePoint(this.finalTotalPrice);
+                newBill = new FixedBill (timenow, custID, this.totalPrice, formattedDiscount);
             }
 
-            FixedBill newBill = new FixedBill(billID, timenow, custID);
-
-            newBill.setTotalPrice(totalPrice);
-
-            newBill.setDiscount(0.10); // belom
-
-            // belom
-            newBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 5, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
-            newBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 5, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
-            newBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 5, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
-            newBill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 5, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
+            for(PurchasedItem purchItem : this.purchasedItems.getList()){
+                for (Item item : items.getList()){
+                    if (item.getItemID() == purchItem.getItemID()){
+                        item.setStock(item.getStock() - purchItem.getQuantity());
+                    }
+                }
+                newBill.getItems().addElement(purchItem);
+            }
             transactions.addElement(newBill);
-        
-            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0, transactions);
-            tab.setContent(cashierContent);
-
 
             if (result.isPresent() && result.get() == yesButton) {
                 try {
@@ -957,7 +1072,73 @@ public class CashierPage extends VBox {
             } else {
                 alert.close();
             }
+
+            this.purchasedItems.getList().clear();
+            
+            setRegCust(customers);
+            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, 0, transactions, this.purchasedItems, this.isUsePoint, this.regisCust);
+            tab.setContent(cashierContent);
+
         });
+
+        usePointButton.setOnAction(event -> {
+            if (this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){
+                totalPriceBox.getChildren().clear();
+                // Create Text Total price
+                String totalPriceBill2 = formatter.format(this.totalPrice);
+                Label totalPriceBills2;
+                if (usePointButton.isSelected()) {
+                    this.isUsePoint = true;
+                    usePointButton.setStyle("-fx-background-color: #3B919B;-fx-text-fill:#C8DFE8");
+
+                    // Create Text Discount
+                    if(this.selectionIndex < this.tempID.size()){
+                        setRegCust(customers);
+                        if (this.regisCust.getActiveStatus()){
+                            this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+                        } else {
+                            this.finalTotalPrice = this.totalPrice;
+                        }
+                    } else {
+                        this.finalTotalPrice = this.totalPrice;
+                    }
+
+                    String fixTotalPrice2 = formatter.format(this.finalTotalPrice);
+                    Label fixTotalPriceBill2 = new Label("Rp" + fixTotalPrice2);
+
+                    if(this.finalTotalPrice == this.totalPrice){
+                        totalPriceBills2 = new Label("Charge Rp" + totalPriceBill2);
+                        totalPriceBox.getChildren().add(totalPriceBills2);
+                    } else {
+                        Text totalPriceBillLabel2 = new Text("Rp" +totalPriceBill2);
+                        totalPriceBills2 = new Label("Charge");
+                        totalPriceBox.getChildren().addAll(totalPriceBills2, totalPriceBillLabel2, fixTotalPriceBill2);
+                        HBox.setMargin(fixTotalPriceBill2, new Insets(0,0,0,10));
+                        totalPriceBox.setSpacing(10);
+                        totalPriceBillLabel2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+                        totalPriceBillLabel2.setTextAlignment(TextAlignment.CENTER);
+                        totalPriceBillLabel2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+                        totalPriceBillLabel2.setStrikethrough(true);
+                    }
+                    fixTotalPriceBill2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+                    fixTotalPriceBill2.setTextAlignment(TextAlignment.CENTER);
+                    fixTotalPriceBill2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+                }
+                else {
+                    this.isUsePoint = false;
+                    usePointButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
+                    totalPriceBills2 = new Label("Charge Rp" + totalPriceBill2);
+                    totalPriceBox.getChildren().add(totalPriceBills2);
+                }
+                totalPriceBills2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+                totalPriceBills2.setTextAlignment(TextAlignment.CENTER);
+                totalPriceBills2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+            }
+        });
+
+        if (isUsePoint){
+            usePointButton.fire();
+        }
 
         // Add right contents to right Box
         rightVBox.getChildren().addAll(addCustBox, memberItemsBox, billButton, hLine2, totalPriceBox);
@@ -993,18 +1174,15 @@ public class CashierPage extends VBox {
         setStyle("-fx-background-color: #F3F9FB;");
     }
 
-    private void clickItem(Stage stage, Tab tab, TabPane tabPane,HBox itemDisplay ){
+    private void clickItem(Stage stage, Tab tab, HBox itemDisplay, Item item, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions ){
         itemDisplay.setOnMouseClicked(event -> {
-            Tab newTab = new Tab("Cashier Detail");
-            newTab.setStyle("-fx-background-color: #F3F9FB;");
-            CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab);
-            newTab.setContent(detailCashierContent);
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
+            setRegCust(customers);
+            CashierDetailPage detailCashierContent = new CashierDetailPage(stage, tab, item, this.purchasedItems, items, tabPane, customers, mode, transactions, this.isUsePoint, this.regisCust);
+            tab.setContent(detailCashierContent);
         });
     }
 
-    private void searchItem(VBox headLibraryTitleBox,HBox headLibraryBox, VBox bodyLibraryVBox, VBox libraryBox, Inventory<Item> items, VBox leftVBox, Stage stage, Tab tab, TabPane tabPane, Label allItem, Label totalItemLabel, Button backButton, CheckBox checkBox1, CheckBox checkBox2, Spinner<Double> spinner, Spinner<Double> spinner2, ChoiceBox<String> choiceCategoriesBox, ToggleGroup group, String newValue, String totalItemString, Integer totalItem ){
+    private void searchItem(VBox headLibraryTitleBox,HBox headLibraryBox, VBox bodyLibraryVBox, VBox libraryBox, Inventory<Item> items, VBox leftVBox, Stage stage, Tab tab, TabPane tabPane, Label allItem, Label totalItemLabel, Button backButton, CheckBox checkBox1, CheckBox checkBox2, Spinner<Double> spinner, Spinner<Double> spinner2, ChoiceBox<String> choiceCategoriesBox, ToggleGroup group, String newValue, String totalItemString, Integer totalItem, Inventory<Customer> customers, Inventory<FixedBill> transactions ){
 
         int mode = 0;
         int count = 0;
@@ -1098,7 +1276,7 @@ public class CashierPage extends VBox {
                 // for loop item
                 for (Item library : items.getList()) {
 
-                    if(library.getSellPrice() >= minPrice && library.getSellPrice() <= maxPrice && library.getCategory().equalsIgnoreCase(selectedCategories) && library.getName().toLowerCase().contains(newValue.toLowerCase())){
+                    if(library.getSellPrice() >= minPrice && library.getSellPrice() <= maxPrice && library.getCategory().equalsIgnoreCase(selectedCategories) && library.getName().toLowerCase().contains(newValue.toLowerCase()) && library.getStock()>0){
 
                         // HBox Display Item
                         HBox libraryDisplay = new HBox();
@@ -1144,7 +1322,7 @@ public class CashierPage extends VBox {
                         HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
 
                         // Add onclick event
-                        clickItem(stage, tab, tabPane, libraryDisplay);
+                        clickItem(stage, tab, libraryDisplay, library,  items, tabPane, customers, mode, transactions);
 
                         bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
                         bodyLibraryVBox.setSpacing(5);
@@ -1160,7 +1338,7 @@ public class CashierPage extends VBox {
                 // for loop item
                 for (Item library : items.getList()) {
 
-                    if(library.getSellPrice() >= minPrice && library.getSellPrice() <= maxPrice && library.getName().toLowerCase().contains(newValue.toLowerCase())){
+                    if(library.getSellPrice() >= minPrice && library.getSellPrice() <= maxPrice && library.getName().toLowerCase().contains(newValue.toLowerCase()) && library.getStock()>0){
 
                         // HBox Display Item
                         HBox libraryDisplay = new HBox();
@@ -1206,7 +1384,7 @@ public class CashierPage extends VBox {
                         HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
 
                         // Add onclick event
-                        clickItem(stage, tab, tabPane, libraryDisplay);
+                        clickItem(stage, tab, libraryDisplay, library, items, tabPane, customers, mode, transactions);
 
                         bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
                         bodyLibraryVBox.setSpacing(5);
@@ -1222,7 +1400,7 @@ public class CashierPage extends VBox {
                 // for loop item
                 for (Item library : items.getList()) {
 
-                    if(library.getCategory().equalsIgnoreCase(selectedCategories) && library.getName().toLowerCase().contains(newValue.toLowerCase())){
+                    if(library.getCategory().equalsIgnoreCase(selectedCategories) && library.getName().toLowerCase().contains(newValue.toLowerCase()) && library.getStock()>0){
 
                         // HBox Display Item
                         HBox libraryDisplay = new HBox();
@@ -1268,7 +1446,7 @@ public class CashierPage extends VBox {
                         HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
 
                         // Add onclick event
-                        clickItem(stage, tab, tabPane, libraryDisplay);
+                        clickItem(stage, tab, libraryDisplay, library, items, tabPane, customers, mode, transactions);
 
                         bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
                         bodyLibraryVBox.setSpacing(5);
@@ -1283,7 +1461,7 @@ public class CashierPage extends VBox {
                 
                 // for loop item
                 for (Item library : items.getList()) {
-                    if(library.getName().toLowerCase().contains(newValue.toLowerCase())){
+                    if(library.getName().toLowerCase().contains(newValue.toLowerCase()) && library.getStock()>0){
                     
                         // HBox Display Item
                         HBox libraryDisplay = new HBox();
@@ -1329,7 +1507,7 @@ public class CashierPage extends VBox {
                         HBox.setMargin(libraryPriceBills, new Insets(0,0,0,320));
 
                         // Add onclick event
-                        clickItem(stage, tab, tabPane, libraryDisplay);
+                        clickItem(stage, tab, libraryDisplay, library, items, tabPane, customers, mode, transactions);
 
                         bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
                         bodyLibraryVBox.setSpacing(5);
@@ -1364,7 +1542,7 @@ public class CashierPage extends VBox {
     private double getMaxPrice (Inventory<Item> items){
         double max = 0;
         for (Item itemElement : items.getList()){
-            if (itemElement.getSellPrice() > max){
+            if (itemElement.getSellPrice() > max && itemElement.getStock() > 0){
                 max = itemElement.getSellPrice();
             }
         }
@@ -1374,11 +1552,35 @@ public class CashierPage extends VBox {
     private double getMinPrice(Inventory<Item> items){
         double min = getMaxPrice(items);
         for (Item itemElement : items.getList()){
-            if (itemElement.getSellPrice() < min){
+            if (itemElement.getSellPrice() < min && itemElement.getStock() > 0){
                 min = itemElement.getSellPrice();
             }
         }
         return min;
 
+    }
+
+    private void setRegCust(Inventory<Customer> customers){
+        if(this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){
+            for (Customer cust : customers.getList()) {
+                if(this.tempID.get(this.selectionIndex) == cust.getId()){
+                    this.regisCust = (RegisteredCustomer) cust;
+                }
+            }
+        }
+    }
+
+    private int getCustIndex(Inventory<Customer> customers){
+        int count = -1;
+        if (this.regisCust != null) {
+            count++;
+            for (int id : this.tempID) {
+                if(this.regisCust.getId() == id){
+                    break;
+                }
+                count++;
+            }
+        }
+        return count;
     }
 }
