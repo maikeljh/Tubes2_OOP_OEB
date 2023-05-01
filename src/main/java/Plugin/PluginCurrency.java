@@ -3,7 +3,6 @@ package Plugin;
 import DataStore.DataStore;
 import Plugin.Decorator.SettingsDecorator;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -20,17 +19,24 @@ import System.PurchasedItem;
 import System.RegisteredCustomer;
 import System.Member;
 import System.VIP;
-import java.io.File;
+import System.SalesReport;
+import System.Settings;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement
-public class PluginCurrency extends SettingsDecorator {
+public class PluginCurrency extends SettingsDecorator implements Serializable{
     private Inventory<Currency> currencies;
     private double currentKurs;
+    private String currency;
 
     public PluginCurrency() {
         currencies = new Inventory<Currency>();
         this.currentKurs = 1;
+        this.currency = "IDR";
+        this.pluginName = "Plugin Currency";
     }
 
     @Override
@@ -38,7 +44,9 @@ public class PluginCurrency extends SettingsDecorator {
         // Try to read data currencies
         DataStore<Currency> currencyDataStore = new DataStore<Currency>();
         try {
-            currencies = currencyDataStore.loadData("currency", this.page.getSettings(), new Class<?>[]{Inventory.class, Currency.class});
+            Settings temp = new Settings();
+            temp.setFormat("xml");
+            currencies = currencyDataStore.loadData("currency", temp, new Class<?>[]{Inventory.class, Currency.class});
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -81,18 +89,21 @@ public class PluginCurrency extends SettingsDecorator {
             for(Currency currency : currencies.getList()){
                 formatOptions.getItems().add(currency.getCurrency());
             }
-            formatOptions.setValue(formatOptions.getItems().get(0));
+            formatOptions.setValue(this.currency);
 
             formatOptions.valueProperty().addListener((observable, oldValue, newValue) -> {
                 double newKurs = 1;
+
                 for(Currency currency : currencies.getList()){
-                    if(currency.getCurrency() == newValue){
+                    if(Objects.equals(currency.getCurrency(), newValue)){
                         newKurs = currency.getKurs();
+                        this.currency = currency.getCurrency();
                     }
                 }
 
                 Inventory<Item> items = this.page.getItems();
                 Inventory<Customer> customers = this.page.getCustomers();
+                SalesReport report = this.page.getReport();
 
                 for(Item item : items.getList()){
                     item.setSellPrice(item.getSellPrice() / this.currentKurs * newKurs);
@@ -108,10 +119,31 @@ public class PluginCurrency extends SettingsDecorator {
                     }
                 }
 
+                for(PurchasedItem item : report.getItems().getList()){
+                    item.setSellPrice(item.getSellPrice() / this.currentKurs * newKurs);
+                    item.setBuyPrice(item.getBuyPrice() / this.currentKurs * newKurs);
+                }
+
+                this.currentKurs = newKurs;
+
                 // Save new data
                 this.page.getItemDS().saveData("item", this.page.getSettings(), new Class<?>[]{Inventory.class, Item.class}, items);
                 this.page.getCustomerDS().saveData("customer", this.page.getSettings(), new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
-                this.currentKurs = newKurs;
+                Inventory<SalesReport> tempReport = new Inventory<SalesReport>();
+                tempReport.addElement(report);
+                this.page.getReportDS().saveData("report", this.page.getSettings(), new Class<?>[]{Inventory.class, SalesReport.class, PurchasedItem.class}, tempReport);
+
+                // Save settings
+                Settings temp = new Settings();
+                Inventory<Settings> tempSettings = new Inventory<Settings>();
+                tempSettings.addElement(this.page.getSettings());
+                List<Class<?>> clazzes = this.getPage().getSettings().getPluginManager().getClazzes();
+                Class<?>[] classesArray = clazzes.toArray(new Class<?>[clazzes.size()]);
+                Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
+                Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+                System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+                this.page.getSettingsDS().saveData("settings", temp, concatenated, tempSettings);
             });
 
             // Merge contents
@@ -124,7 +156,7 @@ public class PluginCurrency extends SettingsDecorator {
 
         this.page.getOptions().getChildren().add(optionButton);
 
-        this.page.getFormatOptions().setOnAction(e -> {
+/*        this.page.getFormatOptions().setOnAction(e -> {
             File directory = new File(this.page.getSettings().getSaveDirectory());
             File[] files = directory.listFiles();
             for (File file : files) {
@@ -134,14 +166,30 @@ public class PluginCurrency extends SettingsDecorator {
                 }
             }
             currencyDataStore.saveData("currency", this.page.getSettings(), new Class<?>[]{Inventory.class, Currency.class}, currencies);
-        });
+        });*/
 
-        this.page.getPickFolder().addEventHandler(ActionEvent.ACTION, event -> {
-            currencyDataStore.saveData("currency", this.page.getSettings(), new Class<?>[]{Inventory.class, Currency.class}, currencies);
-        });
+//        this.page.getPickFolder().addEventHandler(ActionEvent.ACTION, event -> {
+//            currencyDataStore.saveData("currency", this.page.getSettings(), new Class<?>[]{Inventory.class, Currency.class}, currencies);
+//        });
     }
 
     public static void main(String args[]){}
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public double getCurrentKurs() {
+        return currentKurs;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setCurrentKurs(double currentKurs) {
+        this.currentKurs = currentKurs;
+    }
 }
 
 @XmlRootElement

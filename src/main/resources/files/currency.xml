@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
-    <neff>0</neff>
+    <currency>
+        <currency>IDR</currency>
+        <kurs>1.0</kurs>
+    </currency>
+    <currency>
+        <currency>SGD</currency>
+        <kurs>9.1E-5</kurs>
+    </currency>
+    <currency>
+        <currency>YEN</currency>
+        <kurs>0.0093</kurs>
+    </currency>
+    <neff>3</neff>
 </inventory>

@@ -5,7 +5,6 @@ import Plugin.BasePlugin;
 import System.Settings;
 import System.Member;
 import UI.*;
-import com.itextpdf.text.DocumentException;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,9 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,44 +24,67 @@ import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
 import System.FixedBill;
+import System.SalesReport;
 import Plugin.PluginManager;
+
 
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
     private Settings settings = new Settings();
-
+    private SalesReport report = new SalesReport();
     private Inventory<Item> items = new Inventory<Item>();
     private Inventory<Customer> customers = new Inventory<Customer>();
 
-    private DataStore<Item> itemDS = new DataStore<Item>();
-    private DataStore<Settings> settingsDS = new DataStore<Settings>();
-    private DataStore<Customer> customerDS = new DataStore<Customer>();
+    private final DataStore<Item> itemDS = new DataStore<Item>();
+    private final DataStore<Settings> settingsDS = new DataStore<Settings>();
+    private final DataStore<Customer> customerDS = new DataStore<Customer>();
+    private final DataStore<SalesReport> reportDS = new DataStore<SalesReport>();
 
     @Override
-    public void start(Stage stage) throws DocumentException, FileNotFoundException {
+    public void start(Stage stage) {
         // Load settings
         try {
             Settings temp = new Settings();
-            settings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class, PluginManager.class, SettingsDecorator.class}).getElement(0);
+            Settings loadedSettings = settingsDS.loadData("settings", temp, new Class<?>[]{Inventory.class, Settings.class, PluginManager.class, SettingsDecorator.class}).getElement(0);
+            if(loadedSettings != null){
+                settings = loadedSettings;
+            } else {
+                settings.setFormat("xml");
+            }
         } catch (Exception e){
-           e.printStackTrace();
+            settings.setFormat("xml");
         }
 
         // Read Items Data
         try {
-            items = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
+            Inventory<Item> loadedItems = itemDS.loadData("item", settings, new Class<?>[]{Inventory.class, Item.class});
+            if(loadedItems != null){
+                items = loadedItems;
+            }
         } catch (Exception e){
             // Do Nothing
         }
 
         // Read Customers Data
         try {
-            customers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
+            Inventory<Customer> loadedCustomers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
+            if(loadedCustomers != null){
+                customers = loadedCustomers;
+            }
         } catch (Exception e){
             // Do Nothing
         }
 
+        // Read Sales Report Data
+        try {
+            SalesReport loadedReport = reportDS.loadData("report", settings, new Class<?>[]{Inventory.class, SalesReport.class, PurchasedItem.class}).getElement(0);
+            if(loadedReport != null){
+                report = loadedReport;
+            }
+        } catch (Exception e){
+            // Do Nothing
+        }
         if(items.getNeff() > 0){
             Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
             for(int i = 0; i < items.getNeff(); i++){
@@ -80,6 +99,8 @@ public class ApplicationBNMOStore extends Application {
         bill2.setDate("2023-2-12");
         bill2.setCustomerID(234);
         bill2.setBillID(5679);
+        bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+        bill2.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
 
         // Read transaction data
         Inventory<FixedBill> transactions = new Inventory<FixedBill>();
@@ -106,7 +127,6 @@ public class ApplicationBNMOStore extends Application {
         Menu menu = new Menu("Menu");
 
         /* Menu Items */
-
         // Members
         MenuItem membersPage = new MenuItem("Members");
         membersPage.setOnAction(event -> {
@@ -160,7 +180,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("History");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            SalesReportPage reportPage = new SalesReportPage(stage, newTab, itemsSold);
+            SalesReportPage reportPage = new SalesReportPage(stage, newTab, report);
             newTab.setContent(reportPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -182,46 +202,43 @@ public class ApplicationBNMOStore extends Application {
                 try {
                     // Try to load plugin from selected jar file
                     settings.getPluginManager().loadPlugin(selectedFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+
+                    // Create New Menu from BasePlugin if the plugin is derived from BasePlugin
+                    int idx =  settings.getPluginManager().getPlugins().size() - 1;
+                    if(settings.getPluginManager().getPlugins().get(idx) instanceof BasePlugin){
+                        MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
+
+                        newPage.setOnAction(e -> {
+                            // Handle open menu item click
+                            Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
+                            Tab newTab = new Tab(newPlugin.getPluginName());
+                            newTab.setStyle("-fx-background-color: #F3F9FB;");
+
+                            // Set plugin to tab's content
+                            BasePlugin newBasePlugin = (BasePlugin) newPlugin;
+                            newBasePlugin.setItems(report.getItems());
+                            newTab.setContent(newBasePlugin.initialize());
+                            tabPane.getTabs().add(newTab);
+                            tabPane.getSelectionModel().select(newTab);
+                        });
+
+                        menu.getItems().add(newPage);
+                    }
+
+                    List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
+                    Class<?>[] classesArray = clazzes.toArray(new Class<?>[0]);
+                    Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class, BasePlugin.class};
+                    Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+                    System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+                    Inventory<Settings> temp = new Inventory<Settings>();
+                    temp.addElement(settings);
+
+                    Settings template = new Settings();
+                    settingsDS.saveData("settings", template, concatenated, temp);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // Create New Menu from BasePlugin if the plugin is derived from BasePlugin
-                int idx =  settings.getPluginManager().getPlugins().size() - 1;
-                if(settings.getPluginManager().getPlugins().get(idx).getClass() == BasePlugin.class){
-                    MenuItem newPage = new MenuItem( settings.getPluginManager().getPlugins().get(idx).getPluginName());
-
-                    newPage.setOnAction(e -> {
-                        // Handle open menu item click
-                        Plugin newPlugin = settings.getPluginManager().getPlugins().get(idx);
-                        Tab newTab = new Tab(newPlugin.getPluginName());
-                        newTab.setStyle("-fx-background-color: #F3F9FB;");
-
-                        // Set plugin to tab's content
-                        BasePlugin newBasePlugin = (BasePlugin) newPlugin;
-                        newTab.setContent(newBasePlugin.initialize());
-                        tabPane.getTabs().add(newTab);
-                        tabPane.getSelectionModel().select(newTab);
-                    });
-
-                    menu.getItems().add(newPage);
-                }
-
-                List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
-                Class<?>[] classesArray = clazzes.toArray(new Class<?>[clazzes.size()]);
-                Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
-                Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
-                System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
-
-                Inventory<Settings> temp = new Inventory<Settings>();
-                temp.addElement(settings);
-                settingsDS.saveData("settings", settings, concatenated, temp);
             }
         });
 
@@ -233,11 +250,10 @@ public class ApplicationBNMOStore extends Application {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
-            SettingsPage settingsTab = new SettingsPage(stage, settings, items, customers, itemDS, customerDS, settingsDS);
+            SettingsPage settingsTab = new SettingsPage(stage, newTab, menu, settings, items, customers, report, itemDS, customerDS, settingsDS, reportDS);
             boolean found = false;
             for(Plugin plugin : settings.getPluginManager().getPlugins()){
-                if(plugin instanceof SettingsDecorator){
-                    SettingsDecorator settingsDecorated = (SettingsDecorator) plugin;
+                if(plugin instanceof SettingsDecorator settingsDecorated){
                     settingsDecorated.setPage(settingsTab);
                     settingsDecorated.getPage().setStage(stage);
                     settingsDecorated.getPage().setSettings(settings);
@@ -260,6 +276,26 @@ public class ApplicationBNMOStore extends Application {
         menu.getItems().add(pluginsPage);
         menu.getItems().add(settingsPage);
         menu.getItems().add(cashierDetailPage);
+
+        // Add BasePlugins to Menu
+        for(Plugin plugin : settings.getPluginManager().getPlugins()){
+            if(plugin instanceof BasePlugin){
+                MenuItem newPage = new MenuItem(plugin.getPluginName());
+                newPage.setOnAction(e -> {
+                    // Handle open menu item click
+                    Tab newTab = new Tab(plugin.getPluginName());
+                    newTab.setStyle("-fx-background-color: #F3F9FB;");
+
+                    // Set plugin to tab's content
+                    BasePlugin newBasePlugin = (BasePlugin) plugin;
+                    newBasePlugin.setItems(report.getItems());
+                    newTab.setContent(newBasePlugin.initialize());
+                    tabPane.getTabs().add(newTab);
+                    tabPane.getSelectionModel().select(newTab);
+                });
+                menu.getItems().add(newPage);
+            }
+        }
 
         // Main Menu Bar
         MenuBar menuBar = new MenuBar();

@@ -1,9 +1,11 @@
 package Plugin;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serializable;
+
 @XmlRootElement
-public class Plugin {
-    private String pluginName;
+public class Plugin implements Serializable {
+    protected String pluginName;
 
     public Plugin(){}
 

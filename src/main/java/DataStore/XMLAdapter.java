@@ -3,18 +3,7 @@ import java.io.File;
 import jakarta.xml.bind.*;
 import System.Inventory;
 
-public class
-
-
-
-
-
-
-
-
-
-
-XMLAdapter implements DataAdapter{
+public class XMLAdapter implements DataAdapter{
     public Object readData(String filePath, Class<?>[] classTypes) {
         try {
             // Creating a File object
@@ -30,7 +19,7 @@ XMLAdapter implements DataAdapter{
             Object object = unmarshaller.unmarshal(file);
             return object;
         } catch (JAXBException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
         return null;
     }
@@ -53,7 +42,7 @@ XMLAdapter implements DataAdapter{
             // Write to XML file
             marshaller.marshal(newData, file);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
     }
 }

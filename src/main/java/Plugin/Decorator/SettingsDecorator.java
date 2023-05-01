@@ -24,6 +24,7 @@ public class SettingsDecorator extends Plugin {
 
     // Method needs to be overridden or else executes nothing
     public void execute(){}
+
     // Page has method
     // 1. getOptions() = VBox -> Add more settings options
     // 2. getDetails() = VBox -> Add detail for settings options

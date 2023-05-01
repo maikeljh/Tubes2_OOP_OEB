@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import Plugin.Decorator.SettingsDecorator;
 
 @XmlRootElement
 public class PluginManager implements Serializable {
@@ -25,7 +26,11 @@ public class PluginManager implements Serializable {
         clazzes = new ArrayList<>();
     }
 
-    public void loadPlugin(File jarFile) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public void removePlugin(int idx){
+        plugins.remove(idx);
+    }
+
+    public void loadPlugin(File jarFile) throws Exception {
         // Class Loader
         URLClassLoader classLoader = new URLClassLoader(new URL[] {jarFile.toURI().toURL()});
 
@@ -46,20 +51,40 @@ public class PluginManager implements Serializable {
 
             // Load class
             Class<?> clazz = classLoader.loadClass(className);
+            Class<?>[] others = {Plugin.class, BasePlugin.class, SettingsDecorator.class};
+
             if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
                 // Create Plugin Class
                 Class<? extends Plugin> pluginClass = clazz.asSubclass(Plugin.class);
 
-                // Construct Plugin
-                Constructor<? extends Plugin> constructor;
-                Plugin plugin;
+                // Check if class is not base classes
+                boolean valid = true;
+                for (Class<?> cls : others) {
+                    if (cls.equals(pluginClass)) {
+                        valid = false;
+                        break;
+                    }
+                }
 
-                constructor = pluginClass.getDeclaredConstructor();
-                plugin = constructor.newInstance();
+                if(valid){
+                    // Construct Plugin
+                    Constructor<? extends Plugin> constructor;
+                    Plugin plugin;
 
-                // Add plugin to list of plugins
-                clazzes.add(pluginClass);
-                plugins.add(plugin);
+                    constructor = pluginClass.getDeclaredConstructor();
+                    plugin = constructor.newInstance();
+
+                    // Check if plugin already exists
+                    for (Plugin check : this.plugins){
+                        if (check.getPluginName().equals(plugin.getPluginName())) {
+                            throw new Exception("Plugin already exists");
+                        }
+                    }
+
+                    // Add plugin to list of plugins
+                    clazzes.add(pluginClass);
+                    plugins.add(plugin);
+                }
             }
         }
 
