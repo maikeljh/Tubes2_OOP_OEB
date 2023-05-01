@@ -20,7 +20,7 @@ import System.Customer;
 import System.FixedBill;
 
 public class CashierDetailPage extends VBox {
-    private Integer quantity = 1;
+    private Integer quantity = 0;
 
     public CashierDetailPage(Stage stage, Tab tab, Item item, Inventory<PurchasedItem> purchasedItems, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, boolean usePoint, RegisteredCustomer regisCust){
 
@@ -57,13 +57,18 @@ public class CashierDetailPage extends VBox {
                 if (purchItem.getItemID() == item.getItemID()){
                     flag = true;
                     purchItem.setQuantity(this.quantity);
+                    if (this.quantity == 0) {
+                        purchasedItems.removeElement(purchItem);
+                    }
                     break;
                 }
             }
             
             if (!flag) {
-                PurchasedItem newPurchasedItem = new PurchasedItem(item, this.quantity);
-                purchasedItems.addElement(newPurchasedItem);
+                if (this.quantity > 0) {
+                    PurchasedItem newPurchasedItem = new PurchasedItem(item, this.quantity);
+                    purchasedItems.addElement(newPurchasedItem);
+                }
             }
 
             CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust);
@@ -113,7 +118,7 @@ public class CashierDetailPage extends VBox {
         Button plusQuantity = new Button("+");
 
         minusQuantity.setOnAction(event -> {
-            if(this.quantity > 1) this.quantity--;
+            if(this.quantity > 0) this.quantity--;
             quantity.setText(this.quantity.toString());
         });
 
