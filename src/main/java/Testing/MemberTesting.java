@@ -1,6 +1,5 @@
 package Testing;
 import System.*;
-import javafx.scene.image.Image;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -14,10 +13,11 @@ public class MemberTesting {
         assertEquals(2000, member.getPoint());
     }
 
+    @Test
     public void testCalculateDiscount() {
         Member member = new Member();
         member.setId(1);
         member.setPoint(3000);
-        member.calculateDiscount()
+        assertEquals(197000, (int) member.calculateDiscount(200000, true));
     }
 }
