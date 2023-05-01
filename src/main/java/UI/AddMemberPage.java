@@ -97,7 +97,7 @@ public class AddMemberPage extends VBox {
         customerID.setItems(observableId);
 
         // Styling customerID label
-        customerID.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
+        customerID.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px;");
         customerID.setPadding(new Insets(0, 0, 0, 10));
         customerID.setMinWidth(1194);
         customerID.setMinHeight(50);
@@ -117,7 +117,7 @@ public class AddMemberPage extends VBox {
         TextField inputName = new TextField();
         inputName.setPadding(new Insets(0, 0, 0, 10));
         inputName.setFont(Font.font("Montserrat", 20));
-        inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black; -fx-font-style: Montserrat");
+        inputName.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black;");
         inputName.setPromptText("Enter name...");
         inputName.setMinWidth(1194);
         inputName.setMinHeight(50);

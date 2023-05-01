@@ -11,11 +11,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import System.PurchasedItem;
+import System.RegisteredCustomer;
+import System.Item;
+import java.text.NumberFormat;
+import System.Inventory;
+import System.Customer;
+import System.FixedBill;
 
 public class CashierDetailPage extends VBox {
-    private Integer quantity = 1;
+    private Integer quantity = 0;
 
-    public CashierDetailPage(Stage stage, Tab tab){
+    public CashierDetailPage(Stage stage, Tab tab, Item item, Inventory<PurchasedItem> purchasedItems, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, boolean usePoint, RegisteredCustomer regisCust){
+
+        for (PurchasedItem purchItem : purchasedItems.getList()){
+            if (purchItem.getItemID() == item.getItemID()){
+                this.quantity = purchItem.getQuantity();
+                break;
+            }
+        }
+
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -23,7 +38,11 @@ public class CashierDetailPage extends VBox {
         HBox middle = new HBox();
 
         // Create title
-        Label title = new Label("Cappucino - Rp30.000");
+        String titleName = item.getName();
+        NumberFormat formatter = NumberFormat.getInstance();
+        formatter.setGroupingUsed(true);
+        String titlePrice = "Rp" + formatter.format(item.getSellPrice());
+        Label title = new Label(titleName + " - " + titlePrice);
         title.setFont(Font.font("Montserrat", FontWeight.BOLD, 36));
         title.setStyle("-fx-text-fill: #3B919B");
         title.setAlignment(Pos.CENTER);
@@ -32,13 +51,38 @@ public class CashierDetailPage extends VBox {
         Button addButton = new Button("Save");
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
-        addButton.setOnAction(event -> {});
+        addButton.setOnAction(event -> {
+            boolean flag = false;
+            for (PurchasedItem purchItem : purchasedItems.getList()){
+                if (purchItem.getItemID() == item.getItemID()){
+                    flag = true;
+                    purchItem.setQuantity(this.quantity);
+                    if (this.quantity == 0) {
+                        purchasedItems.removeElement(purchItem);
+                    }
+                    break;
+                }
+            }
+            
+            if (!flag) {
+                if (this.quantity > 0) {
+                    PurchasedItem newPurchasedItem = new PurchasedItem(item, this.quantity);
+                    purchasedItems.addElement(newPurchasedItem);
+                }
+            }
+
+            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust);
+            tab.setContent(cashierContent);
+        });
 
         // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
-        cancelButton.setOnAction(event -> {});
+        cancelButton.setOnAction(event -> {
+            CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust);
+            tab.setContent(cashierContent);
+        });
 
         // Set title to HBox
         middle.getChildren().addAll(title);
@@ -74,13 +118,28 @@ public class CashierDetailPage extends VBox {
         Button plusQuantity = new Button("+");
 
         minusQuantity.setOnAction(event -> {
-            if(this.quantity > 1) this.quantity--;
+            if(this.quantity > 0) this.quantity--;
             quantity.setText(this.quantity.toString());
         });
 
         plusQuantity.setOnAction(event -> {
-            this.quantity++;
+            if(this.quantity < item.getStock()) this.quantity++;
             quantity.setText(this.quantity.toString());
+        });
+
+        quantity.textProperty().addListener((observable, oldValue, newValue) -> {
+            Integer tempQuantity = 0;
+            if (newValue != ""){
+                tempQuantity = Integer.parseInt(newValue);
+            }
+            if(tempQuantity <= item.getStock()){
+                this.quantity = tempQuantity;
+                quantity.setText(this.quantity.toString());
+            } else {
+                tempQuantity = item.getStock();
+                this.quantity = tempQuantity;
+                quantity.setText(this.quantity.toString());
+            }
         });
 
         // Create Discount Input
@@ -362,13 +421,13 @@ public class CashierDetailPage extends VBox {
         // Add Discount Input to Discount Box
         discountBox.getChildren().addAll(labelDiscount, discountInput);
 
-        // Create Quantity Input
-        VBox notesBox = new VBox();
-        Label labelNotes = new Label("Notes");
+        // // Create Quantity Input
+        // VBox notesBox = new VBox();
+        // Label labelNotes = new Label("Notes");
 
-        // Quantity Inputs
-        TextField notes = new TextField();
-        notes.setPromptText("Description . . .");
+        // // Quantity Inputs
+        // TextField notes = new TextField();
+        // notes.setPromptText("Description . . .");
 
         // Styling Label
         labelQuantity.setFont(Font.font("Montserrat", FontWeight.BOLD, 24));
@@ -377,8 +436,8 @@ public class CashierDetailPage extends VBox {
         labelDiscount.setFont(Font.font("Montserrat", FontWeight.BOLD, 24));
         labelDiscount.setStyle("-fx-text-fill: #3B919B");
 
-        labelNotes.setFont(Font.font("Montserrat", FontWeight.BOLD, 24));
-        labelNotes.setStyle("-fx-text-fill: #3B919B");
+        // labelNotes.setFont(Font.font("Montserrat", FontWeight.BOLD, 24));
+        // labelNotes.setStyle("-fx-text-fill: #3B919B");
 
         // Styling Input
         quantity.setFont(Font.font("Montserrat",18));
@@ -417,11 +476,11 @@ public class CashierDetailPage extends VBox {
         sixthToggleBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px;");
         sixthToggleBox.setPrefWidth(580);
 
-        notes.setFont(Font.font("Montserrat",16));
-        notes.setPadding(new Insets(10, 10, 10 ,10));
-        notes.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px;");
-        notes.setPrefWidth(1160);
-        notes.setAlignment(Pos.TOP_LEFT);
+        // notes.setFont(Font.font("Montserrat",16));
+        // notes.setPadding(new Insets(10, 10, 10 ,10));
+        // notes.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px;");
+        // notes.setPrefWidth(1160);
+        // notes.setAlignment(Pos.TOP_LEFT);
 
         // Styling Button
         minusQuantity.setFont(Font.font("Montserrat",18));
@@ -444,16 +503,16 @@ public class CashierDetailPage extends VBox {
         rightDiscountBox.setSpacing(10);
         discountBox.setSpacing(10);
         discountInput.setSpacing(20);
-        notesBox.setSpacing(10);
+        // notesBox.setSpacing(10);
 
         // Add inputs to HBox
         buttonBox.getChildren().addAll(minusQuantity, plusQuantity);
         quantityInput.getChildren().addAll(quantity, buttonBox);
         quantityBox.getChildren().addAll(labelQuantity, quantityInput);
-        notesBox.getChildren().addAll(labelNotes, notes);
+        // notesBox.getChildren().addAll(labelNotes, notes);
 
         // Add Contents
-        getChildren().addAll(hBox, horizontalLine1, quantityBox, horizontalLine2, discountBox, horizontalLine3, notesBox);
+        getChildren().addAll(hBox, horizontalLine1, quantityBox, horizontalLine2, discountBox, horizontalLine3);
 
         // Styling Layout
         setPadding(new Insets(30, 50, 0, 50));

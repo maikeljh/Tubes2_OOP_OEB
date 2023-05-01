@@ -13,12 +13,14 @@ import java.io.FileOutputStream;
 public class FixedBill extends Bill{
     /* attributes */
     private int bill_id;
+    private static int billCount = 1;
 
     public FixedBill(){
         super();
     }
     public FixedBill(int bill_id) { super(); this.bill_id = bill_id; }
-    public FixedBill(int bill_id, String date, int customer_id) { super(date, customer_id); this.bill_id = bill_id; }
+    public FixedBill(String date, double total_price, double discount) { super(date); this.bill_id = billCount; this.total_price = total_price; this.discount = discount; billCount++; }
+    public FixedBill(String date, int customer_id, double total_price, double discount) { super(date, customer_id); this.bill_id = billCount; this.total_price = total_price; this.discount = discount; billCount++;}
 
     /* methods */
     public int getBillID(){

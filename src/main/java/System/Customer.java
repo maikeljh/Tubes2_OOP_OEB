@@ -22,6 +22,7 @@ public class Customer implements Serializable {
         this.transaction = new Inventory<FixedBill>();
         this.transaction.addElement(bill);
         customerCount++;
+        bill.setCustomerID(this.id);
     }
 
     public static int getCustomerCount() {
@@ -32,12 +33,12 @@ public class Customer implements Serializable {
         return id;
     }
 
-    public Inventory<FixedBill> getTransaction() {
-        return transaction;
+    public void setId( int id){
+        this.id = id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Inventory<FixedBill> getTransaction() {
+        return transaction;
     }
 
     public void setTransaction(Inventory<FixedBill> transactions) {
