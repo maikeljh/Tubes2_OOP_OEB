@@ -9,20 +9,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -43,20 +43,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -77,20 +77,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -111,20 +111,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -145,20 +145,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -179,20 +179,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -213,20 +213,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -247,20 +247,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -281,20 +281,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -315,20 +315,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -349,20 +349,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -383,20 +383,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -417,20 +417,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -451,20 +451,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -485,20 +485,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -519,20 +519,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -553,20 +553,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -587,20 +587,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -621,20 +621,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -655,20 +655,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -689,20 +689,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -723,20 +723,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -757,20 +757,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -791,20 +791,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -825,20 +825,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -859,20 +859,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -884,7 +884,7 @@
             <neff>1</neff>
         </transaction>
         <activeStatus>true</activeStatus>
-        <name>Up OOP open it up</name>
+        <name>YES</name>
         <phoneNumber>19332192</phoneNumber>
         <point>0</point>
     </member>
@@ -897,20 +897,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -935,20 +935,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -973,20 +973,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1011,20 +1011,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1049,20 +1049,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1087,20 +1087,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1125,20 +1125,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1163,20 +1163,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1201,20 +1201,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1239,20 +1239,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1277,20 +1277,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1315,20 +1315,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1353,20 +1353,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -1391,20 +1391,20 @@
                 <discount>10.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>1.8925929371673668E-239</buyPrice>
+                        <buyPrice>15000.0</buyPrice>
                         <category>Coffee</category>
-                        <itemID>27</itemID>
+                        <itemID>53</itemID>
                         <name>Cappuccino</name>
-                        <sellPrice>2.5234965470387202E-239</sellPrice>
+                        <sellPrice>20000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>3</quantity>
                     </purchasedItem>
                     <purchasedItem>
-                        <buyPrice>3.7853037667833818E-239</buyPrice>
+                        <buyPrice>30000.0</buyPrice>
                         <category>Desserts</category>
-                        <itemID>28</itemID>
+                        <itemID>54</itemID>
                         <name>Blueberry Pie</name>
-                        <sellPrice>4.7946080802211556E-239</sellPrice>
+                        <sellPrice>38000.0</sellPrice>
                         <stock>10</stock>
                         <quantity>1</quantity>
                     </purchasedItem>

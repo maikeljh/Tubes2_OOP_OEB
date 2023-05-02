@@ -1,7 +1,15 @@
 package System;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
+import java.io.Serializable;
 
+@Getter @Setter @NoArgsConstructor @Data
 @XmlRootElement
 public abstract class RegisteredCustomer extends Customer {
     protected String name;
@@ -9,9 +17,6 @@ public abstract class RegisteredCustomer extends Customer {
     protected int point;
     protected boolean activeStatus;
 
-    public RegisteredCustomer() {
-        super();
-    }
     public RegisteredCustomer(int customerId, String name, String phoneNumber, FixedBill bill) {
         super(customerId);
         this.name = name;
@@ -28,37 +33,12 @@ public abstract class RegisteredCustomer extends Customer {
         this.point = point;
         this.activeStatus = activeStatus;
     }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public int getPoint() {
-        return this.point;
-    }
-
     public boolean getActiveStatus() {
         return this.activeStatus;
     }
 
     public void setActiveStatus(boolean activeStatus) {
         this.activeStatus = activeStatus;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
     }
 
     public void calculatePoint(double total_price) {

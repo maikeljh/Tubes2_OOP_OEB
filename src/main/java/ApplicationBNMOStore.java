@@ -105,27 +105,6 @@ public class ApplicationBNMOStore extends Application {
         bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
         bill2.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
 
-        // Read customers data
-        Inventory<Customer> customers = new Inventory<Customer>();
-        for (int i = 0; i < 40; i++) {
-            if (i > 34) {
-                customers.addElement(new VIP(i+1, "Niggas are drunk", "0283103812", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(true);
-                }
-            }
-
-            else if (i <= 34 && i >= 25) {
-                customers.addElement(new Member(i+1, "Up OOP open it up", "19332192", bill2));
-                if (i % 3 == 0) {
-                    ((RegisteredCustomer) customers.getList().get(i)).setActiveStatus(true);
-                }
-            }
-
-            else {
-                customers.addElement(new Customer(bill2));
-            }
-        }
 
         // Read transactions
         double total_price = 30000;
