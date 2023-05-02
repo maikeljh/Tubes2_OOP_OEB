@@ -2,6 +2,8 @@ import DataStore.DataStore;
 import Plugin.Decorator.SettingsDecorator;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
+import Plugin.PluginCashier.DiscountCashier;
+import Plugin.PluginCashier.TaxAndServiceSettings;
 import System.Settings;
 import System.Member;
 import UI.*;
@@ -182,7 +184,13 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Cashier");
             CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, transactions, new Inventory<PurchasedItem>(), false, null);
-            newTab.setContent(cashierTab);
+            DiscountCashier tes = new DiscountCashier();
+            tes.setPage(cashierTab);
+            tes.getPage().setStage(stage);
+            tes.getPage().setSettings(settings);
+            tes.getPage().setSettingsDS(settingsDS);
+            tes.execute();
+            newTab.setContent(tes.getPage());
             // newTab.setStyle("-fx-background-color: #F3F9FB;");
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -291,6 +299,13 @@ public class ApplicationBNMOStore extends Application {
             if(!found) {
                 newTab.setContent(settingsTab);
             }
+            TaxAndServiceSettings tes = new TaxAndServiceSettings();
+            tes.setPage(settingsTab);
+            tes.getPage().setStage(stage);
+            tes.getPage().setSettings(settings);
+            tes.getPage().setSettingsDS(settingsDS);
+            tes.execute();
+            newTab.setContent(tes.getPage());
         });
 
         // Add Menu Items to Menu

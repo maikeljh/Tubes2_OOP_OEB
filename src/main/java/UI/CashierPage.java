@@ -2,6 +2,9 @@ package UI;
 
 
 import java.util.*;
+
+import System.Settings;
+import DataStore.DataStore;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -46,6 +49,7 @@ import System.Member;
 public class CashierPage extends VBox {
     
     private Inventory<PurchasedItem> purchasedItems;
+    private Settings settings;
     private double totalPrice = 0;
     private RegisteredCustomer regisCust = null;
     private double finalTotalPrice = 0;
@@ -74,9 +78,13 @@ public class CashierPage extends VBox {
     private VBox bodyLibraryVBox = null;
     private HBox headLibraryBox = null;
     private VBox headLibraryTitleBox = null;
+
+    private HBox totalPriceBox = null;
+
     private Stage stage;
     private Tab tab;
     private TabPane tabPane;
+    private DataStore<Settings> settingsDS;
 
 
     public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust){
@@ -988,7 +996,7 @@ public class CashierPage extends VBox {
         hLine2.setOpacity(0.47);
 
         // Create HBox for total Price
-        HBox totalPriceBox = new HBox();
+        totalPriceBox = new HBox();
         totalPriceBox.setPrefHeight(50);
 
         // Create Text Discount
@@ -1034,7 +1042,7 @@ public class CashierPage extends VBox {
 
         // Add contents to total price box
         totalPriceBox.prefWidthProperty().bind(rightVBox.widthProperty().subtract(10));
-        totalPriceBox.setPadding(new Insets(5, 0, 0, 0));
+        totalPriceBox.setPadding(new Insets(5, 10, 0, 10));
         totalPriceBox.setAlignment(Pos.CENTER);
         totalPriceBox.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
 
@@ -1573,7 +1581,7 @@ public class CashierPage extends VBox {
         this.libraryBox.getChildren().addAll(this.headLibraryBox, scrollPane3);
     }
 
-    private double getMaxPrice (){
+    public double getMaxPrice (){
         double max = 0;
         for (Item itemElement : this.items.getList()){
             if (itemElement.getSellPrice() > max && itemElement.getStock() > 0){
@@ -1583,7 +1591,7 @@ public class CashierPage extends VBox {
         return max;
     }
 
-    private double getMinPrice(){
+    public double getMinPrice(){
         double min = getMaxPrice();
         for (Item itemElement : this.items.getList()){
             if (itemElement.getSellPrice() < min && itemElement.getStock() > 0){
@@ -1594,7 +1602,7 @@ public class CashierPage extends VBox {
 
     }
 
-    private void setRegCust(){
+    public void setRegCust(){
         if(this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){
             for (Customer cust : this.customers.getList()) {
                 if(this.tempID.get(this.selectionIndex) == cust.getId()){
@@ -1604,7 +1612,7 @@ public class CashierPage extends VBox {
         }
     }
 
-    private int getCustIndex(){
+    public int getCustIndex(){
         int count = -1;
         if (this.regisCust != null) {
             count++;
@@ -1616,5 +1624,29 @@ public class CashierPage extends VBox {
             }
         }
         return count;
+    }
+
+    public HBox getTotalPriceBox() {
+        return totalPriceBox;
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    public void setSettings(Settings settings){
+        this.settings = settings;
+    }
+
+    public void setSettingsDS(DataStore<Settings> settingsDS){
+        this.settingsDS = settingsDS;
+    }
+
+    public Settings getSettings(){
+        return this.settings;
+    }
+
+    public DataStore<Settings> getSettingsDS(){
+        return this.settingsDS;
     }
 }

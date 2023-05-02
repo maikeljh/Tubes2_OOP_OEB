@@ -1,5 +1,8 @@
 package UI;
 
+import DataStore.DataStore;
+import System.Settings;
+import Plugin.PluginCashier.DiscountCashier;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -15,12 +18,17 @@ import System.PurchasedItem;
 import System.RegisteredCustomer;
 import System.Item;
 import java.text.NumberFormat;
+import java.util.Set;
+
 import System.Inventory;
 import System.Customer;
 import System.FixedBill;
 
 public class CashierDetailPage extends VBox {
     private Integer quantity = 0;
+    private Settings settings;
+    private DataStore<Settings> settingsDS;
+    private Stage stage;
 
     public CashierDetailPage(Stage stage, Tab tab, Item item, Inventory<PurchasedItem> purchasedItems, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, boolean usePoint, RegisteredCustomer regisCust){
 
@@ -72,7 +80,13 @@ public class CashierDetailPage extends VBox {
             }
 
             CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust);
-            tab.setContent(cashierContent);
+            DiscountCashier tes = new DiscountCashier();
+            tes.setPage(cashierContent);
+            tes.getPage().setStage(stage);
+            tes.getPage().setSettings(settings);
+            tes.getPage().setSettingsDS(settingsDS);
+            tes.execute();
+            tab.setContent(tes.getPage());
         });
 
         // Create cancel button
@@ -81,7 +95,13 @@ public class CashierDetailPage extends VBox {
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
             CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust);
-            tab.setContent(cashierContent);
+            DiscountCashier tes = new DiscountCashier();
+            tes.setPage(cashierContent);
+            tes.getPage().setStage(stage);
+            tes.getPage().setSettings(settings);
+            tes.getPage().setSettingsDS(settingsDS);
+            tes.execute();
+            tab.setContent(tes.getPage());
         });
 
         // Set title to HBox
@@ -518,5 +538,25 @@ public class CashierDetailPage extends VBox {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(20);
         setStyle("-fx-background-color: #F3F9FB;");
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    public void setSettings(Settings settings){
+        this.settings = settings;
+    }
+
+    public void setSettingsDS(DataStore<Settings> settingsDS){
+        this.settingsDS = settingsDS;
+    }
+
+    public Settings getSettings(){
+        return this.settings;
+    }
+
+    public DataStore<Settings> getSettingsDS(){
+        return this.settingsDS;
     }
 }

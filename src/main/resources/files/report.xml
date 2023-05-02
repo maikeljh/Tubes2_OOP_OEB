@@ -3,20 +3,20 @@
     <salesReport>
         <items>
             <purchasedItem>
-                <buyPrice>15000.000000000002</buyPrice>
+                <buyPrice>0.012694500000000001</buyPrice>
                 <category>Coffee</category>
                 <itemID>65</itemID>
                 <name>Cappuccino</name>
-                <sellPrice>20000.0</sellPrice>
+                <sellPrice>0.016926</sellPrice>
                 <stock>10</stock>
                 <quantity>3</quantity>
             </purchasedItem>
             <purchasedItem>
-                <buyPrice>30000.000000000004</buyPrice>
+                <buyPrice>0.025389000000000002</buyPrice>
                 <category>Desserts</category>
                 <itemID>66</itemID>
                 <name>Blueberry Pie</name>
-                <sellPrice>38000.0</sellPrice>
+                <sellPrice>0.0321594</sellPrice>
                 <stock>10</stock>
                 <quantity>1</quantity>
             </purchasedItem>
