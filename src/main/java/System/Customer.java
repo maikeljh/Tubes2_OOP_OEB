@@ -1,18 +1,21 @@
 package System;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
-
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Data
 @XmlRootElement
 public class Customer implements Serializable {
     protected int id;
     private static int customerCount = 1;
     protected Inventory<FixedBill> transaction;
 
-    public Customer() {
-
-    }
     public Customer(int id) {
         this.id = id;
         this.transaction = new Inventory<FixedBill>();
@@ -25,23 +28,4 @@ public class Customer implements Serializable {
         bill.setCustomerID(this.id);
     }
 
-    public static int getCustomerCount() {
-        return customerCount;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId( int id){
-        this.id = id;
-    }
-
-    public Inventory<FixedBill> getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Inventory<FixedBill> transactions) {
-        this.transaction = transactions;
-    }
 }
