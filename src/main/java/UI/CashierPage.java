@@ -6,7 +6,6 @@ import java.util.*;
 import Plugin.Decorator.CashierDecorator;
 import Plugin.Decorator.CashierDetailDecorator;
 import Plugin.Plugin;
-import Plugin.PluginCashier.DiscountDetailCashier;
 import System.Settings;
 import DataStore.DataStore;
 import javafx.geometry.Insets;

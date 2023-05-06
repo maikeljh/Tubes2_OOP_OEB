@@ -3,8 +3,6 @@ import Plugin.Decorator.CashierDecorator;
 import Plugin.Decorator.SettingsDecorator;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
-import Plugin.PluginCashier.DiscountCashier;
-import Plugin.PluginCashier.TaxAndServiceSettings;
 import System.Settings;
 import System.Member;
 import UI.*;
@@ -103,8 +101,10 @@ public class ApplicationBNMOStore extends Application {
         bill2.setDate("2023-2-12");
         bill2.setCustomerID(234);
         bill2.setBillID(5679);
-        bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
         bill2.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
+        bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+
+        report.updateReport(bill2);
 
         // Read transactions
         double totalPrice = 30000;

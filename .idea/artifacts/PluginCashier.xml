@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="PluginCashier">
+  <artifact type="jar" name="PluginCashier">
     <output-path>$PROJECT_DIR$/out/artifacts/PluginCashier</output-path>
     <root id="archive" name="PluginCashier.jar">
       <element id="module-output" name="Tubes2_OOP_OEB" />
