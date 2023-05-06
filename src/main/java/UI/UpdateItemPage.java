@@ -202,14 +202,14 @@ public class UpdateItemPage extends VBox {
             // Check if all inputs not empty
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
                 int newStock = Integer.parseInt(newStockText);
-                double sell_price = Double.parseDouble(sellPriceText);
-                double buy_price = Double.parseDouble(buyPriceText);
+                double newSellPrice = Double.parseDouble(sellPriceText);
+                double newBuyPrice = Double.parseDouble(buyPriceText);
 
                 // Set new attribute values
                 item.setName(newName);
                 item.setCategory(newCategory);
-                item.setBuyPrice(buy_price);
-                item.setSellPrice(sell_price);
+                item.setBuyPrice(newBuyPrice);
+                item.setSellPrice(newSellPrice);
                 item.setStock(newStock);
                 item.setImage(newImage);
 

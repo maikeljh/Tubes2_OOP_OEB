@@ -41,10 +41,10 @@ public abstract class RegisteredCustomer extends Customer {
         this.activeStatus = activeStatus;
     }
 
-    public void calculatePoint(double total_price) {
-        this.setPoint(this.point += (int) (0.01 * total_price));
+    public void calculatePoint(double totalPrice) {
+        this.setPoint(this.point += (int) (0.01 * totalPrice));
     }
 
-    public abstract double calculateDiscount(double total_price, boolean point);
+    public abstract double calculateDiscount(double totalPrice, boolean point);
 
 }

@@ -9,14 +9,14 @@ import java.io.Serializable;
 @XmlRootElement
 public class Settings implements Serializable {
     /* Attributes */
-    private PluginManager plugin_manager;
+    private PluginManager pluginManager;
     private String format;
-    private String save_directory;
+    private String saveDirectory;
 
     public Settings(){
         format = "obj";
-        save_directory = "src/main/resources/files/";
-        plugin_manager = new PluginManager();
+        saveDirectory = "src/main/resources/files/";
+        pluginManager = new PluginManager();
     }
 
     /* Methods */
@@ -29,22 +29,22 @@ public class Settings implements Serializable {
     }
 
     public String getSaveDirectory(){
-        return save_directory;
+        return saveDirectory;
     }
 
     public PluginManager getPluginManager(){
-        return plugin_manager;
+        return pluginManager;
 
     }
     public void setFormat(String format){
         this.format = format;
     }
 
-    public void setSaveDirectory(String save_directory){
-        this.save_directory = save_directory;
+    public void setSaveDirectory(String saveDirectory){
+        this.saveDirectory = saveDirectory;
     }
 
-    public void setPluginManager(PluginManager plugin_manager){
-        this.plugin_manager = plugin_manager;
+    public void setPluginManager(PluginManager pluginManager){
+        this.pluginManager = pluginManager;
     }
 }

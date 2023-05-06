@@ -212,11 +212,11 @@ public class AddItemPage extends Page{
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
                 // Parse Numeric Input
                 int newStock = Integer.parseInt(newStockText);
-                double sell_price = Double.parseDouble(sellPriceText);
-                double buy_price = Double.parseDouble(buyPriceText);
+                double newSellPrice = Double.parseDouble(sellPriceText);
+                double newBuyPrice = Double.parseDouble(buyPriceText);
 
                 // Create new Item
-                Item newItem = new Item(newName, newStock, sell_price, buy_price, newCategory, newImage);
+                Item newItem = new Item(newName, newStock, newSellPrice, newBuyPrice, newCategory, newImage);
 
                 // Add item to inventory
                 items.addElement(newItem);

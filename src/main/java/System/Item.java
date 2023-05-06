@@ -9,41 +9,41 @@ import java.io.Serializable;
 
 @XmlRootElement
 public class Item implements Serializable {
-    protected int item_id;
+    protected int itemID;
     protected String name;
     protected int stock;
-    protected double sell_price;
-    protected double buy_price;
+    protected double sellPrice;
+    protected double buyPrice;
     protected String category;
     protected transient Image image;
     protected static int itemIDCount;
 
     public Item(){}
 
-    public Item(String name, int stock, double sell_price, double buy_price, String category, Image image){
+    public Item(String name, int stock, double sellPrice, double buyPrice, String category, Image image){
         itemIDCount++;
-        this.item_id = itemIDCount;
+        this.itemID = itemIDCount;
         this.name = name;
         this.stock = stock;
-        this.sell_price = sell_price;
-        this.buy_price = buy_price;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
         this.category = category;
         this.image = image;
     }
 
     public Item(Item other){
-        this.item_id = other.item_id;
+        this.itemID = other.itemID;
         this.name = other.name;
         this.stock = other.stock;
-        this.sell_price = other.sell_price;
-        this.buy_price = other.buy_price;
+        this.sellPrice = other.sellPrice;
+        this.buyPrice = other.buyPrice;
         this.category = other.category;
         this.image = other.image;
     }
 
     /* Setter */
     public void setItemID(int id){
-        this.item_id = id;
+        this.itemID = id;
     }
 
     public void setName(String name){
@@ -54,12 +54,12 @@ public class Item implements Serializable {
         this.stock = stock;
     }
 
-    public void setSellPrice(double sell_price){
-        this.sell_price = sell_price;
+    public void setSellPrice(double sellPrice){
+        this.sellPrice = sellPrice;
     }
 
-    public void setBuyPrice(double buy_price){
-        this.buy_price = buy_price;
+    public void setBuyPrice(double buyPrice){
+        this.buyPrice = buyPrice;
     }
 
     public void setCategory(String category){
@@ -72,7 +72,7 @@ public class Item implements Serializable {
 
     /* Getter */
     public int getItemID(){
-        return this.item_id;
+        return this.itemID;
     }
 
     public String getName(){
@@ -84,11 +84,11 @@ public class Item implements Serializable {
     }
 
     public double getSellPrice(){
-        return this.sell_price;
+        return this.sellPrice;
     }
 
     public double getBuyPrice(){
-        return this.buy_price;
+        return this.buyPrice;
     }
 
     public String getCategory(){
@@ -101,7 +101,7 @@ public class Item implements Serializable {
         return this.image;
     }
 
-    public static void setItemIDCount(int item_count){
-        itemIDCount = item_count;
+    public static void setItemIDCount(int itemCount){
+        itemIDCount = itemCount;
     }
 }

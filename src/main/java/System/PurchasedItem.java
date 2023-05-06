@@ -29,9 +29,9 @@ public class PurchasedItem extends Item {
 
     /* Methods */
     public double calculateGrossProfit(){
-        return this.quantity * this.sell_price;
+        return this.quantity * this.sellPrice;
     }
     public double calculateNetProfit(){
-        return this.calculateGrossProfit() - (this.quantity * this.buy_price);
+        return this.calculateGrossProfit() - (this.quantity * this.buyPrice);
     }
 }
