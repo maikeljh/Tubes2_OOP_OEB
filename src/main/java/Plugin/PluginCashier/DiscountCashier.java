@@ -40,8 +40,8 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
                 if(this.page.getTotalPrice() == this.page.getFinalTotalPrice()){
                     this.page.getTotalPriceBills().setText("Charge Rp" + String.format("%.2f", this.page.getTotalPrice()));
                 } else {
-                    this.page.getTotalPriceBillLabel().setText("Charge Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
-                    this.page.getFixTotalPriceBill().setText("Charge Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
+                    this.page.getTotalPriceBillLabel().setText("Rp" + String.format("%.2f", this.page.getTotalPrice()));
+                    this.page.getFixTotalPriceBill().setText("Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
                 }
 
                 this.currentTax = this.TAS.getTax();
@@ -65,8 +65,8 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
                         if(this.page.getTotalPrice() == this.page.getFinalTotalPrice()){
                             this.page.getTotalPriceBills().setText("Charge Rp" + String.format("%.2f", this.page.getTotalPrice()));
                         } else {
-                            this.page.getTotalPriceBillLabel().setText("Charge Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
-                            this.page.getFixTotalPriceBill().setText("Charge Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
+                            this.page.getTotalPriceBillLabel().setText("Rp" + String.format("%.2f", this.page.getTotalPrice()));
+                            this.page.getFixTotalPriceBill().setText("Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
                         }
 
                         this.currentTax = this.TAS.getTax();
@@ -101,7 +101,7 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
         // Override use point button
         this.getPage().getUsePointButton().setOnAction(event -> {
             this.getPage().setRegCust();
-            if(this.getPage().getRegisCust() != null){
+            if (this.getPage().getRegisCust() != null){
                 this.getPage().usePointHandler();
                 // Create Discount, Tax, and Service Label
                 Label tempTax = new Label("Tax: Rp" + String.format("%.2f", TAS.getTax()));
@@ -117,6 +117,24 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
                 // Add additional charge to page
                 this.page.getTotalPriceBox().getChildren().add(tempAdditionalCharge);
             }
+        });
+
+        this.getPage().getChoiceBox().getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            this.getPage().setRegCust();
+            this.getPage().choiceBoxHandler(newValue);
+            // Create Discount, Tax, and Service Label
+            Label tempTax = new Label("Tax: Rp" + String.format("%.2f", TAS.getTax()));
+            Label tempService = new Label("Service: Rp" + String.format("%.2f", TAS.getService()));
+
+            // Create VBox for these labels
+            VBox tempAdditionalCharge = new VBox();
+            tempAdditionalCharge.getChildren().addAll(tempTax, tempService);
+            tempAdditionalCharge.setSpacing(3);
+            tempAdditionalCharge.setAlignment(Pos.CENTER_RIGHT);
+            HBox.setHgrow(tempAdditionalCharge, Priority.ALWAYS);
+
+            // Add additional charge to page
+            this.page.getTotalPriceBox().getChildren().add(tempAdditionalCharge);
         });
     }
 }
