@@ -47,37 +47,19 @@ public class SalesReport implements Serializable {
     }
 
     public void updateReport(FixedBill fixedBill){
-        for(PurchasedItem item : fixedBill.getItems().getList()){
-            items.addElement(item);
-        }
-    }
-
-    public void calculateReport(Inventory<FixedBill> transactions){
-        /*
-        for (FixedBill fixedBill : transactions.getList()){
-            for (PurchasedItem purchasedItem : fixedBill.getItems().getList()){
-                ReportItem reportItem = new ReportItem(purchasedItem, purchasedItem.getQuantity()); // convert PurchasedItem to ReportItem
-                if (getElementIdx(purchasedItem.getName()) == -1){
-                    // if not found on items, then add item to list
-                    items.addElement(reportItem);
-                } else {
-                    // if item already on the items list, then update the item on the list
-                    ReportItem salesReportItem = items.getElement(getElementIdx(purchasedItem.getName())); // ReportItem exists in items
-                    reportItem.setQuantity(purchasedItem.getQuantity() + salesReportItem.getQuantity()); // set new quantity
-                    reportItem.calculateGrossProfit(); // calculate new gross profit
-                    reportItem.calculateNetProfit(); // calculate new net profit
-                    items.setElement(getElementIdx(purchasedItem.getName()), reportItem);
-                }
+        // update items when a fixed bill is added
+        for (PurchasedItem item : fixedBill.getItems().getList()){
+            if (getElementIdx(item.getName()) == -1){
+                // if item not in items list, then add item to list
+                items.addElement(item);
+            } else {
+                // update item list
+                int newQty = items.getElement(getElementIdx(item.getName())).getQuantity() + item.getQuantity();
+                items.getElement(getElementIdx(item.getName())).setQuantity(newQty);
             }
+            total_gross_profit += item.calculateGrossProfit();
+            total_net_profit += item.calculateNetProfit();
         }
-        // sum all gross and net profit
-        totalGrossProfit = 0;
-        totalNetProfit = 0;
-        for (ReportItem reportItem : items.getList()){
-            totalGrossProfit += reportItem.getGrossProfit();
-            totalNetProfit += reportItem.getNetProfit();
-        }
-        */
     }
 
     public void printReport() throws DocumentException, FileNotFoundException{
