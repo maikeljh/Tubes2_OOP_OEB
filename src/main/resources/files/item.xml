@@ -8,5 +8,13 @@
         <sellPrice>1021.9780219780218</sellPrice>
         <stock>12</stock>
     </item>
-    <neff>1</neff>
+    <item>
+        <buyPrice>12345.0</buyPrice>
+        <category>TES</category>
+        <itemID>78</itemID>
+        <name>TES2</name>
+        <sellPrice>12345.0</sellPrice>
+        <stock>12</stock>
+    </item>
+    <neff>2</neff>
 </inventory>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <taxAndService>
+        <service>2000.0</service>
+        <tax>1000.0</tax>
+    </taxAndService>
+    <neff>1</neff>
+</inventory>

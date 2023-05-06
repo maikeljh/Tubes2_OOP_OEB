@@ -3,6 +3,7 @@ package UI;
 
 import java.util.*;
 
+import Plugin.PluginCashier.DiscountDetailCashier;
 import System.Settings;
 import DataStore.DataStore;
 import javafx.geometry.Insets;
@@ -47,10 +48,9 @@ import System.Member;
 
 
 public class CashierPage extends VBox {
-    
     private Inventory<PurchasedItem> purchasedItems;
     private Settings settings;
-    private double totalPrice = 0;
+    protected double totalPrice = 0;
     private RegisteredCustomer regisCust = null;
     private double finalTotalPrice = 0;
     private boolean isUsePoint = false;
@@ -85,10 +85,12 @@ public class CashierPage extends VBox {
     private Tab tab;
     private TabPane tabPane;
     private DataStore<Settings> settingsDS;
+    private double formattedDiscount;
+    private Text totalPriceBillLabel;
+    private Label fixTotalPriceBill;
+    private Label totalPriceBills;
 
-
-    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust){
-        
+    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS){
         this.stage = stage;
         this.tab = tab;
         this.tabPane = tabPane;
@@ -100,6 +102,8 @@ public class CashierPage extends VBox {
         this.isUsePoint = usePoint;
         this.purchasedItems = purchasedItems;
         this.mode = mode;
+        this.settings = settings;
+        this.settingsDS = settingsDS;
 
         // Create main VBox
         VBox mainVBox = new VBox();
@@ -120,7 +124,6 @@ public class CashierPage extends VBox {
         Label title = new Label("Cashier");
         title.setFont(Font.font("Montserrat", FontWeight.BOLD, 28));
         title.setTextAlignment(TextAlignment.CENTER);
-
 
         // Add header to HBox
         hBox.getChildren().addAll(title);
@@ -144,11 +147,10 @@ public class CashierPage extends VBox {
         Tab tab2 = new Tab("Library");
         tab2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: white;-fx-background-radius: 10;-fx-focus-color: transparent;");
 
-
         // Create HBox for grid
         HBox gridHBox = new HBox();
 
-        //Styling grid box
+        // Styling grid box
         gridHBox.setPrefHeight(600);
         gridHBox.setStyle("-fx-background: #F3F9FB; -fx-background-color: #F3F9FB;");
         gridHBox.prefWidthProperty().bind(this.leftVBox.widthProperty());
@@ -203,8 +205,14 @@ public class CashierPage extends VBox {
                 // Add onclick event
                 itemDisplay.setOnMouseClicked(event -> {
                     setRegCust();
-                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust);
-                    tab.setContent(detailCashierContent);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
+                    DiscountDetailCashier tes = new DiscountDetailCashier();
+                    tes.setPage(detailCashierContent);
+                    tes.getPage().setStage(stage);
+                    tes.getPage().setSettings(settings);
+                    tes.getPage().setSettingsDS(settingsDS);
+                    tes.execute();
+                    tab.setContent(tes.getPage());
                 });
                 
                 // Add Item Display to Grid
@@ -239,7 +247,6 @@ public class CashierPage extends VBox {
                 col = 0;
                 row++;
             }
-
         }
 
         // Add grid to grid box
@@ -259,7 +266,6 @@ public class CashierPage extends VBox {
         searchBar.setPromptText("Search. . .");
         searchBar.setPrefWidth(600);
         searchBar.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;");
-
 
         // Create a filter button
         ImageView filterIcon = new ImageView("/images/icon/filterButton.png");
@@ -359,7 +365,6 @@ public class CashierPage extends VBox {
         filterDropDownButton.getItems().add(menuItem);
 
         filterDropDownButton.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;-fx-focus-color: transparent;");
-        
 
         // Add contents to searchBox
         searchBox.getChildren().addAll(searchBar, filterDropDownButton);
@@ -374,7 +379,6 @@ public class CashierPage extends VBox {
         this.libraryBox.setPrefHeight(430);
         this.libraryBox.prefWidthProperty().bind(this.leftVBox.widthProperty().subtract(60));
         this.libraryBox.setStyle("-fx-background-color: white;-fx-border-radius: 10;-fx-border-width: 0.2;-fx-border-color: black;-fx-background-radius: 10");
-        
 
         // Create HBox header library
         this.headLibraryBox = new HBox();
@@ -485,8 +489,14 @@ public class CashierPage extends VBox {
                 // Add onclick event
                 libraryDisplay.setOnMouseClicked(event -> {
                     setRegCust();
-                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, library, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust);
-                    tab.setContent(detailCashierContent);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, library, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
+                    DiscountDetailCashier tes = new DiscountDetailCashier();
+                    tes.setPage(detailCashierContent);
+                    tes.getPage().setStage(stage);
+                    tes.getPage().setSettings(settings);
+                    tes.getPage().setSettingsDS(settingsDS);
+                    tes.execute();
+                    tab.setContent(tes.getPage());
                 });
 
                 this.bodyLibraryVBox.getChildren().addAll(hLine4, libraryDisplay);
@@ -801,7 +811,7 @@ public class CashierPage extends VBox {
         addCustomerButton.setOnAction(event -> {
             Tab newTab = new Tab("Cashier");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, new Inventory<PurchasedItem>(), false, null);
+            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
             newTab.setContent(cashierContent);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -1014,14 +1024,13 @@ public class CashierPage extends VBox {
         NumberFormat formatter = NumberFormat.getInstance();
         formatter.setGroupingUsed(true);
         String totalPriceBill = formatter.format(this.totalPrice);
-        Label totalPriceBills;
         String fixTotalPrice = formatter.format(this.finalTotalPrice);
-        Label fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
+        fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
         if(this.finalTotalPrice == this.totalPrice){
             totalPriceBills = new Label("Charge Rp" + totalPriceBill);
             totalPriceBox.getChildren().add(totalPriceBills);
         } else {
-            Text totalPriceBillLabel = new Text("Rp" + totalPriceBill);
+            totalPriceBillLabel = new Text("Rp" + totalPriceBill);
             totalPriceBills = new Label("Charge");
             totalPriceBox.getChildren().addAll(totalPriceBills, totalPriceBillLabel, fixTotalPriceBill);
             HBox.setMargin(fixTotalPriceBill, new Insets(0,0,0,10));
@@ -1077,7 +1086,7 @@ public class CashierPage extends VBox {
             double discount = (this.totalPrice - this.finalTotalPrice) / this.totalPrice;
             DecimalFormat df = new DecimalFormat("#.##");
             df.setRoundingMode(RoundingMode.DOWN);
-            double formattedDiscount = Double.parseDouble(df.format(discount));
+            formattedDiscount = Double.parseDouble(df.format(discount));
 
             if(this.selectionIndex >= this.tempID.size() || this.selectionIndex == -1){
                 newBill = new FixedBill(timenow, this.totalPrice, formattedDiscount);
@@ -1118,7 +1127,7 @@ public class CashierPage extends VBox {
             this.purchasedItems.getList().clear();
             
             setRegCust();
-            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, this.purchasedItems, this.isUsePoint, this.regisCust);
+            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, this.purchasedItems, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
             tab.setContent(cashierContent);
 
         });
@@ -1219,13 +1228,18 @@ public class CashierPage extends VBox {
     private void clickItem(HBox itemDisplay, Item item){
         itemDisplay.setOnMouseClicked(event -> {
             setRegCust();
-            CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust);
-            tab.setContent(detailCashierContent);
+            CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
+            DiscountDetailCashier tes = new DiscountDetailCashier();
+            tes.setPage(detailCashierContent);
+            tes.getPage().setStage(stage);
+            tes.getPage().setSettings(settings);
+            tes.getPage().setSettingsDS(settingsDS);
+            tes.execute();
+            tab.setContent(tes.getPage());
         });
     }
 
     private void searchItem(){
-
         this.mode = 0;
         int count = 0;
         boolean isPriceChecked = this.checkBox1.isSelected();
@@ -1563,7 +1577,6 @@ public class CashierPage extends VBox {
         this.totalItem = count;
         this.totalItemString = String.valueOf(this.totalItem) + " Items";
         this.totalItemLabel.setText(totalItemString);
-        
 
         // Create scrollpane
         ScrollPane scrollPane3 = new ScrollPane(this.bodyLibraryVBox);
@@ -1630,6 +1643,14 @@ public class CashierPage extends VBox {
         return totalPriceBox;
     }
 
+    public Stage getStage(){
+        return this.stage;
+    }
+
+    public Tab getTab(){
+        return this.tab;
+    }
+
     public void setStage(Stage stage){
         this.stage = stage;
     }
@@ -1648,5 +1669,33 @@ public class CashierPage extends VBox {
 
     public DataStore<Settings> getSettingsDS(){
         return this.settingsDS;
+    }
+
+    public void setTotalPrice(double totalPrice){
+        this.totalPrice = totalPrice;
+    }
+
+    public double getTotalPrice(){
+        return this.totalPrice;
+    }
+
+    public void setFinalTotalPrice(double finalTotalPrice){
+        this.finalTotalPrice = finalTotalPrice;
+    }
+
+    public double getFinalTotalPrice(){
+        return this.finalTotalPrice;
+    }
+
+    public Label getTotalPriceBills(){
+        return this.totalPriceBills;
+    }
+
+    public Text getTotalPriceBillLabel(){
+        return this.totalPriceBillLabel;
+    }
+
+    public Label getFixTotalPriceBill(){
+        return this.fixTotalPriceBill;
     }
 }

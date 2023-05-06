@@ -5,6 +5,7 @@ import Plugin.Plugin;
 import Plugin.PluginManager;
 import System.Inventory;
 import System.Settings;
+import DataStore.DataStore;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -13,23 +14,29 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 public class TaxAndServiceSettings extends SettingsDecorator implements Serializable {
-    private double currentTax;
-    private double currentServiceCharge;
+    private TaxAndService currentTAS;
+    private DataStore<TaxAndService> TASStore;
 
     public TaxAndServiceSettings() {
         this.pluginName = "Plugin Tax & Service";
-        this.currentTax = 0;
-        this.currentServiceCharge = 0;
+        this.currentTAS = new TaxAndService();
+        this.TASStore = new DataStore<TaxAndService>();
     }
 
     @Override
     public void execute() {
+        // Try to load current TAS
+        try {
+            currentTAS = TASStore.loadData("taxAndService", this.page.getSettings(), new Class<?>[]{Inventory.class, TaxAndService.class}).getElement(0);
+        } catch (Exception e){
+            // Do nothing
+        }
+
         // Create new settings option
         Button optionButton = new Button("Tax & Service");
         ImageView iconDiscount = new ImageView(new Image("/images/icon/taxservice.png"));
@@ -70,7 +77,7 @@ public class TaxAndServiceSettings extends SettingsDecorator implements Serializ
             Label taxLabel = new Label("Tax");
             taxLabel.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 20));
 
-            TextField taxInput = new TextField(String.valueOf(this.currentTax));
+            TextField taxInput = new TextField(String.valueOf(this.currentTAS.getTax()));
 
             taxBox.getChildren().addAll(taxLabel, taxInput);
             taxBox.setSpacing(10);
@@ -81,7 +88,7 @@ public class TaxAndServiceSettings extends SettingsDecorator implements Serializ
             Label serviceLabel = new Label("Service");
             serviceLabel.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 20));
 
-            TextField serviceInput = new TextField(String.valueOf(this.currentServiceCharge));
+            TextField serviceInput = new TextField(String.valueOf(this.currentTAS.getService()));
 
             serviceBox.getChildren().addAll(serviceLabel, serviceInput);
             serviceBox.setSpacing(10);
@@ -91,8 +98,13 @@ public class TaxAndServiceSettings extends SettingsDecorator implements Serializ
 
             // Add event onclick button save
             save.setOnAction(e -> {
-                setCurrentTax(Double.parseDouble(taxInput.getText()));
-                setCurrentServiceCharge(Double.parseDouble(serviceInput.getText()));
+                currentTAS.setTax(Double.parseDouble(taxInput.getText()));
+                currentTAS.setService(Double.parseDouble(serviceInput.getText()));
+
+                // Save tax and service
+                Inventory<TaxAndService> saveTAS = new Inventory<TaxAndService>();
+                saveTAS.addElement(currentTAS);
+                TASStore.saveData("taxAndService", this.page.getSettings(), new Class<?>[]{Inventory.class, TaxAndService.class}, saveTAS);
 
                 // Save settings
                 Settings temp = new Settings();
@@ -120,21 +132,5 @@ public class TaxAndServiceSettings extends SettingsDecorator implements Serializ
         });
 
         this.page.getOptions().getChildren().add(optionButton);
-    }
-
-    public double getCurrentServiceCharge() {
-        return currentServiceCharge;
-    }
-
-    public double getCurrentTax() {
-        return currentTax;
-    }
-
-    public void setCurrentServiceCharge(double currentServiceCharge) {
-        this.currentServiceCharge = currentServiceCharge;
-    }
-
-    public void setCurrentTax(double currentTax) {
-        this.currentTax = currentTax;
     }
 }

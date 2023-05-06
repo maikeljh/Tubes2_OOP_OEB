@@ -162,7 +162,7 @@ public class ApplicationBNMOStore extends Application {
         cashierPage.setOnAction(event -> {
             // Handle open menu item click
             Tab newTab = new Tab("Cashier");
-            CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, transactions, new Inventory<PurchasedItem>(), false, null);
+            CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
             DiscountCashier tes = new DiscountCashier();
             tes.setPage(cashierTab);
             tes.getPage().setStage(stage);
