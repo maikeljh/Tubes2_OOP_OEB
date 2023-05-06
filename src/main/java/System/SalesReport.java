@@ -5,11 +5,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 
+@Getter @Setter
 @XmlRootElement
 public class SalesReport implements Serializable {
     /* attributes */
@@ -25,30 +28,6 @@ public class SalesReport implements Serializable {
     }
 
     /* methods */
-
-    public void setItems(Inventory<PurchasedItem> items) {
-        this.items = items;
-    }
-
-    public void setTotalGrossProfit(double totalGrossProfit) {
-        this.totalGrossProfit = totalGrossProfit;
-    }
-
-    public void setTotalNetProfit(double totalNetProfit) {
-        this.totalNetProfit = totalNetProfit;
-    }
-
-    public double getTotalGrossProfit() {
-        return totalGrossProfit;
-    }
-
-    public double getTotalNetProfit() {
-        return totalNetProfit;
-    }
-
-    public Inventory<PurchasedItem> getItems(){
-        return items;
-    }
 
     public int getElementIdx(String itemName){
         boolean found = false;

@@ -1002,7 +1002,7 @@ public class CashierPage extends VBox {
         // Create Text Discount
         if(this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){
             setRegCust();
-            if (this.regisCust.getActiveStatus()){
+            if (this.regisCust.isActiveStatus()){
                 this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
             } else {
                 this.finalTotalPrice = this.totalPrice;
@@ -1136,7 +1136,7 @@ public class CashierPage extends VBox {
                     // Create Text Discount
                     if(this.selectionIndex < this.tempID.size()){
                         setRegCust();
-                        if (this.regisCust.getActiveStatus()){
+                        if (this.regisCust.isActiveStatus()){
                             this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
                         } else {
                             this.finalTotalPrice = this.totalPrice;

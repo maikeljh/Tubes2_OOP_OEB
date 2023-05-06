@@ -1,9 +1,13 @@
 package System;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@NoArgsConstructor @Getter @Setter
 @XmlRootElement
 public class Bill implements Serializable {
     /* attributes */
@@ -12,10 +16,6 @@ public class Bill implements Serializable {
     protected double discount;
     protected String date;
     protected int customerID;
-
-    public Bill(){
-        items = new Inventory<PurchasedItem>();
-    }
 
     public Bill(String date) {
         this.date = date;
@@ -28,37 +28,6 @@ public class Bill implements Serializable {
     }
 
     /* methods */
-    public void setTotalPrice(double totalPrice){
-        this.totalPrice = totalPrice;
-    }
-    public void setDiscount(double discount){
-        this.discount = discount;
-    }
-    public void setDate(String date){
-        this.date = date;
-    }
-    public void setCustomerID(int customerID){
-        this.customerID = customerID;
-    }
-    public void setItems(Inventory<PurchasedItem> list){
-        this.items = list;
-    }
-
-    public Inventory<PurchasedItem> getItems(){
-        return items;
-    }
-    public double getTotalPrice(){
-        return totalPrice;
-    }
-    public double getDiscount(){
-        return discount;
-    }
-    public String getDate(){
-        return date;
-    }
-    public int getCustomerID(){
-        return customerID;
-    }
     public PurchasedItem getItem(int idx){
         return items.getElement(idx);
     }

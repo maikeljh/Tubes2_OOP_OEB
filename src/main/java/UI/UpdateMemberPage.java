@@ -248,7 +248,7 @@ public class UpdateMemberPage extends VBox {
         deactToggle.setStyle("-fx-background-color: #F3F9FB;");
         deactToggle.setCursor(Cursor.HAND);
 
-        if (((RegisteredCustomer) customer).getActiveStatus()) {
+        if (((RegisteredCustomer) customer).isActiveStatus()) {
             deactToggle.setGraphic(activateMember);
             deactToggle.setOnAction(event -> {
                 if (deactToggle.isSelected()) {
@@ -307,7 +307,7 @@ public class UpdateMemberPage extends VBox {
                     String name = inputName.getText();
                     String phoneNumber = inputNumber.getText();
                     int point = ((RegisteredCustomer) customer).getPoint();
-                    boolean activeStat = ((RegisteredCustomer) customer).getActiveStatus();
+                    boolean activeStat = ((RegisteredCustomer) customer).isActiveStatus();
                     Inventory<FixedBill> bills = customer.getTransaction();
 
                     if (customers.getElement(id-1).getId() == id) {
@@ -328,7 +328,7 @@ public class UpdateMemberPage extends VBox {
                     String name = inputName.getText();
                     String phoneNumber = inputNumber.getText();
                     int point = ((RegisteredCustomer) customer).getPoint();
-                    boolean activeStat = ((RegisteredCustomer) customer).getActiveStatus();
+                    boolean activeStat = ((RegisteredCustomer) customer).isActiveStatus();
                     Inventory<FixedBill> bills = customer.getTransaction();
 
                     if (customers.getElement(id-1).getId() == id) {
@@ -344,7 +344,7 @@ public class UpdateMemberPage extends VBox {
                 }
             }
 
-            if (((RegisteredCustomer) customer).getActiveStatus()) {
+            if (((RegisteredCustomer) customer).isActiveStatus()) {
                 if (deactToggle.isSelected()) {
                     ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
                 }

@@ -2,11 +2,14 @@ package System;
 
 import jakarta.xml.bind.annotation.XmlAnyElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter @Setter
 @XmlRootElement
 public class Inventory<T> implements Serializable{
     @XmlAnyElement(lax = true)
@@ -18,22 +21,8 @@ public class Inventory<T> implements Serializable{
         this.neff = 0;
     }
 
-    /* Getter */
-    public List<T> getList(){
-        return this.list;
-    }
-
     public T getElement(int idx){
         return this.list.get(idx);
-    }
-
-    public int getNeff(){
-        return neff;
-    }
-
-    /* Setter */
-    public void setNeff(int neff){
-        this.neff = neff;
     }
 
     public void addElement(T element) {

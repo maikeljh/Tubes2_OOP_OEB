@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
 
-@Getter @Setter @NoArgsConstructor @Data
+@NoArgsConstructor @Getter @Setter
 @XmlRootElement
 public abstract class RegisteredCustomer extends Customer {
     protected String name;
@@ -33,14 +33,6 @@ public abstract class RegisteredCustomer extends Customer {
         this.point = point;
         this.activeStatus = activeStatus;
     }
-    public boolean getActiveStatus() {
-        return this.activeStatus;
-    }
-
-    public void setActiveStatus(boolean activeStatus) {
-        this.activeStatus = activeStatus;
-    }
-
     public void calculatePoint(double totalPrice) {
         this.setPoint(this.point += (int) (0.01 * totalPrice));
     }
