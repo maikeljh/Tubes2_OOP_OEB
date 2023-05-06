@@ -12,25 +12,25 @@ import java.io.FileOutputStream;
 public class Tutorial {
     public static <XMLElement> void tes() throws DocumentException, FileNotFoundException {
         // 1. Setup data yang ingin ditulis
-        FixedBill bill = new FixedBill();
+        Bill bill = new Bill();
         bill.setTotalPrice(100.00);
         bill.setDiscount(10.00);
         bill.setDate("2023-2-12");
         bill.setCustomerID(1234);
         bill.setBillID(5678);
 
-        FixedBill bill2 = new FixedBill();
+        Bill bill2 = new Bill();
         bill2.setTotalPrice(100.00);
         bill2.setDiscount(10.00);
         bill2.setDate("2023-2-12");
         bill2.setCustomerID(234);
         bill2.setBillID(5679);
 
-        Inventory<FixedBill> billList = new Inventory<FixedBill>();
+        Inventory<Bill> billList = new Inventory<Bill>();
         billList.addElement(bill);
         billList.addElement(bill2);
 
-        Inventory<FixedBill> customerBill = new Inventory<FixedBill>();
+        Inventory<Bill> customerBill = new Inventory<Bill>();
         customerBill.addElement(bill2);
 
         Customer customer1 = new Customer(bill);
@@ -68,7 +68,7 @@ public class Tutorial {
         bill2.getItems().addElement(item3);
 
         // 2. Create DataStore (Ini buatnya di class ApplicationBNMOStore untuk setiap class yang diperlukan)
-        DataStore<FixedBill> ds = new DataStore<FixedBill> ();
+        DataStore<Bill> ds = new DataStore<Bill> ();
         DataStore<Customer> dataCustomer = new DataStore<Customer>();
 
         // 3. Cara Read dan Write Data di XML
@@ -76,25 +76,25 @@ public class Tutorial {
         /*
         XMLAdapter testing = new XMLAdapter();
         ds.setAdapter(testing);
-        ds.saveData("bill", "xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
-        Inventory<FixedBill> hasil = ds.loadData("bill", "xml", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
+        ds.saveData("bill", "xml", new Class<?>[]{Inventory.class, Bill.class, PurchasedItem.class}, billList);
+        Inventory<Bill> hasil = ds.loadData("bill", "xml", new Class<?>[]{Inventory.class, Bill.class, PurchasedItem.class});
 
         XMLAdapter testCustomer = new XMLAdapter();
         dataCustomer.setAdapter(testCustomer);
-        dataCustomer.saveData("customer.xml", new Class<?>[] {Inventory.class, Customer.class, FixedBill.class, PurchasedItem.class}, customers);
+        dataCustomer.saveData("customer.xml", new Class<?>[] {Inventory.class, Customer.class, Bill.class, PurchasedItem.class}, customers);
 
 
         // 4. Cara Read dan Write Data di JSON
         JSONAdapter testing1 = new JSONAdapter();
         ds.setAdapter(testing1);
-        ds.saveData("bill", "json", new Class<?>[]{Inventory.class, FixedBill.class}, billList);
-        Inventory<FixedBill> hasil1 = ds.loadData("bill", "json", new Class<?>[]{Inventory.class, FixedBill.class});
+        ds.saveData("bill", "json", new Class<?>[]{Inventory.class, Bill.class}, billList);
+        Inventory<Bill> hasil1 = ds.loadData("bill", "json", new Class<?>[]{Inventory.class, Bill.class});
 
         // 5. Cara Read dan Write Data di OBJ
         OBJAdapter testing2 = new OBJAdapter();
         ds.setAdapter(testing2);
-        ds.saveData("bill", "txt", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class}, billList);
-        Inventory<FixedBill> hasil2 = ds.loadData("bill.txt", "txt", new Class<?>[]{Inventory.class, FixedBill.class, PurchasedItem.class});
+        ds.saveData("bill", "txt", new Class<?>[]{Inventory.class, Bill.class, PurchasedItem.class}, billList);
+        Inventory<Bill> hasil2 = ds.loadData("bill.txt", "txt", new Class<?>[]{Inventory.class, Bill.class, PurchasedItem.class});
 
         // 6. Cara Print PDF
         Document document = new Document();

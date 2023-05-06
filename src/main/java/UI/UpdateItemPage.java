@@ -1,7 +1,6 @@
 package UI;
 
 import DataStore.DataStore;
-import DataStore.XMLAdapter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,10 +26,12 @@ import System.Settings;
 
 import javax.imageio.ImageIO;
 
-public class UpdateItemPage extends VBox {
+public class UpdateItemPage extends Page {
     private final ImageView itemImage;
 
-    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
+    public UpdateItemPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS, Settings settings, DataStore<Settings> settingsDS){
+        super(stage, tab, settings, settingsDS);
+
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -51,7 +52,7 @@ public class UpdateItemPage extends VBox {
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
+            ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings, settingsDS);
             tab.setContent(detailItemContent);
         });
 
@@ -231,7 +232,7 @@ public class UpdateItemPage extends VBox {
                 itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings, settingsDS);
                 tab.setContent(detailItemContent);
             } else {
                 // Show alert

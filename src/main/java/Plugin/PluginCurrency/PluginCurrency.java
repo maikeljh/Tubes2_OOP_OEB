@@ -16,7 +16,7 @@ import javafx.scene.text.FontWeight;
 import System.Inventory;
 import System.Item;
 import System.Customer;
-import System.FixedBill;
+import System.Bill;
 import System.PurchasedItem;
 import System.RegisteredCustomer;
 import System.Member;
@@ -114,7 +114,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
                 }
 
                 for(Customer customer : customers.getBox()){
-                    for(FixedBill bill : customer.getTransaction().getBox()){
+                    for(Bill bill : customer.getTransaction().getBox()){
                         for(PurchasedItem item : bill.getItems().getBox()){
                             item.setSellPrice(item.getSellPrice() / this.currentKurs * newKurs);
                             item.setBuyPrice(item.getBuyPrice() / this.currentKurs * newKurs);
@@ -131,7 +131,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
 
                 // Save new data
                 this.page.getItemDS().saveData("item", this.page.getSettings(), new Class<?>[]{Inventory.class, Item.class}, items);
-                this.page.getCustomerDS().saveData("customer", this.page.getSettings(), new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+                this.page.getCustomerDS().saveData("customer", this.page.getSettings(), new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
                 Inventory<SalesReport> tempReport = new Inventory<SalesReport>();
                 tempReport.addElement(report);
                 this.page.getReportDS().saveData("report", this.page.getSettings(), new Class<?>[]{Inventory.class, SalesReport.class, PurchasedItem.class}, tempReport);

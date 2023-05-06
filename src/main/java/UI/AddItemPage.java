@@ -29,10 +29,12 @@ import System.Item;
 
 import javax.imageio.ImageIO;
 
-public class AddItemPage extends Page{
+public class AddItemPage extends Page {
     private final ImageView itemImage;
 
-    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
+    public AddItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings, DataStore<Settings> settingsDS){
+        super(stage, tab, settings, settingsDS);
+
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -53,7 +55,7 @@ public class AddItemPage extends Page{
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings, settingsDS);
             tab.setContent(listItemPage);
         });
 
@@ -238,7 +240,7 @@ public class AddItemPage extends Page{
                 itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
                 // Change page
-                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
+                ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings, settingsDS);
                 tab.setContent(listItemPage);
             } else {
                 // Show alert

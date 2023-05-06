@@ -46,9 +46,9 @@ public class SalesReport implements Serializable {
         }
     }
 
-    public void updateReport(FixedBill fixedBill){
+    public void updateReport(Bill Bill){
         // update items when a fixed bill is added
-        for (PurchasedItem item : fixedBill.getItems().getBox()){
+        for (PurchasedItem item : Bill.getItems().getBox()){
             if (getElementIdx(item.getName()) == -1){
                 // if item not in items list, then add item to list
                 items.addElement(item);

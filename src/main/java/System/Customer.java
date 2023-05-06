@@ -14,15 +14,15 @@ import lombok.Setter;
 public class Customer implements Serializable {
     protected int id;
     private static int customerCount = 1;
-    protected Inventory<FixedBill> transaction;
+    protected Inventory<Bill> transaction;
 
     public Customer(int id) {
         this.id = id;
-        this.transaction = new Inventory<FixedBill>();
+        this.transaction = new Inventory<Bill>();
     }
-    public Customer(FixedBill bill) {
+    public Customer(Bill bill) {
         this.id = customerCount;
-        this.transaction = new Inventory<FixedBill>();
+        this.transaction = new Inventory<Bill>();
         this.transaction.addElement(bill);
         customerCount++;
         bill.setCustomerID(this.id);

@@ -24,7 +24,7 @@ import System.PurchasedItem;
 import System.RegisteredCustomer;
 import System.Customer;
 import System.VIP;
-import System.FixedBill;
+import System.Bill;
 import System.SalesReport;
 import Plugin.PluginManager;
 
@@ -69,7 +69,7 @@ public class ApplicationBNMOStore extends Application {
 
         // Read Customers Data
         try {
-            Inventory<Customer> loadedCustomers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class});
+            Inventory<Customer> loadedCustomers = customerDS.loadData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class});
             if(loadedCustomers != null){
                 customers = loadedCustomers;
             }
@@ -95,7 +95,7 @@ public class ApplicationBNMOStore extends Application {
             }
         }
 
-        FixedBill bill2 = new FixedBill();
+        Bill bill2 = new Bill();
         bill2.setTotalPrice(100.00);
         bill2.setDiscount(10.00);
         bill2.setDate("2023-2-12");
@@ -109,14 +109,14 @@ public class ApplicationBNMOStore extends Application {
         // Read transactions
         double totalPrice = 30000;
         double discount = 0.10;
-        Inventory<FixedBill> transactions = new Inventory<FixedBill>();
+        Inventory<Bill> transactions = new Inventory<Bill>();
         for (int i=0; i<5; i++){
-            FixedBill fixedBill = new FixedBill("25/04/2023 21:21", i+1, totalPrice, discount);
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
-            fixedBill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 10, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
-            transactions.addElement(fixedBill);
+            Bill Bill = new Bill("25/04/2023 21:21", i+1, totalPrice, discount);
+            Bill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
+            Bill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
+            Bill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
+            Bill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 10, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
+            transactions.addElement(Bill);
         }
 
         // Read sold items
@@ -139,7 +139,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Members");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers, customerDS, settings);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, newTab, customers, customerDS, settings, settingsDS);
             newTab.setContent(listMemberPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -151,7 +151,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Items");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS, settings);
+            ListItemPage listItemPage = new ListItemPage(stage, newTab, items, itemDS, settings, settingsDS);
             newTab.setContent(listItemPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
@@ -188,7 +188,7 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("History");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
-            SalesReportPage reportPage = new SalesReportPage(stage, newTab, report);
+            SalesReportPage reportPage = new SalesReportPage(stage, newTab, report, settings, settingsDS);
             newTab.setContent(reportPage);
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);

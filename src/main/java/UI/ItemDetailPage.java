@@ -23,8 +23,10 @@ import System.Settings;
 
 import java.io.File;
 
-public class ItemDetailPage extends VBox {
-    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
+public class ItemDetailPage extends Page {
+    public ItemDetailPage(Stage stage, Tab tab, Item item, Inventory<Item> items, DataStore<Item> itemDS, Settings settings, DataStore<Settings> settingsDS){
+        super(stage, tab, settings, settingsDS);
+
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -43,7 +45,7 @@ public class ItemDetailPage extends VBox {
 
         // Add event on update button
         updateButton.setOnAction(event -> {
-            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items, itemDS, settings);
+            UpdateItemPage updateItemContent = new UpdateItemPage(stage, tab, item, items, itemDS, settings, settingsDS);
             tab.setContent(updateItemContent);
         });
 
@@ -64,7 +66,7 @@ public class ItemDetailPage extends VBox {
             itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
             // Change page
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings, settingsDS);
             tab.setContent(listItemPage);
         });
         // Create back button
@@ -72,7 +74,7 @@ public class ItemDetailPage extends VBox {
         backButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         backButton.setStyle("-fx-background-color: #769295; -fx-text-fill: white;");
         backButton.setOnAction(event -> {
-            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings);
+            ListItemPage listItemPage = new ListItemPage(stage, tab, items, itemDS, settings, settingsDS);
             tab.setContent(listItemPage);
         });
 

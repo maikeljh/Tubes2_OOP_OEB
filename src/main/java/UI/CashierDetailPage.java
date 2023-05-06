@@ -18,9 +18,9 @@ import java.text.NumberFormat;
 
 import System.Inventory;
 import System.Customer;
-import System.FixedBill;
+import System.Bill;
 
-public class CashierDetailPage extends VBox {
+public class CashierDetailPage extends Page {
     protected Integer quantity = 0;
     protected Settings settings;
     protected DataStore<Settings> settingsDS;
@@ -34,15 +34,13 @@ public class CashierDetailPage extends VBox {
     protected TabPane tabPane;
     protected Inventory<Customer> customers;
     protected Integer mode;
-    protected Inventory<FixedBill> transactions;
+    protected Inventory<Bill> transactions;
     protected boolean usePoint;
     protected RegisteredCustomer regisCust;
 
-    public CashierDetailPage(Stage stage, Tab tab, Item item, Inventory<PurchasedItem> purchasedItems, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, boolean usePoint, RegisteredCustomer regisCust, Settings settings, DataStore<Settings> settingsDS){
-        this.stage = stage;
-        this.tab = tab;
-        this.settings = settings;
-        this.settingsDS = settingsDS;
+    public CashierDetailPage(Stage stage, Tab tab, Item item, Inventory<PurchasedItem> purchasedItems, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<Bill> transactions, boolean usePoint, RegisteredCustomer regisCust, Settings settings, DataStore<Settings> settingsDS){
+        super(stage, tab, settings, settingsDS);
+
         this.item = item;
         this.purchasedItems = purchasedItems;
         this.items = items;

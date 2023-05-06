@@ -13,11 +13,11 @@ import java.io.Serializable;
 @XmlRootElement
 public class Member extends RegisteredCustomer {
 
-    public Member(int customerId, String name, String phoneNumber, FixedBill bill) {
+    public Member(int customerId, String name, String phoneNumber, Bill bill) {
         super(customerId, name, phoneNumber, bill);
     }
 
-    public Member(int customerId, String name, String phoneNumber, int point, boolean activeStatus, Inventory<FixedBill> bills) {
+    public Member(int customerId, String name, String phoneNumber, int point, boolean activeStatus, Inventory<Bill> bills) {
         super(customerId, name, phoneNumber, point, activeStatus);
         this.setTransaction(bills);
     }

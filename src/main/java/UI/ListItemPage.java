@@ -18,8 +18,9 @@ import javafx.stage.Stage;
 import System.Settings;
 
 public class ListItemPage extends Page {
+    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings, DataStore<Settings> settingsDS){
+        super(stage, tab, settings, settingsDS);
 
-    public ListItemPage(Stage stage, Tab tab, Inventory<Item> items, DataStore<Item> itemDS, Settings settings){
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -36,7 +37,7 @@ public class ListItemPage extends Page {
         addButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         addButton.setStyle("-fx-background-color: #3B919B; -fx-text-fill: white;");
         addButton.setOnAction(event -> {
-            AddItemPage addItemContent = new AddItemPage(stage, tab, items, itemDS, settings);
+            AddItemPage addItemContent = new AddItemPage(stage, tab, items, itemDS, settings, settingsDS);
             tab.setContent(addItemContent);
         });
 
@@ -93,7 +94,7 @@ public class ListItemPage extends Page {
 
             // Add onclick event
             itemDisplay.setOnMouseClicked(event -> {
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
+                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings, settingsDS);
                 tab.setContent(detailItemContent);
             });
             // Add Item Display to Grid
@@ -164,7 +165,7 @@ public class ListItemPage extends Page {
 
                     // Add onclick event
                     itemDisplay.setOnMouseClicked(e -> {
-                        ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings);
+                        ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings, settingsDS);
                         tab.setContent(detailItemContent);
                     });
                     // Add Item Display to Grid

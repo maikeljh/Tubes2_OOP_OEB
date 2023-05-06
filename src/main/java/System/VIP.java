@@ -13,11 +13,11 @@ import java.io.Serializable;
 @XmlRootElement
 public class VIP extends RegisteredCustomer{
 
-    public VIP(int customerId, String name, String phoneNumber, FixedBill bill) {
+    public VIP(int customerId, String name, String phoneNumber, Bill bill) {
         super(customerId, name, phoneNumber, bill);
     }
 
-    public VIP(int customerId, String name, String phoneNumber, int point, boolean activeStatus, Inventory<FixedBill> bills) {
+    public VIP(int customerId, String name, String phoneNumber, int point, boolean activeStatus, Inventory<Bill> bills) {
         super(customerId, name, phoneNumber, point, activeStatus);
         this.setTransaction(bills);
     }

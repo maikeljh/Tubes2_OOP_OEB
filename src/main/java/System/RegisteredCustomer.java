@@ -17,7 +17,7 @@ public abstract class RegisteredCustomer extends Customer {
     protected int point;
     protected boolean activeStatus;
 
-    public RegisteredCustomer(int customerId, String name, String phoneNumber, FixedBill bill) {
+    public RegisteredCustomer(int customerId, String name, String phoneNumber, Bill bill) {
         super(customerId);
         this.name = name;
         this.phoneNumber = phoneNumber;

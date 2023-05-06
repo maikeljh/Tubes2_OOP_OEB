@@ -3,7 +3,6 @@ package UI;
 import com.itextpdf.text.DocumentException;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -21,12 +19,15 @@ import System.PurchasedItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.collections.FXCollections;
-import javafx.util.Callback;
-
 import java.io.FileNotFoundException;
 
-public class SalesReportPage extends VBox {
-    public SalesReportPage(Stage stage, Tab tab, SalesReport report) {
+import System.Settings;
+import DataStore.DataStore;
+
+public class SalesReportPage extends Page {
+    public SalesReportPage(Stage stage, Tab tab, SalesReport report, Settings settings, DataStore<Settings> settingsDS) {
+        super(stage, tab, settings, settingsDS);
+
         // Create header (HBox)
         HBox hbox = new HBox();
 

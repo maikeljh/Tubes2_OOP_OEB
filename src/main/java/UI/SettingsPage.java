@@ -25,7 +25,7 @@ import System.Inventory;
 import System.Settings;
 import System.Item;
 import System.Customer;
-import System.FixedBill;
+import System.Bill;
 import System.PurchasedItem;
 import System.RegisteredCustomer;
 import System.Member;
@@ -136,7 +136,7 @@ public class SettingsPage extends HBox {
 
             settingsDS.saveData("settings", temp, concatenated, tempSettings);
             itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
-            customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+            customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
 
             // Save report
             Inventory<SalesReport> tempReport = new Inventory<SalesReport>();
@@ -174,7 +174,7 @@ public class SettingsPage extends HBox {
 
                 settingsDS.saveData("settings", temp, concatenated, tempSettings);
                 itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
-                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
 
                 // Save report
                 Inventory<SalesReport> tempReport = new Inventory<SalesReport>();

@@ -28,7 +28,7 @@ import System.PurchasedItem;
 import System.Inventory;
 import System.Item;
 import System.Customer;
-import System.FixedBill;
+import System.Bill;
 import System.RegisteredCustomer;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -57,7 +57,7 @@ public class CashierPage extends VBox {
     private int selectionIndex;
     private Inventory<Item> items;
     private Inventory<Customer> customers;
-    private Inventory<FixedBill> transactions;
+    private Inventory<Bill> transactions;
     private int mode;
     private int totalItem = 0;
     private String totalItemString = "";
@@ -90,7 +90,7 @@ public class CashierPage extends VBox {
     private ToggleButton usePointButton;
     private NumberFormat formatter;
 
-    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS){
+    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<Bill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS){
         // Assign values
         this.stage = stage;
         this.tab = tab;
@@ -1508,7 +1508,7 @@ public class CashierPage extends VBox {
             int custID = -1;
 
             // Init newBill
-            FixedBill newBill;
+            Bill newBill;
 
             // Create formattedDiscount (newBill)
             double discount = (this.totalPrice - this.finalTotalPrice) / this.totalPrice;
@@ -1520,7 +1520,7 @@ public class CashierPage extends VBox {
             if(this.selectionIndex >= this.tempID.size() || this.selectionIndex == -1){
 
                 // Create newBill (newCust)
-                newBill = new FixedBill(timenow, this.totalPrice, formattedDiscount);
+                newBill = new Bill(timenow, this.totalPrice, formattedDiscount);
 
                 // Create newCust (customers)
                 Customer newCust = new Customer(newBill);
@@ -1547,7 +1547,7 @@ public class CashierPage extends VBox {
                 this.regisCust.calculatePoint(this.finalTotalPrice);
 
                 // Create newBill to the customer
-                newBill = new FixedBill (timenow, custID, this.totalPrice, formattedDiscount);
+                newBill = new Bill (timenow, custID, this.totalPrice, formattedDiscount);
 
             }
 

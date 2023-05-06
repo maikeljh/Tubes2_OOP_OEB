@@ -18,8 +18,10 @@ import javafx.stage.Stage;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 
-public class HistoryPage extends VBox {
-    public HistoryPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
+public class HistoryPage extends Page {
+    public HistoryPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings, DataStore<Settings> settingsDS) {
+        super(stage, tab, settings, settingsDS);
+
         // Create header (HBox)
         HBox hbox = new HBox();
 
@@ -45,7 +47,7 @@ public class HistoryPage extends VBox {
 
         // Add event handler for back button
         backButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
             tab.setContent(listMemberPage);
         });
 
@@ -67,7 +69,7 @@ public class HistoryPage extends VBox {
         int i = 1; // counter
 
         // Display list of transactions / history
-        for (FixedBill transaction : customer.getTransaction().getBox()) {
+        for (Bill transaction : customer.getTransaction().getBox()) {
             // Create HBox for every transaction (fixed bill)
             HBox transactionHBox = new HBox();
 

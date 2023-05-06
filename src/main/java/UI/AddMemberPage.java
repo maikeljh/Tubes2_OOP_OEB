@@ -19,13 +19,15 @@ import javafx.stage.Stage;
 import System.Settings;
 import DataStore.DataStore;
 import javafx.scene.image.ImageView;
-import System.FixedBill;
+import System.Bill;
 import System.PurchasedItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddMemberPage extends VBox {
-    public AddMemberPage(Stage stage, Tab tab, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings) {
+public class AddMemberPage extends Page {
+    public AddMemberPage(Stage stage, Tab tab, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings, DataStore<Settings> settingsDS) {
+        super(stage, tab, settings, settingsDS);
+
         // Create HBox for header
         HBox hBox = new HBox();
 
@@ -62,7 +64,7 @@ public class AddMemberPage extends VBox {
 
         // Add event handler for cancel button
         cancelButton.setOnAction(event -> {
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
+            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
             tab.setContent(listMemberPage);
         });
 
@@ -162,7 +164,7 @@ public class AddMemberPage extends VBox {
             int id = customerID.getValue();
             String name = inputName.getText();
             String phoneNumber = inputNumber.getText();
-            FixedBill bill = new FixedBill();
+            Bill bill = new Bill();
 
             for (Customer customer : customers.getBox()) {
                 if (customer.getId() == id) {
@@ -183,10 +185,10 @@ public class AddMemberPage extends VBox {
                 }
 
                 // Save data
-                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, FixedBill.class, PurchasedItem.class}, customers);
+                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
 
                 // Change page back to ListMemberPage
-                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings);
+                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
                 tab.setContent(listMemberPage);
             }
             // If input is not completed
