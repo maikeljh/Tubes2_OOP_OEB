@@ -127,8 +127,8 @@ public class Tutorial {
 
         PdfPCell id = new PdfPCell(new Phrase("Product ID", header));
         PdfPCell name = new PdfPCell(new Phrase("Product Name", header));
-        PdfPCell buy_price = new PdfPCell(new Phrase("Buy Price", header));
-        PdfPCell sell_price = new PdfPCell(new Phrase("Sell Price", header));
+        PdfPCell buyPrice = new PdfPCell(new Phrase("Buy Price", header));
+        PdfPCell sellPrice = new PdfPCell(new Phrase("Sell Price", header));
         PdfPCell quantity = new PdfPCell(new Phrase("Quantity", header));
         PdfPCell gross_profit = new PdfPCell(new Phrase("Gross Profit", header));
         PdfPCell net_profit = new PdfPCell(new Phrase("Net Profit", header));
@@ -142,13 +142,13 @@ public class Tutorial {
         name.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
         name.setPadding(5);
 
-        sell_price.setHorizontalAlignment(Element.ALIGN_CENTER);
-        sell_price.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
-        sell_price.setPadding(5);
+        sellPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+        sellPrice.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
+        sellPrice.setPadding(5);
 
-        buy_price.setHorizontalAlignment(Element.ALIGN_CENTER);
-        buy_price.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
-        buy_price.setPadding(5);
+        buyPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+        buyPrice.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
+        buyPrice.setPadding(5);
 
         quantity.setHorizontalAlignment(Element.ALIGN_CENTER);
         quantity.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
@@ -165,8 +165,8 @@ public class Tutorial {
         // Tambahin kolom header ke tabel
         table.addCell(id);
         table.addCell(name);
-        table.addCell(buy_price);
-        table.addCell(sell_price);
+        table.addCell(buyPrice);
+        table.addCell(sellPrice);
         table.addCell(quantity);
         table.addCell(gross_profit);
         table.addCell(net_profit);
@@ -236,8 +236,8 @@ public class Tutorial {
 
         // Bikin row untuk total
         PdfPCell totalLabelCell = new PdfPCell(new Phrase("Total", header));
-        PdfPCell total_gross_profit = new PdfPCell(new Phrase(String.valueOf(totalGrossProfit), header));
-        PdfPCell total_net_profit = new PdfPCell(new Phrase(String.valueOf(totalNetProfit), header));
+        PdfPCell totalGrossProfit = new PdfPCell(new Phrase(String.valueOf(totalGrossProfit), header));
+        PdfPCell totalNetProfit = new PdfPCell(new Phrase(String.valueOf(totalNetProfit), header));
 
         // Styling Row Total
         totalLabelCell.setColspan(5);
@@ -245,16 +245,16 @@ public class Tutorial {
         totalLabelCell.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
         totalLabelCell.setPadding(5);
 
-        total_gross_profit.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
-        total_gross_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalGrossProfit.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
+        totalGrossProfit.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-        total_net_profit.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
-        total_net_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalNetProfit.setBackgroundColor(new BaseColor(0x8C, 0xAE, 0xBB));
+        totalNetProfit.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         // Tambahin row terakhir ke tabel
         table.addCell(totalLabelCell);
-        table.addCell(total_gross_profit);
-        table.addCell(total_net_profit);
+        table.addCell(totalGrossProfit);
+        table.addCell(totalNetProfit);
 
         // Tambahin tabel ke dokumen
         document.add(table);

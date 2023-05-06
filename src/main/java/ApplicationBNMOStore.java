@@ -107,11 +107,11 @@ public class ApplicationBNMOStore extends Application {
 
 
         // Read transactions
-        double total_price = 30000;
+        double totalPrice = 30000;
         double discount = 0.10;
         Inventory<FixedBill> transactions = new Inventory<FixedBill>();
         for (int i=0; i<5; i++){
-            FixedBill fixedBill = new FixedBill("25/04/2023 21:21", i+1, total_price, discount);
+            FixedBill fixedBill = new FixedBill("25/04/2023 21:21", i+1, totalPrice, discount);
             fixedBill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
             fixedBill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
             fixedBill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));

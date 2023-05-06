@@ -12,29 +12,29 @@ import java.io.FileOutputStream;
 @XmlRootElement
 public class FixedBill extends Bill{
     /* attributes */
-    private int bill_id;
+    private int billID;
     private static int billCount = 1;
 
     public FixedBill(){
         super();
     }
-    public FixedBill(int bill_id) { super(); this.bill_id = bill_id; }
-    public FixedBill(String date, double total_price, double discount) { super(date); this.bill_id = billCount; this.total_price = total_price; this.discount = discount; billCount++; }
-    public FixedBill(String date, int customer_id, double total_price, double discount) { super(date, customer_id); this.bill_id = billCount; this.total_price = total_price; this.discount = discount; billCount++;}
+    public FixedBill(int billID) { super(); this.billID = billID; }
+    public FixedBill(String date, double totalPrice, double discount) { super(date); this.billID = billCount; this.totalPrice = totalPrice; this.discount = discount; billCount++; }
+    public FixedBill(String date, int customerID, double totalPrice, double discount) { super(date, customerID); this.billID = billCount; this.totalPrice = totalPrice; this.discount = discount; billCount++;}
 
     /* methods */
     public int getBillID(){
-        return bill_id;
+        return billID;
     }
 
-    public void setBillID(int bill_id){
-        this.bill_id = bill_id;
+    public void setBillID(int billID){
+        this.billID = billID;
     }
 
     public void printBill() throws DocumentException, FileNotFoundException {
         //
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/files/FixedBill" + bill_id + ".pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/files/FixedBill" + billID + ".pdf"));
         document.open();
 
         // Add title
@@ -51,7 +51,7 @@ public class FixedBill extends Bill{
 
         // Add bill id label
         Font textFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK);
-        Paragraph billIDLabel = new Paragraph(new Phrase("Bill ID: " + this.bill_id, textFont));
+        Paragraph billIDLabel = new Paragraph(new Phrase("Bill ID: " + this.billID, textFont));
         subtitle.setAlignment(Element.ALIGN_CENTER);
         subtitle.setSpacingAfter(10);
         document.add(billIDLabel);
@@ -62,7 +62,7 @@ public class FixedBill extends Bill{
         document.add(dateLabel);
 
         // Add customer id
-        Paragraph customerIDLabel = new Paragraph(new Phrase("Customer " + this.customer_id, textFont));
+        Paragraph customerIDLabel = new Paragraph(new Phrase("Customer " + this.customerID, textFont));
         customerIDLabel.setAlignment(Element.ALIGN_LEFT);
         customerIDLabel.setSpacingAfter(10);
         document.add(customerIDLabel);
@@ -164,7 +164,7 @@ public class FixedBill extends Bill{
 
         // Create subtotal row
         PdfPCell subtotalLabelCell = new PdfPCell(new Phrase("Subtotal", headerFont));
-        PdfPCell subtotalCell = new PdfPCell(new Phrase(String.valueOf(this.total_price), headerFont));
+        PdfPCell subtotalCell = new PdfPCell(new Phrase(String.valueOf(this.totalPrice), headerFont));
 
         // Style subtotal row
         subtotalLabelCell.setColspan(4);

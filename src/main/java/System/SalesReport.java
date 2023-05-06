@@ -13,14 +13,14 @@ import java.io.Serializable;
 @XmlRootElement
 public class SalesReport implements Serializable {
     /* attributes */
-    private double total_gross_profit;
-    private double total_net_profit;
+    private double totalGrossProfit;
+    private double totalNetProfit;
     private Inventory<PurchasedItem> items;
 
     /* ctor */
     public SalesReport(){
-        this.total_gross_profit = 0;
-        this.total_net_profit = 0;
+        this.totalGrossProfit = 0;
+        this.totalNetProfit = 0;
         items = new Inventory<PurchasedItem>();
     }
 
@@ -30,20 +30,20 @@ public class SalesReport implements Serializable {
         this.items = items;
     }
 
-    public void setTotalGrossProfit(double total_gross_profit) {
-        this.total_gross_profit = total_gross_profit;
+    public void setTotalGrossProfit(double totalGrossProfit) {
+        this.totalGrossProfit = totalGrossProfit;
     }
 
-    public void setTotalNetProfit(double total_net_profit) {
-        this.total_net_profit = total_net_profit;
+    public void setTotalNetProfit(double totalNetProfit) {
+        this.totalNetProfit = totalNetProfit;
     }
 
     public double getTotalGrossProfit() {
-        return total_gross_profit;
+        return totalGrossProfit;
     }
 
     public double getTotalNetProfit() {
-        return total_net_profit;
+        return totalNetProfit;
     }
 
     public Inventory<PurchasedItem> getItems(){
@@ -92,11 +92,11 @@ public class SalesReport implements Serializable {
             }
         }
         // sum all gross and net profit
-        total_gross_profit = 0;
-        total_net_profit = 0;
+        totalGrossProfit = 0;
+        totalNetProfit = 0;
         for (ReportItem reportItem : items.getList()){
-            total_gross_profit += reportItem.getGrossProfit();
-            total_net_profit += reportItem.getNetProfit();
+            totalGrossProfit += reportItem.getGrossProfit();
+            totalNetProfit += reportItem.getNetProfit();
         }
         */
     }
@@ -122,8 +122,8 @@ public class SalesReport implements Serializable {
         Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
         PdfPCell id = new PdfPCell(new Phrase("Product ID", headerFont));
         PdfPCell name = new PdfPCell(new Phrase("Product Name", headerFont));
-        PdfPCell buy_price = new PdfPCell(new Phrase("Buy Price", headerFont));
-        PdfPCell sell_price = new PdfPCell(new Phrase("Sell Price", headerFont));
+        PdfPCell buyPrice = new PdfPCell(new Phrase("Buy Price", headerFont));
+        PdfPCell sellPrice = new PdfPCell(new Phrase("Sell Price", headerFont));
         PdfPCell quantity = new PdfPCell(new Phrase("Quantity", headerFont));
         PdfPCell gross_profit = new PdfPCell(new Phrase("Gross Profit", headerFont));
         PdfPCell net_profit = new PdfPCell(new Phrase("Net Profit", headerFont));
@@ -139,15 +139,15 @@ public class SalesReport implements Serializable {
         name.setBackgroundColor(new BaseColor(140, 174, 187));
         name.setPadding(5);
 
-        buy_price.setHorizontalAlignment(Element.ALIGN_CENTER);
-        buy_price.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        buy_price.setBackgroundColor(new BaseColor(140, 174, 187));
-        buy_price.setPadding(5);
+        buyPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+        buyPrice.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        buyPrice.setBackgroundColor(new BaseColor(140, 174, 187));
+        buyPrice.setPadding(5);
 
-        sell_price.setHorizontalAlignment(Element.ALIGN_CENTER);
-        sell_price.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        sell_price.setBackgroundColor(new BaseColor(140, 174, 187));
-        sell_price.setPadding(5);
+        sellPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+        sellPrice.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        sellPrice.setBackgroundColor(new BaseColor(140, 174, 187));
+        sellPrice.setPadding(5);
 
         quantity.setHorizontalAlignment(Element.ALIGN_CENTER);
         quantity.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -167,8 +167,8 @@ public class SalesReport implements Serializable {
         // Add header cells to table
         table.addCell(id);
         table.addCell(name);
-        table.addCell(buy_price);
-        table.addCell(sell_price);
+        table.addCell(buyPrice);
+        table.addCell(sellPrice);
         table.addCell(quantity);
         table.addCell(gross_profit);
         table.addCell(net_profit);
@@ -239,8 +239,8 @@ public class SalesReport implements Serializable {
 
         // Create total row
         PdfPCell totalLabelCell = new PdfPCell(new Phrase("Total", headerFont));
-        PdfPCell total_gross_profit = new PdfPCell(new Phrase(String.valueOf(this.total_gross_profit), headerFont));
-        PdfPCell total_net_profit = new PdfPCell(new Phrase(String.valueOf(this.total_net_profit), headerFont));
+        PdfPCell totalGrossProfit = new PdfPCell(new Phrase(String.valueOf(this.totalGrossProfit), headerFont));
+        PdfPCell totalNetProfit = new PdfPCell(new Phrase(String.valueOf(this.totalNetProfit), headerFont));
 
         // Style total row
         totalLabelCell.setColspan(5);
@@ -249,18 +249,18 @@ public class SalesReport implements Serializable {
         totalLabelCell.setBackgroundColor(new BaseColor(140, 174, 187));
         totalLabelCell.setPadding(5);
 
-        total_gross_profit.setBackgroundColor(new BaseColor(140, 174, 187));
-        total_gross_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
-        total_gross_profit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        totalGrossProfit.setBackgroundColor(new BaseColor(140, 174, 187));
+        totalGrossProfit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalGrossProfit.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        total_net_profit.setBackgroundColor(new BaseColor(140, 174, 187));
-        total_net_profit.setHorizontalAlignment(Element.ALIGN_CENTER);
-        total_net_profit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        totalNetProfit.setBackgroundColor(new BaseColor(140, 174, 187));
+        totalNetProfit.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalNetProfit.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
         // Add total row cells to table
         table.addCell(totalLabelCell);
-        table.addCell(total_gross_profit);
-        table.addCell(total_net_profit);
+        table.addCell(totalGrossProfit);
+        table.addCell(totalNetProfit);
 
         // Add table to document
         document.add(table);

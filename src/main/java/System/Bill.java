@@ -8,10 +8,10 @@ import java.io.Serializable;
 public class Bill implements Serializable {
     /* attributes */
     protected Inventory<PurchasedItem> items;
-    protected double total_price;
+    protected double totalPrice;
     protected double discount;
     protected String date;
-    protected int customer_id;
+    protected int customerID;
 
     public Bill(){
         items = new Inventory<PurchasedItem>();
@@ -22,14 +22,14 @@ public class Bill implements Serializable {
         items = new Inventory<PurchasedItem>();
     }
 
-    public Bill(String date, int customer_id) {
-        this.date = date; this.customer_id = customer_id;
+    public Bill(String date, int customerId) {
+        this.date = date; this.customerID = customerID;
         items = new Inventory<PurchasedItem>();
     }
 
     /* methods */
-    public void setTotalPrice(double total_price){
-        this.total_price = total_price;
+    public void setTotalPrice(double totalPrice){
+        this.totalPrice = totalPrice;
     }
     public void setDiscount(double discount){
         this.discount = discount;
@@ -37,8 +37,8 @@ public class Bill implements Serializable {
     public void setDate(String date){
         this.date = date;
     }
-    public void setCustomerID(int customer_id){
-        this.customer_id = customer_id;
+    public void setCustomerID(int customerID){
+        this.customerID = customerID;
     }
     public void setItems(Inventory<PurchasedItem> list){
         this.items = list;
@@ -48,7 +48,7 @@ public class Bill implements Serializable {
         return items;
     }
     public double getTotalPrice(){
-        return total_price;
+        return totalPrice;
     }
     public double getDiscount(){
         return discount;
@@ -57,16 +57,16 @@ public class Bill implements Serializable {
         return date;
     }
     public int getCustomerID(){
-        return customer_id;
+        return customerID;
     }
     public PurchasedItem getItem(int idx){
         return items.getElement(idx);
     }
 
     public double calculateDiscount(){
-        return discount * total_price;
+        return discount * totalPrice;
     }
     public double calculateChargePrice(){
-        return total_price - calculateDiscount();
+        return totalPrice - calculateDiscount();
     }
 }

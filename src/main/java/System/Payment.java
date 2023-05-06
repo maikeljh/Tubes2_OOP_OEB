@@ -2,8 +2,8 @@ package System;
 
 public interface Payment {
     // Function to calculate point
-    public int calculatePoint(int total_price);
+    public int calculatePoint(int totalPrice);
 
     // Function to calculate discount
-    public double calculateDiscount(int total_price);
+    public double calculateDiscount(int totalPrice);
 }

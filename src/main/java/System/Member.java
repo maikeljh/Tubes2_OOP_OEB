@@ -22,17 +22,17 @@ public class Member extends RegisteredCustomer {
         this.setTransaction(bills);
     }
 
-    public double calculateDiscount(double total_price, boolean point){
+    public double calculateDiscount(double totalPrice, boolean point){
         double result = 0;
         if(point){
-            if ( this.point > total_price){
-                this.point -= total_price;
+            if ( this.point > totalPrice){
+                this.point -= totalPrice;
             } else {
-                result = total_price - (double) this.point;
+                result = totalPrice - (double) this.point;
                 this.point = 0;
             }
         } else {
-            result = total_price;
+            result = totalPrice;
         }
         return result;
     }
