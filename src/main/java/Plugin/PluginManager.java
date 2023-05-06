@@ -1,12 +1,13 @@
 package Plugin;
 
+import Plugin.Decorator.CashierDecorator;
+import Plugin.Decorator.CashierDetailDecorator;
+import Plugin.Decorator.Decorator;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class PluginManager implements Serializable {
 
             // Load class
             Class<?> clazz = classLoader.loadClass(className);
-            Class<?>[] others = {Plugin.class, BasePlugin.class, SettingsDecorator.class};
+            Class<?>[] others = {Plugin.class, BasePlugin.class, Decorator.class, SettingsDecorator.class, CashierDecorator.class, CashierDetailDecorator.class};
 
             if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
                 // Create Plugin Class
@@ -88,8 +89,6 @@ public class PluginManager implements Serializable {
             } else {
                 clazzes.add(clazz);
             }
-
-            System.out.println(clazz);
         }
 
         // Close jar file
@@ -110,5 +109,26 @@ public class PluginManager implements Serializable {
 
     public void setClazzes(List<Class<?>> clazzes){
         this.clazzes = clazzes;
+    }
+
+    public Plugin getPlugin(String pluginName){
+        for(Plugin plugin : plugins){
+            if(plugin.getPluginName().equals(pluginName)){
+                return plugin;
+            }
+        }
+        return new Plugin();
+    }
+
+    public void removePlugin(String pluginName){
+        for(Plugin plugin : plugins){
+            if(plugin.getPluginName().equals(pluginName)){
+                if(plugin.nextPlugin != null){
+                    removePlugin(plugin.nextPlugin);
+                }
+                plugins.remove(plugin);
+                break;
+            }
+        }
     }
 }

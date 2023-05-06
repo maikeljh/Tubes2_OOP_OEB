@@ -1,6 +1,8 @@
 package Plugin.PluginCashier;
 
-public class Discount {
+import java.io.Serializable;
+
+public class Discount implements Serializable {
     private String discountName;
     private double discount;
 

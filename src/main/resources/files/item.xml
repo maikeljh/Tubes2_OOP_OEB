@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
     <item>
-        <buyPrice>1021.9780219780218</buyPrice>
+        <buyPrice>1021.9780219780217</buyPrice>
         <category>TES</category>
         <itemID>52</itemID>
         <name>TES</name>
-        <sellPrice>1021.9780219780218</sellPrice>
+        <sellPrice>1021.9780219780217</sellPrice>
         <stock>12</stock>
     </item>
     <item>
-        <buyPrice>12345.0</buyPrice>
+        <buyPrice>12345.000000000002</buyPrice>
         <category>TES</category>
         <itemID>78</itemID>
         <name>TES2</name>
-        <sellPrice>12345.0</sellPrice>
+        <sellPrice>12345.000000000002</sellPrice>
         <stock>12</stock>
     </item>
     <neff>2</neff>

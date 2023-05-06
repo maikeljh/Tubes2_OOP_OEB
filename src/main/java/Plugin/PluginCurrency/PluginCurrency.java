@@ -1,7 +1,9 @@
-package Plugin;
+package Plugin.PluginCurrency;
 
 import DataStore.DataStore;
 import Plugin.Decorator.SettingsDecorator;
+import Plugin.Plugin;
+import Plugin.PluginManager;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,6 +39,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
         this.currentKurs = 1;
         this.currency = "IDR";
         this.pluginName = "Plugin Currency";
+        this.mainPlugin = true;
     }
 
     @Override
@@ -189,34 +192,5 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
 
     public void setCurrentKurs(double currentKurs) {
         this.currentKurs = currentKurs;
-    }
-}
-
-@XmlRootElement
-class Currency implements Serializable {
-    private String currency;
-    private double kurs;
-
-    public Currency(){}
-
-    public Currency(String currency, double kurs){
-        this.currency = currency;
-        this.kurs = kurs;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public double getKurs() {
-        return kurs;
-    }
-
-    public void setCurrency(String currency){
-        this.currency = currency;
-    }
-
-    public void setKurs(double kurs){
-        this.kurs = kurs;
     }
 }

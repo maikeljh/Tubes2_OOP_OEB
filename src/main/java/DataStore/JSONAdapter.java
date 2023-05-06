@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class JSONAdapter implements DataAdapter {
+public class JSONAdapter implements DataAdapter, Serializable {
     // Function to read data from a file
     public Object readData(String filePath, Class<?>[] classTypes){
         ObjectMapper mapper = new ObjectMapper();

@@ -18,7 +18,8 @@ import java.util.Comparator;
 public class Plugin1 extends BasePlugin {
 
    public Plugin1(){
-       this.setPluginName("Line & Bar Chart");
+       this.pluginName = "Line & Bar Chart";
+       this.mainPlugin = true;
    }
 
    public static void main(String args[]){}
@@ -89,7 +90,7 @@ public class Plugin1 extends BasePlugin {
             barSeries.getData().add(new XYChart.Data<>(sortedData.getElement(i).getName(), sortedData.getElement(i).getQuantity()));
         }
        }
-       
+
 //        barSeries.getData().add(new XYChart.Data<>("January", 100));
 //        barSeries.getData().add(new XYChart.Data<>("February", 150));
 //        barSeries.getData().add(new XYChart.Data<>("March", 200));

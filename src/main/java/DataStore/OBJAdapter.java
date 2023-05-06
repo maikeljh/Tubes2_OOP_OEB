@@ -3,7 +3,7 @@ import System.Inventory;
 
 import java.io.*;
 
-public class OBJAdapter implements DataAdapter {
+public class OBJAdapter implements DataAdapter, Serializable  {
     // Function to read data from a file
     public Object readData(String filePath, Class<?>[] classTypes){
         try {
