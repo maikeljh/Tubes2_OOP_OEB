@@ -1,11 +1,10 @@
 package Plugin;
 
-import Plugin.Plugin;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
-import System.Inventory;
-import System.PurchasedItem;
+import Core.Inventory;
+import Core.PurchasedItem;
 
 @XmlRootElement
 public class BasePlugin extends Plugin {

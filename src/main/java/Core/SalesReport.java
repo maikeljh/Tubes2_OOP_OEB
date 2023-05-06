@@ -1,4 +1,4 @@
-package System;
+package Core;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -11,6 +11,8 @@ import lombok.Setter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 
 @Getter @Setter
 @XmlRootElement
@@ -60,6 +62,8 @@ public class SalesReport implements Serializable {
             totalGrossProfit += item.calculateGrossProfit();
             totalNetProfit += item.calculateNetProfit();
         }
+
+        Collections.sort(items.getBox(), Comparator.comparingInt(PurchasedItem::getQuantity).reversed());
     }
 
     public void printReport() throws DocumentException, FileNotFoundException{

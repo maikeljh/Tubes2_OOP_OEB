@@ -1,5 +1,6 @@
-package Plugin;
+package Plugin.Plugin1;
 
+import Plugin.BasePlugin;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -9,8 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.Label;
-import System.Inventory;
-import System.PurchasedItem;
+import Core.Inventory;
+import Core.PurchasedItem;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;

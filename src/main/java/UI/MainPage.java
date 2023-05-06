@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.image.Image;
@@ -77,7 +76,7 @@ public class MainPage extends VBox {
         thread.start();
     }
 
-    public void setStop(boolean stop){
+    public void setStop(){
         this.stop = true;
     }
 }

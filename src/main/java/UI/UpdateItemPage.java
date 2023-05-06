@@ -20,9 +20,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import System.Inventory;
-import System.Item;
-import System.Settings;
+import Core.Inventory;
+import Core.Item;
+import Core.Settings;
 
 import javax.imageio.ImageIO;
 

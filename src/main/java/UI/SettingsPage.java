@@ -21,16 +21,16 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import System.Inventory;
-import System.Settings;
-import System.Item;
-import System.Customer;
-import System.Bill;
-import System.PurchasedItem;
-import System.RegisteredCustomer;
-import System.Member;
-import System.VIP;
-import System.SalesReport;
+import Core.Inventory;
+import Core.Settings;
+import Core.Item;
+import Core.Customer;
+import Core.Bill;
+import Core.PurchasedItem;
+import Core.RegisteredCustomer;
+import Core.Member;
+import Core.VIP;
+import Core.SalesReport;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
 

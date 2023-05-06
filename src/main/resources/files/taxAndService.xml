@@ -2,7 +2,7 @@
 <inventory>
     <taxAndService>
         <service>2000.0</service>
-        <tax>1000.0</tax>
+        <tax>4000.0</tax>
     </taxAndService>
     <neff>1</neff>
 </inventory>

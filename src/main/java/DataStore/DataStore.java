@@ -1,7 +1,7 @@
 package DataStore;
 
-import System.Inventory;
-import System.Settings;
+import Core.Inventory;
+import Core.Settings;
 
 import java.io.Serializable;
 import java.util.Objects;

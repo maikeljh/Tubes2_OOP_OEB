@@ -1,15 +1,14 @@
 package UI;
 import DataStore.DataStore;
-import System.*;
+import Core.*;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -18,6 +17,15 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class DetailMemberPage extends Page {
+    private Label nameLabel;
+    private Label numberLabel;
+    private Label pointsLabel;
+    private HBox membershipIcon;
+    private ImageView deactivateLogo;
+    private ImageView activateLogo;
+    private ImageView regularLogo;
+    private ImageView vipDetailLogo;
+
     public DetailMemberPage(Stage stage, Tab tab, Customer customer, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings, DataStore<Settings> settingsDS) {
         super(stage, tab, settings, settingsDS);
 
@@ -62,7 +70,7 @@ public class DetailMemberPage extends Page {
         nameTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
         // Create label for name
-        Label nameLabel = new Label();
+        nameLabel = new Label();
         nameLabel.setPadding(new Insets(0, 0, 0, 10));
         nameLabel.setFont(Font.font("Montserrat", 20));
         nameLabel.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
@@ -83,7 +91,7 @@ public class DetailMemberPage extends Page {
         phoneTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
         // Create label for phone number
-        Label numberLabel = new Label();
+        numberLabel = new Label();
         numberLabel.setPadding(new Insets(0, 0, 0, 10));
         numberLabel.setFont(Font.font("Montserrat", 20));
         numberLabel.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
@@ -103,7 +111,7 @@ public class DetailMemberPage extends Page {
         pointsTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
         // Create label for phone number
-        Label pointsLabel = new Label();
+        pointsLabel = new Label();
         pointsLabel.setPadding(new Insets(0, 0, 0, 10));
         pointsLabel.setFont(Font.font("Montserrat", 20));
         pointsLabel.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px; -fx-text-fill: black");
@@ -122,17 +130,17 @@ public class DetailMemberPage extends Page {
         HBox membershipDetails = new HBox();
 
         // Create HBox for membership details icon
-        HBox membershipIcon = new HBox();
+        membershipIcon = new HBox();
 
         // Create Membership Status title
         Label membershipTitle = new Label("Membership Status");
         membershipTitle.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
 
         // Setup image view for membership details
-        ImageView deactivateLogo = new ImageView("/images/icon/deactivateLogo.png");
-        ImageView activateLogo = new ImageView("/images/icon/activeLogo.png");
-        ImageView regularLogo = new ImageView("/images/icon/regularLogo.png");
-        ImageView vipDetailLogo = new ImageView("/images/icon/vipDetailLogo.png");
+        deactivateLogo = new ImageView("/images/icon/deactivateLogo.png");
+        activateLogo = new ImageView("/images/icon/activeLogo.png");
+        regularLogo = new ImageView("/images/icon/regularLogo.png");
+        vipDetailLogo = new ImageView("/images/icon/vipDetailLogo.png");
 
         // Styling Image View for deactivateLogo
         deactivateLogo.setPreserveRatio(true);
@@ -203,5 +211,23 @@ public class DetailMemberPage extends Page {
         setPadding(new Insets(30, 50, 0, 50));
         setSpacing(20);
         setStyle("-fx-background-color: #F3F9FB;");
+
+        Thread thread = new Thread(() -> {
+            while (!close && !Page.isExit()) {
+                Platform.runLater(() -> {
+                    nameLabel.setText(((RegisteredCustomer) customer).getName());
+                    numberLabel.setText(((RegisteredCustomer) customer).getPhoneNumber());
+                    pointsLabel.setText(Integer.toString(((RegisteredCustomer) customer).getPoint()));
+                });
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 }

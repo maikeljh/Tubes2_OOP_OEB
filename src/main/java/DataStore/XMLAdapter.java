@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.Serializable;
 
 import jakarta.xml.bind.*;
-import System.Inventory;
 
 public class XMLAdapter implements DataAdapter, Serializable {
     public Object readData(String filePath, Class<?>[] classTypes) {
@@ -21,7 +20,7 @@ public class XMLAdapter implements DataAdapter, Serializable {
             Object object = unmarshaller.unmarshal(file);
             return object;
         } catch (JAXBException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
         return null;
     }
@@ -44,7 +43,7 @@ public class XMLAdapter implements DataAdapter, Serializable {
             // Write to XML file
             marshaller.marshal(newData, file);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
     }
 }

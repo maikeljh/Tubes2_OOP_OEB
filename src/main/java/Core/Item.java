@@ -1,4 +1,4 @@
-package System;
+package Core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.xml.bind.annotation.XmlRootElement;

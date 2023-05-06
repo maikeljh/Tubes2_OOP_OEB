@@ -1,4 +1,4 @@
-package System;
+package Core;
 
 import jakarta.xml.bind.annotation.XmlAnyElement;
 import jakarta.xml.bind.annotation.XmlRootElement;

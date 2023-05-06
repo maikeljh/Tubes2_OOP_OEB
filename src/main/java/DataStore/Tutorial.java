@@ -1,12 +1,8 @@
 package DataStore;
-import System.*;
+import Core.*;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import javafx.scene.image.Image;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 /* DOKUMENTASI CARA READ DAN WRITE DATA + PRINT PDF */
 public class Tutorial {

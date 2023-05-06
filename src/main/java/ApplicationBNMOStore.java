@@ -3,8 +3,8 @@ import Plugin.Decorator.CashierDecorator;
 import Plugin.Decorator.SettingsDecorator;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
-import System.Settings;
-import System.Member;
+import Core.Settings;
+import Core.Member;
 import UI.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -18,14 +18,14 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import System.Inventory;
-import System.Item;
-import System.PurchasedItem;
-import System.RegisteredCustomer;
-import System.Customer;
-import System.VIP;
-import System.Bill;
-import System.SalesReport;
+import Core.Inventory;
+import Core.Item;
+import Core.PurchasedItem;
+import Core.RegisteredCustomer;
+import Core.Customer;
+import Core.VIP;
+import Core.Bill;
+import Core.SalesReport;
 import Plugin.PluginManager;
 
 
@@ -54,6 +54,7 @@ public class ApplicationBNMOStore extends Application {
                 settings.setFormat("xml");
             }
         } catch (Exception e){
+            // Do Nothing
             settings.setFormat("xml");
         }
 
@@ -95,36 +96,6 @@ public class ApplicationBNMOStore extends Application {
             }
         }
 
-        Bill bill2 = new Bill();
-        bill2.setTotalPrice(100.00);
-        bill2.setDiscount(10.00);
-        bill2.setDate("2023-2-12");
-        bill2.setCustomerID(234);
-        bill2.setBillID(5679);
-        bill2.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
-        bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
-
-        report.updateReport(bill2);
-
-        // Read transactions
-        double totalPrice = 30000;
-        double discount = 0.10;
-        Inventory<Bill> transactions = new Inventory<Bill>();
-        for (int i=0; i<5; i++){
-            Bill Bill = new Bill("25/04/2023 21:21", i+1, totalPrice, discount);
-            Bill.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
-            Bill.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
-            Bill.getItems().addElement(new PurchasedItem(new Item("Cheese Cake", 10, 40000, 36000, "Desserts", new Image("/images/item/item4.png")), 2));
-            Bill.getItems().addElement(new PurchasedItem(new Item("Mineral Water", 10, 20000, 15000, "Non Coffee", new Image("/images/item/item4.png")), 1));
-            transactions.addElement(Bill);
-        }
-
-        // Read sold items
-        Inventory<PurchasedItem> itemsSold = new Inventory<PurchasedItem>();
-        itemsSold.addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 5));
-        itemsSold.addElement(new PurchasedItem(new Item("Green Tea Latte", 10, 21000, 16500, "Non-Coffee", new Image("/images/item/item4.png")), 10));
-        itemsSold.addElement(new PurchasedItem(new Item("Fried Rice", 7, 30000, 23000, "Indonesian Dish", new Image("/images/item/item4.png")), 2));
-
         // Create Group and new Scene
         Group root = new Group();
         Scene scene = new Scene(root, 1280, 720);
@@ -162,7 +133,7 @@ public class ApplicationBNMOStore extends Application {
         cashierPage.setOnAction(event -> {
             // Handle open menu item click
             Tab newTab = new Tab("Cashier");
-            CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
+            CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
             boolean found = false;
             for(Plugin plugin : this.settings.getPluginManager().getPlugins()){
                 if(plugin instanceof CashierDecorator cashierDecorated){
@@ -245,7 +216,7 @@ public class ApplicationBNMOStore extends Application {
                     Settings template = new Settings();
                     settingsDS.saveData("settings", template, concatenated, temp);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // Do Nothing
                 }
             }
         });
@@ -342,7 +313,10 @@ public class ApplicationBNMOStore extends Application {
         stage.show();
 
         // Stop thread if application closed
-        stage.setOnCloseRequest(event -> mainPage.setStop(true));
+        stage.setOnCloseRequest(event -> {
+            mainPage.setStop();
+            Page.setExit(true);
+        });
     }
 
     public static void main(String[] args) {

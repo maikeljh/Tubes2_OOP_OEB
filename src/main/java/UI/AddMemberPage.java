@@ -1,10 +1,10 @@
 package UI;
 
-import System.Customer;
-import System.Inventory;
-import System.Member;
-import System.RegisteredCustomer;
-import System.VIP;
+import Core.Customer;
+import Core.Inventory;
+import Core.Member;
+import Core.RegisteredCustomer;
+import Core.VIP;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,11 +16,11 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import System.Settings;
+import Core.Settings;
 import DataStore.DataStore;
 import javafx.scene.image.ImageView;
-import System.Bill;
-import System.PurchasedItem;
+import Core.Bill;
+import Core.PurchasedItem;
 import java.util.ArrayList;
 import java.util.List;
 

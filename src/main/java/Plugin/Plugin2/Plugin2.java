@@ -1,5 +1,6 @@
-package Plugin;
+package Plugin.Plugin2;
 
+import Plugin.BasePlugin;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

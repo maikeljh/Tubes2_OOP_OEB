@@ -13,16 +13,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import System.Inventory;
-import System.Item;
-import System.Customer;
-import System.Bill;
-import System.PurchasedItem;
-import System.RegisteredCustomer;
-import System.Member;
-import System.VIP;
-import System.SalesReport;
-import System.Settings;
+import Core.Inventory;
+import Core.Item;
+import Core.Customer;
+import Core.Bill;
+import Core.PurchasedItem;
+import Core.RegisteredCustomer;
+import Core.Member;
+import Core.VIP;
+import Core.SalesReport;
+import Core.Settings;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
             temp.setFormat("xml");
             currencies = currencyDataStore.loadData("currency", temp, new Class<?>[]{Inventory.class, Currency.class});
         } catch (Exception e){
-            e.printStackTrace();
+            // Do Nothing
         }
 
         // Create new settings option

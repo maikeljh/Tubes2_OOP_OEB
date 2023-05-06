@@ -1,13 +1,11 @@
 package UI;
 
 import DataStore.DataStore;
-import DataStore.XMLAdapter;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -16,11 +14,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import System.Inventory;
-import System.Item;
-import System.Settings;
-
+import Core.Inventory;
+import Core.Item;
+import Core.Settings;
 import java.io.File;
 
 public class ItemDetailPage extends Page {

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <discount>
+        <discountName>Student 10%</discountName>
+        <discount>0.1</discount>
+    </discount>
+    <discount>
+        <discountName>Dine in 15%</discountName>
+        <discount>0.15</discount>
+    </discount>
+    <discount>
+        <discountName>Independence Day 17%</discountName>
+        <discount>0.17</discount>
+    </discount>
+    <discount>
+        <discountName>Weekend Fortune 20%</discountName>
+        <discount>0.2</discount>
+    </discount>
+    <discount>
+        <discountName>Anniversary 25%</discountName>
+        <discount>0.25</discount>
+    </discount>
+    <discount>
+        <discountName>Borong Day 50%</discountName>
+        <discount>0.5</discount>
+    </discount>
+    <neff>6</neff>
+</inventory>

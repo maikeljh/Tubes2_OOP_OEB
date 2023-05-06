@@ -3,10 +3,10 @@ package UI;
 
 import java.util.*;
 
+import Core.*;
 import Plugin.Decorator.CashierDecorator;
 import Plugin.Decorator.CashierDetailDecorator;
 import Plugin.Plugin;
-import System.Settings;
 import DataStore.DataStore;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,12 +24,7 @@ import javafx.scene.text.TextAlignment;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import System.PurchasedItem;
-import System.Inventory;
-import System.Item;
-import System.Customer;
-import System.Bill;
-import System.RegisteredCustomer;
+
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.scene.control.CheckBox;
@@ -43,11 +38,9 @@ import com.itextpdf.text.DocumentException;
 import java.lang.IndexOutOfBoundsException;
 import java.math.RoundingMode;
 import java.util.Comparator;
-import System.Member;
 
-public class CashierPage extends VBox {
+public class CashierPage extends Page {
     private Inventory<PurchasedItem> purchasedItems;
-    private Settings settings;
     protected double totalPrice = 0;
     protected RegisteredCustomer regisCust = null;
     private double finalTotalPrice = 0;
@@ -57,7 +50,6 @@ public class CashierPage extends VBox {
     private int selectionIndex;
     private Inventory<Item> items;
     private Inventory<Customer> customers;
-    private Inventory<Bill> transactions;
     private int mode;
     private int totalItem = 0;
     private String totalItemString = "";
@@ -76,13 +68,8 @@ public class CashierPage extends VBox {
     private VBox bodyLibraryVBox = null;
     private HBox headLibraryBox = null;
     private VBox headLibraryTitleBox = null;
-
     private HBox totalPriceBox = null;
-
-    private Stage stage;
-    private Tab tab;
     private TabPane tabPane;
-    private DataStore<Settings> settingsDS;
     private double formattedDiscount;
     private Text totalPriceBillLabel;
     private Label fixTotalPriceBill;
@@ -91,13 +78,16 @@ public class CashierPage extends VBox {
     private String fixTotalPrice;
     private ToggleButton usePointButton;
     private NumberFormat formatter;
+    private SalesReport report;
+    private DataStore<Customer> customerDS;
+    private DataStore<SalesReport> reportDS;
 
-    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<Bill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS){
+    public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS, SalesReport report){
+        super(stage, tab, settings, settingsDS);
+
         // Assign values
-        this.stage = stage;
-        this.tab = tab;
+        this.report = report;
         this.tabPane = tabPane;
-        this.transactions = transactions;
         this.customers = customers;
         this.items = items;
         this.selectionIndex = -1;
@@ -105,8 +95,8 @@ public class CashierPage extends VBox {
         this.isUsePoint = usePoint;
         this.purchasedItems = purchasedItems;
         this.mode = mode;
-        this.settings = settings;
-        this.settingsDS = settingsDS;
+        this.customerDS = new DataStore<Customer>();
+        this.reportDS = new DataStore<SalesReport>();
 
         // Create main VBox
         VBox mainVBox = new VBox();
@@ -180,9 +170,18 @@ public class CashierPage extends VBox {
         int count = 0;
 
         // Display List Of Items (grid)
-        for (Item item : this.items.getBox()) {
-
+        for (Item item : this.report.getItems().getBox()) {
             if (count < 9 && item.getStock() > 0){
+                boolean valid = false;
+                for(Item temp : this.items.getBox()){
+                    if(item.getItemID() == temp.getItemID()){
+                        valid = true;
+                    }
+                }
+
+                if(!valid){
+                    continue;
+                }
 
                 // VBox Display Item
                 VBox itemDisplay = new VBox();
@@ -215,7 +214,7 @@ public class CashierPage extends VBox {
                 // Add onclick event
                 itemDisplay.setOnMouseClicked(event -> {
                     setRegCust();
-                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, report);
                     boolean found = false;
                     for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
                         if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
@@ -552,7 +551,7 @@ public class CashierPage extends VBox {
                 // Add onclick event
                 libraryDisplay.setOnMouseClicked(event -> {
                     setRegCust();
-                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, library, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, library, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, report);
                     boolean found = false;
                     for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
                         if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
@@ -1072,7 +1071,7 @@ public class CashierPage extends VBox {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
 
             // Create cashierContent (newTab)
-            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
+            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
                 if(plugin instanceof CashierDecorator cashierDecorated){
@@ -1510,14 +1509,11 @@ public class CashierPage extends VBox {
                 this.customers.addElement(newCust);
 
             } else  { // if a customer is selected
-
                 // for loop customers
                 for (Customer cust : this.customers.getBox()) {
                     if(this.tempID.get(this.selectionIndex) == cust.getId()){
-
                         // Update regisCust
                         this.regisCust = (RegisteredCustomer) cust;
-
                     }
                 }
 
@@ -1529,45 +1525,42 @@ public class CashierPage extends VBox {
 
                 // Create newBill to the customer
                 newBill = new Bill (timenow, custID, this.totalPrice, formattedDiscount);
-
             }
 
             // for loop purchasedItems
             for(PurchasedItem purchItem : this.purchasedItems.getBox()){
-
                 // for loop items
                 for (Item item : this.items.getBox()){
                     if (item.getItemID() == purchItem.getItemID()){
-
                         // Update item stock
                         item.setStock(item.getStock() - purchItem.getQuantity());
-
                     }
                 }
 
                 // Add purchItem to newBill
                 newBill.getItems().addElement(purchItem);
-
             }
 
-            // Add newBill to transactions
-            this.transactions.addElement(newBill);
+            if(this.regisCust != null){
+                // Add newBill to transactions
+                this.regisCust.getTransaction().addElement(newBill);
+            }
+
+            // Update report
+            report.updateReport(newBill);
 
             if (result.isPresent() && result.get() == yesButton) { // if result is yesButton, printBill then close alert
-
-                //Print bill
+                // Print bill
                 try {
                     newBill.printBill();
                     alert.close();
                 } catch (DocumentException | FileNotFoundException | IndexOutOfBoundsException e){
-                    e.printStackTrace();
+                    // Do Nothing
                 }
 
             } else { // if result is noButton, close alert
-
                 // Close alert
                 alert.close();
-
             }
 
             // Reset purchasedItems
@@ -1581,8 +1574,14 @@ public class CashierPage extends VBox {
                 usePointButton.fire();
             }
 
+            // Save data
+            Inventory<SalesReport> tempReport = new Inventory<>();
+            tempReport.addElement(report);
+            this.reportDS.saveData("report", this.settings, new Class<?>[]{Inventory.class, SalesReport.class, PurchasedItem.class}, tempReport);
+            this.customerDS.saveData("customer", this.settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
+
             // Create cashierContent (tab)
-            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
+            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
                 if(plugin instanceof CashierDecorator cashierDecorated){
@@ -1653,7 +1652,7 @@ public class CashierPage extends VBox {
 
             // Set regisCust into the selected customer
             setRegCust();
-            CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
+            CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, this.report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
                 if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){

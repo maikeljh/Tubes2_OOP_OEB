@@ -1,6 +1,7 @@
 package UI;
 
 import com.itextpdf.text.DocumentException;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -14,14 +15,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import System.SalesReport;
-import System.PurchasedItem;
+import Core.SalesReport;
+import Core.PurchasedItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.collections.FXCollections;
 import java.io.FileNotFoundException;
 
-import System.Settings;
+import Core.Settings;
 import DataStore.DataStore;
 
 public class SalesReportPage extends Page {
@@ -57,7 +58,7 @@ public class SalesReportPage extends Page {
                 alert.setContentText("You can open it on resources/files/Sales Report.pdf");
                 alert.showAndWait();
             } catch (DocumentException | FileNotFoundException | InterruptedException e){
-                e.printStackTrace();
+                // Do Nothing
             }
         });
 
@@ -131,6 +132,19 @@ public class SalesReportPage extends Page {
         table.setItems(tableItems);
         table.refresh();
 
+        // Create thread
+        Thread thread = new Thread(() -> {
+            while (!close || !Page.isExit()) {
+                Platform.runLater(table::refresh);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
         // Create scroll pane for VBox
         ScrollPane scrollPane = new ScrollPane(table);
 

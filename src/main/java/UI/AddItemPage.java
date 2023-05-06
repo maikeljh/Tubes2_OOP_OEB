@@ -1,7 +1,6 @@
 package UI;
 
 import DataStore.DataStore;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -23,9 +22,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import System.Settings;
-import System.Inventory;
-import System.Item;
+import Core.Settings;
+import Core.Inventory;
+import Core.Item;
 
 import javax.imageio.ImageIO;
 

@@ -1,4 +1,4 @@
-package System;
+package Core;
 
 public interface Payment {
     // Function to calculate point

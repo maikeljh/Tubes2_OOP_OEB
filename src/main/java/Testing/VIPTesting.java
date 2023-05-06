@@ -1,5 +1,5 @@
 package Testing;
-import System.*;
+import Core.*;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

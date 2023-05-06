@@ -1,5 +1,4 @@
 package DataStore;
-import System.Inventory;
 
 import java.io.*;
 
@@ -13,7 +12,7 @@ public class OBJAdapter implements DataAdapter, Serializable  {
             objectInputStream.close();
             return result;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
         return null;
     }
@@ -27,9 +26,9 @@ public class OBJAdapter implements DataAdapter, Serializable  {
             objectOutputStream.flush();
             objectOutputStream.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            // Do Nothing
         } catch (IOException e) {
-            e.printStackTrace();
+            // Do Nothing
         }
     }
 }

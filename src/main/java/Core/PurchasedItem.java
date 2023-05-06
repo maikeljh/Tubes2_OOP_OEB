@@ -1,11 +1,9 @@
-package System;
+package Core;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @NoArgsConstructor @Getter @Setter
 @XmlRootElement

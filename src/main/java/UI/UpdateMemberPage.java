@@ -1,14 +1,14 @@
 package UI;
 
 import DataStore.DataStore;
-import System.PurchasedItem;
-import System.Customer;
-import System.RegisteredCustomer;
-import System.Inventory;
-import System.VIP;
-import System.Member;
-import System.Bill;
-import System.Settings;
+import Core.PurchasedItem;
+import Core.Customer;
+import Core.RegisteredCustomer;
+import Core.Inventory;
+import Core.VIP;
+import Core.Member;
+import Core.Bill;
+import Core.Settings;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
