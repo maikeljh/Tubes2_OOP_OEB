@@ -85,7 +85,11 @@ public class PluginManager implements Serializable {
                     clazzes.add(pluginClass);
                     plugins.add(plugin);
                 }
+            } else {
+                clazzes.add(clazz);
             }
+
+            System.out.println(clazz);
         }
 
         // Close jar file

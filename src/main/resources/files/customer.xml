@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
-    <member>
+    <vip>
         <id>1</id>
         <transaction>
             <fixedBill>
@@ -29,6 +29,6 @@
         <name>TES</name>
         <phoneNumber>12345</phoneNumber>
         <point>0</point>
-    </member>
+    </vip>
     <neff>1</neff>
 </inventory>

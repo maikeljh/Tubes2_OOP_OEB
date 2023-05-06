@@ -2,7 +2,6 @@ package UI;
 
 import DataStore.DataStore;
 import System.Settings;
-import Plugin.PluginCashier.DiscountCashier;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -30,6 +29,7 @@ public class CashierDetailPage extends VBox {
     protected Inventory<PurchasedItem> purchasedItems;
     protected Item item;
     protected Button addButton;
+    protected Button cancelButton;
     protected Inventory<Item> items;
     protected TabPane tabPane;
     protected Inventory<Customer> customers;
@@ -87,7 +87,7 @@ public class CashierDetailPage extends VBox {
         });
 
         // Create cancel button
-        Button cancelButton = new Button("Cancel");
+        cancelButton = new Button("Cancel");
         cancelButton.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
         cancelButton.setStyle("-fx-background-color: #C34646; -fx-text-fill: white;");
         cancelButton.setOnAction(event -> {
@@ -220,6 +220,10 @@ public class CashierDetailPage extends VBox {
         return this.addButton;
     }
 
+    public Button getCancelButton(){
+        return this.cancelButton;
+    }
+
     public CashierPage processAdd(){
         boolean flag = false;
         for (PurchasedItem purchItem : purchasedItems.getBox()){
@@ -240,11 +244,16 @@ public class CashierDetailPage extends VBox {
             }
         }
 
-        CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust, settings, settingsDS);
+        CashierPage cashierContent = makeChangePage();
 
         return cashierContent;
     }
 
+    public CashierPage makeChangePage(){
+        CashierPage cashierContent = new CashierPage(stage, tab, items, tabPane, customers, mode, transactions, purchasedItems, usePoint, regisCust, settings, settingsDS);
+
+        return cashierContent;
+    }
     public PurchasedItem findPurchasedItem(){
         for (PurchasedItem purchItem : purchasedItems.getBox()){
             if (purchItem.getItemID() == item.getItemID()){

@@ -33,12 +33,9 @@ import javafx.util.StringConverter;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
-// import org.controlsfx.control.RangeSlider;
 import javafx.scene.layout.VBox;
-import System.FixedBill;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javafx.scene.image.Image;
 import java.io.FileNotFoundException;
 import com.itextpdf.text.DocumentException;
 import java.lang.IndexOutOfBoundsException;
@@ -46,12 +43,11 @@ import java.math.RoundingMode;
 import java.util.Comparator;
 import System.Member;
 
-
 public class CashierPage extends VBox {
     private Inventory<PurchasedItem> purchasedItems;
     private Settings settings;
     protected double totalPrice = 0;
-    private RegisteredCustomer regisCust = null;
+    protected RegisteredCustomer regisCust = null;
     private double finalTotalPrice = 0;
     private boolean isUsePoint = false;
     private ChoiceBox<RegisteredCustomer> choiceBox;
@@ -89,10 +85,10 @@ public class CashierPage extends VBox {
     private Text totalPriceBillLabel;
     private Label fixTotalPriceBill;
     private Label totalPriceBills;
-
+    private ToggleButton usePointButton;
+    private NumberFormat formatter;
 
     public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<FixedBill> transactions, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS){
-        
         // Assign values
         this.stage = stage;
         this.tab = tab;
@@ -659,7 +655,7 @@ public class CashierPage extends VBox {
 
                     // Item Price
                     double libraryPrice = library.getSellPrice();
-                    NumberFormat formatter = NumberFormat.getInstance();
+                    formatter = NumberFormat.getInstance();
                     formatter.setGroupingUsed(true);
                     String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
                     Label libraryPriceBills = new Label(libraryPriceBill);
@@ -1334,7 +1330,7 @@ public class CashierPage extends VBox {
         vLine2.setOpacity(0.47);
 
         // Create usePointButton (billButton)
-        ToggleButton usePointButton = new ToggleButton("Use Point");
+        usePointButton = new ToggleButton("Use Point");
 
         // Styling usePointButton
         usePointButton.setPrefWidth(280);
@@ -1383,7 +1379,7 @@ public class CashierPage extends VBox {
         }
 
         // Create Text Total price
-        NumberFormat formatter = NumberFormat.getInstance();
+        formatter = NumberFormat.getInstance();
         formatter.setGroupingUsed(true);
         String totalPriceBill = formatter.format(this.totalPrice);
         String fixTotalPrice = formatter.format(this.finalTotalPrice);
@@ -1585,95 +1581,7 @@ public class CashierPage extends VBox {
 
         // Add usePointButton functionality
         usePointButton.setOnAction(event -> {
-            if (this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){ // if a customer is selected
-
-                // Reset totalPriceBox
-                totalPriceBox.getChildren().clear();
-
-                // Create text total price
-                String totalPriceBill2 = formatter.format(this.totalPrice);
-                Label totalPriceBills2;
-
-                if (usePointButton.isSelected()) { // if usePointButton is selected
-
-                    // Set isUsePoint to true
-                    this.isUsePoint = true;
-
-                    // Styling usePointButton
-                    usePointButton.setStyle("-fx-background-color: #3B919B;-fx-text-fill:#C8DFE8");
-
-                    // Create text discount 
-                    // Set regisCust into the selected customer
-                    setRegCust();
-                    if (this.regisCust.isActiveStatus()){ // if regisCust active status is true
-
-                        // Set finalTotalPrice with calculateDiscount
-                        this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
-
-                    } else { // if regisCust active status is false
-
-                        // Set finalTotalPrice with totalPrice
-                        this.finalTotalPrice = this.totalPrice;
-
-                    }
-
-                    String fixTotalPrice2 = formatter.format(this.finalTotalPrice);
-                    Label fixTotalPriceBill2 = new Label("Rp" + fixTotalPrice2);
-
-                    if(this.finalTotalPrice == this.totalPrice){ // if customer don't get discount
-
-                        // Create totalPriceBills2 (totalPriceBox)
-                        totalPriceBills2 = new Label("Charge Rp" + totalPriceBill2);
-
-                        // Add totalPriceBills to totalPriceBox
-                        totalPriceBox.getChildren().add(totalPriceBills2);
-                        
-                    } else { // if customer get discount
-
-                        // Create totalPriceBills2 (totalPriceBox)
-                        Text totalPriceBillLabel2 = new Text("Rp" +totalPriceBill2);
-                        totalPriceBills2 = new Label("Charge");
-
-                        // Add childrens to totalPriceBox
-                        totalPriceBox.getChildren().addAll(totalPriceBills2, totalPriceBillLabel2, fixTotalPriceBill2);
-
-                        // Add Styling
-                        HBox.setMargin(fixTotalPriceBill2, new Insets(0,0,0,10));
-                        totalPriceBox.setSpacing(10);
-                        totalPriceBillLabel2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
-                        totalPriceBillLabel2.setTextAlignment(TextAlignment.CENTER);
-                        totalPriceBillLabel2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
-                        totalPriceBillLabel2.setStrikethrough(true);
-
-                    }
-
-                    // Styling fixTotalPriceBill2
-                    fixTotalPriceBill2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
-                    fixTotalPriceBill2.setTextAlignment(TextAlignment.CENTER);
-                    fixTotalPriceBill2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
-                }
-                else { // if usePointButton is not selected
-
-                    // Set isUsePoint to false
-                    this.isUsePoint = false;
-
-                    // Styling usePointButton
-                    usePointButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
-
-                    // Create totalPriceBills2 (totalPriceBox)
-                    totalPriceBills2 = new Label("Charge Rp" + totalPriceBill2);
-
-                    // Add totalPriceBills2 to totalPriceBox
-                    totalPriceBox.getChildren().add(totalPriceBills2);
-
-                }
-
-                // Styling totalPriceBills2
-                totalPriceBills2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
-                totalPriceBills2.setTextAlignment(TextAlignment.CENTER);
-                totalPriceBills2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
-
-            }
+            usePointHandler();
         });
 
         // Reset usePointButton
@@ -2214,5 +2122,105 @@ public class CashierPage extends VBox {
 
     public Label getFixTotalPriceBill(){
         return this.fixTotalPriceBill;
+    }
+
+    public void usePointHandler(){
+        if (this.selectionIndex < this.tempID.size() && this.selectionIndex != -1){ // if a customer is selected
+            // Reset totalPriceBox
+            totalPriceBox.getChildren().clear();
+
+            // Create text total price
+            String totalPriceBill2 = formatter.format(this.totalPrice);
+            Label totalPriceBills2;
+
+            if (usePointButton.isSelected()) { // if usePointButton is selected
+
+                // Set isUsePoint to true
+                this.isUsePoint = true;
+
+                // Styling usePointButton
+                usePointButton.setStyle("-fx-background-color: #3B919B;-fx-text-fill:#C8DFE8");
+
+                // Create text discount
+                // Set regisCust into the selected customer
+                setRegCust();
+
+                if (this.regisCust.isActiveStatus()){ // if regisCust active status is true
+
+                    // Set finalTotalPrice with calculateDiscount
+                    this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+
+                } else { // if regisCust active status is false
+
+                    // Set finalTotalPrice with totalPrice
+                    this.finalTotalPrice = this.totalPrice;
+
+                }
+
+                String fixTotalPrice2 = formatter.format(this.finalTotalPrice);
+                Label fixTotalPriceBill2 = new Label("Rp" + fixTotalPrice2);
+
+                if(this.finalTotalPrice == this.totalPrice){ // if customer don't get discount
+
+                    // Create totalPriceBills2 (totalPriceBox)
+                    totalPriceBills2 = new Label("Charge Rp" + totalPriceBill2);
+
+                    // Add totalPriceBills to totalPriceBox
+                    totalPriceBox.getChildren().add(totalPriceBills2);
+
+                } else { // if customer get discount
+
+                    // Create totalPriceBills2 (totalPriceBox)
+                    Text totalPriceBillLabel2 = new Text("Rp" +totalPriceBill2);
+                    totalPriceBills2 = new Label("Charge");
+
+                    // Add childrens to totalPriceBox
+                    totalPriceBox.getChildren().addAll(totalPriceBills2, totalPriceBillLabel2, fixTotalPriceBill2);
+
+                    // Add Styling
+                    HBox.setMargin(fixTotalPriceBill2, new Insets(0,0,0,10));
+                    totalPriceBox.setSpacing(10);
+                    totalPriceBillLabel2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+                    totalPriceBillLabel2.setTextAlignment(TextAlignment.CENTER);
+                    totalPriceBillLabel2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+                    totalPriceBillLabel2.setStrikethrough(true);
+
+                }
+
+                // Styling fixTotalPriceBill2
+                fixTotalPriceBill2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+                fixTotalPriceBill2.setTextAlignment(TextAlignment.CENTER);
+                fixTotalPriceBill2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+            }
+            else { // if usePointButton is not selected
+
+                // Set isUsePoint to false
+                this.isUsePoint = false;
+
+                // Styling usePointButton
+                usePointButton.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: #3B919B;");
+
+                // Create totalPriceBills2 (totalPriceBox)
+                totalPriceBills2 = new Label("Charge Rp" + totalPriceBill2);
+
+                // Add totalPriceBills2 to totalPriceBox
+                totalPriceBox.getChildren().add(totalPriceBills2);
+
+            }
+
+            // Styling totalPriceBills2
+            totalPriceBills2.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
+            totalPriceBills2.setTextAlignment(TextAlignment.CENTER);
+            totalPriceBills2.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;");
+
+        }
+    }
+
+    public ToggleButton getUsePointButton() {
+        return usePointButton;
+    }
+
+    public RegisteredCustomer getRegisCust() {
+        return regisCust;
     }
 }

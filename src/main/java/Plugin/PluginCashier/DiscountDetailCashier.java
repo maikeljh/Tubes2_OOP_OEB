@@ -442,6 +442,18 @@ public class DiscountDetailCashier extends CashierDetailDecorator implements Ser
                 this.page.getTab().setContent(newCashier.getPage());
             }
         });
+
+        this.page.getCancelButton().setOnAction(event -> {
+            CashierPage newPage = getPage().makeChangePage();
+            DiscountCashier newCashier = new DiscountCashier();
+            newCashier.setPage(newPage);
+            newCashier.getPage().setStage(newPage.getStage());
+            newCashier.getPage().setSettings(newPage.getSettings());
+            newCashier.getPage().setSettingsDS(newPage.getSettingsDS());
+            newCashier.execute();
+            this.page.getTab().setContent(newCashier.getPage());
+        });
+
         this.page.getChildren().addAll(discountBox);
     }
 }
