@@ -24,6 +24,7 @@ public class TaxAndServiceSettings extends SettingsDecorator implements Serializ
 
     public TaxAndServiceSettings() {
         this.pluginName = "Plugin Tax & Service";
+        this.nextPlugin = null;
         this.currentTAS = new TaxAndService();
         this.TASStore = new DataStore<TaxAndService>();
     }

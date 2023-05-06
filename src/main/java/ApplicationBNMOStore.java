@@ -1,4 +1,5 @@
 import DataStore.DataStore;
+import Plugin.Decorator.CashierDecorator;
 import Plugin.Decorator.SettingsDecorator;
 import Plugin.Plugin;
 import Plugin.BasePlugin;
@@ -162,28 +163,24 @@ public class ApplicationBNMOStore extends Application {
             // Handle open menu item click
             Tab newTab = new Tab("Cashier");
             CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
-            DiscountCashier tes = new DiscountCashier();
-            tes.setPage(cashierTab);
-            tes.getPage().setStage(stage);
-            tes.getPage().setSettings(settings);
-            tes.getPage().setSettingsDS(settingsDS);
-            tes.execute();
-            newTab.setContent(tes.getPage());
-            // newTab.setStyle("-fx-background-color: #F3F9FB;");
+            boolean found = false;
+            for(Plugin plugin : this.settings.getPluginManager().getPlugins()){
+                if(plugin instanceof CashierDecorator cashierDecorated){
+                    cashierDecorated.setPage(cashierTab);
+                    cashierDecorated.getPage().setStage(stage);
+                    cashierDecorated.getPage().setSettings(settings);
+                    cashierDecorated.getPage().setSettingsDS(settingsDS);
+                    cashierDecorated.execute();
+                    newTab.setContent(cashierDecorated.getPage());
+                    found = true;
+                }
+            }
+            if(!found){
+                newTab.setContent(cashierTab);
+            }
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
         });
-
-        // MenuItem cashierDetailPage = new MenuItem("Cashier Detail");
-        // cashierDetailPage.setOnAction(event -> {
-        //     // Handle open menu item click
-        //     Tab newTab = new Tab("Cashier Detail");
-        //     newTab.setStyle("-fx-background-color: #F3F9FB;");
-        //     CashierDetailPage cashierDetailTab = new CashierDetailPage(stage, newTab);
-        //     newTab.setContent(cashierDetailTab);
-        //     tabPane.getTabs().add(newTab);
-        //     tabPane.getSelectionModel().select(newTab);
-        // });
 
         // Sales Report
         MenuItem salesReportPage = new MenuItem("Sales Report");
@@ -277,13 +274,6 @@ public class ApplicationBNMOStore extends Application {
             if(!found) {
                 newTab.setContent(settingsTab);
             }
-            TaxAndServiceSettings tes = new TaxAndServiceSettings();
-            tes.setPage(settingsTab);
-            tes.getPage().setStage(stage);
-            tes.getPage().setSettings(settings);
-            tes.getPage().setSettingsDS(settingsDS);
-            tes.execute();
-            newTab.setContent(tes.getPage());
         });
 
         // Add Menu Items to Menu

@@ -18,7 +18,9 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
     private boolean stop = false;
 
     public DiscountCashier(){
-        this.pluginName = "Plugin Discount";
+        this.pluginName = "Plugin Discount, Tax, and Service";
+        this.mainPlugin = true;
+        this.nextPlugin = "Plugin Detail Discount";
         this.TAS = new TaxAndService();
         this.TASStore = new DataStore<TaxAndService>();
         this.currentTax = 0;
@@ -119,4 +121,6 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
             }
         });
     }
+
+    public static void main(String args[]){}
 }

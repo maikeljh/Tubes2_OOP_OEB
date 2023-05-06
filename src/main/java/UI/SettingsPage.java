@@ -286,80 +286,93 @@ public class SettingsPage extends HBox {
             VBox pluginBox = new VBox();
             pluginBox.setSpacing(10);
 
-            int idx = 0;
             for(Plugin plugin : settings.getPluginManager().getPlugins()){
-                HBox pluginHBox = new HBox();
-                pluginHBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
-                pluginHBox.setPadding(new Insets(10));
+                if(plugin.isMainPlugin()){
+                    HBox pluginHBox = new HBox();
+                    pluginHBox.setStyle("-fx-background-color: #C8DFE8; -fx-background-radius: 10px");
+                    pluginHBox.setPadding(new Insets(10));
 
-                HBox pluginNameBox = new HBox();
-                Label pluginName = new Label(plugin.getPluginName());
-                pluginName.setFont(Font.font("Montserrat", 20));
-                pluginNameBox.getChildren().add(pluginName);
+                    HBox pluginNameBox = new HBox();
+                    Label pluginName = new Label(plugin.getPluginName());
+                    pluginName.setFont(Font.font("Montserrat", 20));
+                    pluginNameBox.getChildren().add(pluginName);
 
-                // Create HBox for buttons
-                HBox buttonHBox = new HBox();
+                    // Create HBox for buttons
+                    HBox buttonHBox = new HBox();
 
-                // Set image / icon for preview button
-                ImageView deleteIcon = new ImageView("/images/icon/delete.png");
+                    // Set image / icon for preview button
+                    ImageView deleteIcon = new ImageView("/images/icon/delete.png");
 
-                // Style preview button icon
-                deleteIcon.setPreserveRatio(true);
-                deleteIcon.setSmooth(true);
-                deleteIcon.setCache(true);
-                deleteIcon.setFitWidth(27);
-                deleteIcon.setFitHeight(27);
+                    // Style preview button icon
+                    deleteIcon.setPreserveRatio(true);
+                    deleteIcon.setSmooth(true);
+                    deleteIcon.setCache(true);
+                    deleteIcon.setFitWidth(27);
+                    deleteIcon.setFitHeight(27);
 
-                // Create preview button
-                Button deleteButton = new Button();
-                deleteButton.setPrefSize(27, 27);
-                deleteButton.setStyle("-fx-background-color: #C8DFE8;");
-                deleteButton.setGraphic(deleteIcon);
-                deleteButton.setCursor(Cursor.HAND);
+                    // Create preview button
+                    Button deleteButton = new Button();
+                    deleteButton.setPrefSize(27, 27);
+                    deleteButton.setStyle("-fx-background-color: #C8DFE8;");
+                    deleteButton.setGraphic(deleteIcon);
+                    deleteButton.setCursor(Cursor.HAND);
 
-                // Add event delete button
-                int finalIdx = idx;
-                deleteButton.setOnAction(e -> {
-                    if(settings.getPluginManager().getPlugins().get(finalIdx) instanceof BasePlugin){
-                        menu.getItems().stream()
-                                .filter(item -> settings.getPluginManager().getPlugins().get(finalIdx).getPluginName().equals(item.getText()))
-                                .findFirst()
-                                .ifPresent(menu.getItems()::remove);
-                    } else if(settings.getPluginManager().getPlugins().get(finalIdx) instanceof SettingsDecorator){
+                    // Add event delete button
+                    deleteButton.setOnAction(e -> {
+                        if(settings.getPluginManager().getPlugin(plugin.getPluginName()) instanceof BasePlugin){
+                            menu.getItems().stream()
+                                    .filter(item -> settings.getPluginManager().getPlugin(plugin.getPluginName()).getPluginName().equals(item.getText()))
+                                    .findFirst()
+                                    .ifPresent(menu.getItems()::remove);
+                        }
+
+                        settings.getPluginManager().removePlugin(plugin.getPluginName());
+
+                        // Save settings
+                        Settings temp = new Settings();
+                        Inventory<Settings> tempSettings = new Inventory<Settings>();
+                        tempSettings.addElement(settings);
+
+                        List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
+                        Class<?>[] classesArray = clazzes.toArray(new Class<?>[0]);
+                        Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
+                        Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
+                        System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+
+                        settingsDS.saveData("settings", temp, concatenated, tempSettings);
+
                         SettingsPage settingsTab = new SettingsPage(stage, tab, menu, settings, items, customers, report, itemDS, customerDS, settingsDS, reportDS);
-                        tab.setContent(settingsTab);
-                    }
+                        boolean found = false;
+                        for(Plugin tempPlugin : settings.getPluginManager().getPlugins()){
+                            if(tempPlugin instanceof SettingsDecorator settingsDecorated){
+                                settingsDecorated.setPage(settingsTab);
+                                settingsDecorated.getPage().setStage(stage);
+                                settingsDecorated.getPage().setSettings(settings);
+                                settingsDecorated.getPage().setSettingsDS(settingsDS);
+                                settingsDecorated.execute();
+                                tab.setContent(settingsDecorated.getPage());
+                                found = true;
+                            }
+                        }
+                        if(!found) {
+                            tab.setContent(settingsTab);
+                        }
 
-                    settings.getPluginManager().removePlugin(finalIdx);
+                        opt2.fire();
+                    });
 
-                    // Save settings
-                    Settings temp = new Settings();
-                    Inventory<Settings> tempSettings = new Inventory<Settings>();
-                    tempSettings.addElement(settings);
+                    // Styling pluginHBox
+                    HBox.setHgrow(pluginNameBox, Priority.ALWAYS);
+                    pluginNameBox.setAlignment(Pos.CENTER_LEFT);
 
-                    List<Class<?>> clazzes = settings.getPluginManager().getClazzes();
-                    Class<?>[] classesArray = clazzes.toArray(new Class<?>[0]);
-                    Class<?>[] others = {Inventory.class, Settings.class, PluginManager.class, Plugin.class};
-                    Class<?>[] concatenated = Arrays.copyOf(classesArray, classesArray.length + others.length);
-                    System.arraycopy(others, 0, concatenated, classesArray.length, others.length);
+                    // Style transaction buttons HBox
+                    buttonHBox.setAlignment(Pos.CENTER_RIGHT);
 
-                    settingsDS.saveData("settings", temp, concatenated, tempSettings);
-                    opt2.fire();
-                });
-
-                // Styling pluginHBox
-                HBox.setHgrow(pluginNameBox, Priority.ALWAYS);
-                pluginNameBox.setAlignment(Pos.CENTER_LEFT);
-
-                // Style transaction buttons HBox
-                buttonHBox.setAlignment(Pos.CENTER_RIGHT);
-
-                buttonHBox.getChildren().add(deleteButton);
-                pluginHBox.getChildren().addAll(pluginNameBox, buttonHBox);
-                pluginBox.getChildren().add(pluginHBox);
-                pluginBox.setPrefWidth(680);
-
-                idx++;
+                    buttonHBox.getChildren().add(deleteButton);
+                    pluginHBox.getChildren().addAll(pluginNameBox, buttonHBox);
+                    pluginBox.getChildren().add(pluginHBox);
+                    pluginBox.setPrefWidth(680);
+                }
             }
 
             ScrollPane scrollPane = new ScrollPane(pluginBox);

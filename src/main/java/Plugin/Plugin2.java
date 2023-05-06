@@ -21,7 +21,8 @@
 //
 //    public Plugin2(){
 //        // Create Name
-//        this.setPluginName("Pie Chart");
+//        this.pluginName = "Pie Chart";
+//        this.mainPlugin = true;
 //    }
 //
 //    public static void main(String args[]){}

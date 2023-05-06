@@ -1,9 +1,11 @@
 package DataStore;
 import java.io.File;
+import java.io.Serializable;
+
 import jakarta.xml.bind.*;
 import System.Inventory;
 
-public class XMLAdapter implements DataAdapter{
+public class XMLAdapter implements DataAdapter, Serializable {
     public Object readData(String filePath, Class<?>[] classTypes) {
         try {
             // Creating a File object

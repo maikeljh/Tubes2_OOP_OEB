@@ -3,9 +3,10 @@ package DataStore;
 import System.Inventory;
 import System.Settings;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class DataStore<T> {
+public class DataStore<T> implements Serializable {
     private DataAdapter adapter;
 
     public DataStore(){

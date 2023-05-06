@@ -1,5 +1,6 @@
 package Plugin;
 
+import Plugin.Plugin;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;

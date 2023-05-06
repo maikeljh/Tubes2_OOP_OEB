@@ -1,5 +1,6 @@
 package Plugin.PluginCashier;
 
+import DataStore.DataStore;
 import Plugin.Decorator.CashierDetailDecorator;
 import UI.CashierPage;
 import javafx.geometry.Insets;
@@ -18,6 +19,12 @@ import java.io.Serializable;
 
 public class DiscountDetailCashier extends CashierDetailDecorator implements Serializable {
     private double tempDiscount;
+
+    public DiscountDetailCashier(){
+        this.pluginName = "Plugin Detail Discount";
+        this.nextPlugin = "Plugin Tax & Service";
+        this.tempDiscount = 0;
+    }
 
     public void execute(){
         // Create Discount Input

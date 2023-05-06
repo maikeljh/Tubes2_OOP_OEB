@@ -2,8 +2,10 @@ package Plugin.PluginCashier;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serializable;
+
 @XmlRootElement
-public class TaxAndService {
+public class TaxAndService implements Serializable {
     private double tax;
     private double service;
 

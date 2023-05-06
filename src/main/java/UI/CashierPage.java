@@ -3,6 +3,9 @@ package UI;
 
 import java.util.*;
 
+import Plugin.Decorator.CashierDecorator;
+import Plugin.Decorator.CashierDetailDecorator;
+import Plugin.Plugin;
 import Plugin.PluginCashier.DiscountDetailCashier;
 import System.Settings;
 import DataStore.DataStore;
@@ -212,13 +215,21 @@ public class CashierPage extends VBox {
                 itemDisplay.setOnMouseClicked(event -> {
                     setRegCust();
                     CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
-                    DiscountDetailCashier tes = new DiscountDetailCashier();
-                    tes.setPage(detailCashierContent);
-                    tes.getPage().setStage(stage);
-                    tes.getPage().setSettings(settings);
-                    tes.getPage().setSettingsDS(settingsDS);
-                    tes.execute();
-                    tab.setContent(tes.getPage());
+                    boolean found = false;
+                    for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
+                        if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
+                            cashierDetailDecorated.setPage(detailCashierContent);
+                            cashierDetailDecorated.getPage().setStage(stage);
+                            cashierDetailDecorated.getPage().setSettings(settings);
+                            cashierDetailDecorated.getPage().setSettingsDS(settingsDS);
+                            cashierDetailDecorated.execute();
+                            tab.setContent(cashierDetailDecorated.getPage());
+                            found = true;
+                        }
+                    }
+                    if(!found){
+                        tab.setContent(detailCashierContent);
+                    }
                 });
                 
                 // Add Item Display to Grid
@@ -541,13 +552,21 @@ public class CashierPage extends VBox {
                 libraryDisplay.setOnMouseClicked(event -> {
                     setRegCust();
                     CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, library, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
-                    DiscountDetailCashier tes = new DiscountDetailCashier();
-                    tes.setPage(detailCashierContent);
-                    tes.getPage().setStage(stage);
-                    tes.getPage().setSettings(settings);
-                    tes.getPage().setSettingsDS(settingsDS);
-                    tes.execute();
-                    tab.setContent(tes.getPage());
+                    boolean found = false;
+                    for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
+                        if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
+                            cashierDetailDecorated.setPage(detailCashierContent);
+                            cashierDetailDecorated.getPage().setStage(stage);
+                            cashierDetailDecorated.getPage().setSettings(settings);
+                            cashierDetailDecorated.getPage().setSettingsDS(settingsDS);
+                            cashierDetailDecorated.execute();
+                            tab.setContent(cashierDetailDecorated.getPage());
+                            found = true;
+                        }
+                    }
+                    if(!found){
+                        tab.setContent(detailCashierContent);
+                    }
                 });
 
                 // Add childrens to bodyLibraryVBox
@@ -1053,16 +1072,27 @@ public class CashierPage extends VBox {
 
             // Create cashierContent (newTab)
             CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
-
-            // Add cashierContent to newTab
-            newTab.setContent(cashierContent);
+            boolean found = false;
+            for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
+                if(plugin instanceof CashierDecorator cashierDecorated){
+                    cashierDecorated.setPage(cashierContent);
+                    cashierDecorated.getPage().setStage(stage);
+                    cashierDecorated.getPage().setSettings(settings);
+                    cashierDecorated.getPage().setSettingsDS(settingsDS);
+                    cashierDecorated.execute();
+                    newTab.setContent(cashierDecorated.getPage());
+                    found = true;
+                }
+            }
+            if(!found){
+                newTab.setContent(cashierContent);
+            }
 
             // Add newTab to tabPane
             tabPane.getTabs().add(newTab);
 
             // Move page
             tabPane.getSelectionModel().select(newTab);
-
         });
 
         // Add childrens to addCustBox
@@ -1572,11 +1602,22 @@ public class CashierPage extends VBox {
             }
 
             // Create cashierContent (tab)
-            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, this.purchasedItems, this.isUsePoint, this.regisCust, settings, settingsDS);
-
-            // Add cashierContent to tab
-            tab.setContent(cashierContent);
-
+            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, this.transactions, new Inventory<PurchasedItem>(), false, null, settings, settingsDS);
+            boolean found = false;
+            for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
+                if(plugin instanceof CashierDecorator cashierDecorated){
+                    cashierDecorated.setPage(cashierContent);
+                    cashierDecorated.getPage().setStage(stage);
+                    cashierDecorated.getPage().setSettings(settings);
+                    cashierDecorated.getPage().setSettingsDS(settingsDS);
+                    cashierDecorated.execute();
+                    tab.setContent(cashierDecorated.getPage());
+                    found = true;
+                }
+            }
+            if(!found){
+                tab.setContent(cashierContent);
+            }
         });
 
         // Add usePointButton functionality
@@ -1633,13 +1674,21 @@ public class CashierPage extends VBox {
             // Set regisCust into the selected customer
             setRegCust();
             CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.transactions, this.isUsePoint, this.regisCust, this.settings, this.settingsDS);
-            DiscountDetailCashier tes = new DiscountDetailCashier();
-            tes.setPage(detailCashierContent);
-            tes.getPage().setStage(stage);
-            tes.getPage().setSettings(settings);
-            tes.getPage().setSettingsDS(settingsDS);
-            tes.execute();
-            tab.setContent(tes.getPage());
+            boolean found = false;
+            for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
+                if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
+                    cashierDetailDecorated.setPage(detailCashierContent);
+                    cashierDetailDecorated.getPage().setStage(stage);
+                    cashierDetailDecorated.getPage().setSettings(settings);
+                    cashierDetailDecorated.getPage().setSettingsDS(settingsDS);
+                    cashierDetailDecorated.execute();
+                    tab.setContent(cashierDetailDecorated.getPage());
+                    found = true;
+                }
+            }
+            if(!found){
+                tab.setContent(detailCashierContent);
+            }
         });
     }
 
