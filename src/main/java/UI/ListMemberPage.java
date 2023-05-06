@@ -217,7 +217,8 @@ public class ListMemberPage extends VBox {
 
             // memberBox styling
             if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
-                if (((RegisteredCustomer) customer).isActiveStatus()) {
+                if (((RegisteredCustomer) customer).isActiveStatus()
+            ) {
                     customerBox.setStyle("-fx-background-color: #98CBDE; -fx-background-radius: 10px");
                 }
                 else {

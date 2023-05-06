@@ -23,19 +23,21 @@ public class VIP extends RegisteredCustomer{
     }
 
     public double calculateDiscount(double totalPrice, boolean point){
-
-        double result = 0;
-        if (point){
-            if ( this.point > totalPrice){
-                this.point -= totalPrice;
+        if (this.activeStatus) {
+            double result = 0;
+            if (point){
+                if ( this.point > totalPrice){
+                    this.point -= totalPrice;
+                } else {
+                    result =  totalPrice - ((double) this.point + 0.1 * totalPrice);
+                    this.point = 0;
+                }
             } else {
-                result =  totalPrice - ((double) this.point + 0.1 * totalPrice);
-                this.point = 0;
+                result =  totalPrice - ( 0.1 * totalPrice);
             }
-        } else {
-            result =  totalPrice - ( 0.1 * totalPrice);
+
+            return result;
         }
-        
-        return result;
+        return totalPrice;
     }
 }
