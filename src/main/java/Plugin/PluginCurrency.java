@@ -86,7 +86,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
             title.setFont(Font.font("Montserrat", FontWeight.SEMI_BOLD, 30));
 
             ComboBox<String> formatOptions = new ComboBox<>();
-            for(Currency currency : currencies.getList()){
+            for(Currency currency : currencies.getBox()){
                 formatOptions.getItems().add(currency.getCurrency());
             }
             formatOptions.setValue(this.currency);
@@ -94,7 +94,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
             formatOptions.valueProperty().addListener((observable, oldValue, newValue) -> {
                 double newKurs = 1;
 
-                for(Currency currency : currencies.getList()){
+                for(Currency currency : currencies.getBox()){
                     if(Objects.equals(currency.getCurrency(), newValue)){
                         newKurs = currency.getKurs();
                         this.currency = currency.getCurrency();
@@ -105,21 +105,21 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
                 Inventory<Customer> customers = this.page.getCustomers();
                 SalesReport report = this.page.getReport();
 
-                for(Item item : items.getList()){
+                for(Item item : items.getBox()){
                     item.setSellPrice(item.getSellPrice() / this.currentKurs * newKurs);
                     item.setBuyPrice(item.getBuyPrice() / this.currentKurs * newKurs);
                 }
 
-                for(Customer customer : customers.getList()){
-                    for(FixedBill bill : customer.getTransaction().getList()){
-                        for(PurchasedItem item : bill.getItems().getList()){
+                for(Customer customer : customers.getBox()){
+                    for(FixedBill bill : customer.getTransaction().getBox()){
+                        for(PurchasedItem item : bill.getItems().getBox()){
                             item.setSellPrice(item.getSellPrice() / this.currentKurs * newKurs);
                             item.setBuyPrice(item.getBuyPrice() / this.currentKurs * newKurs);
                         }
                     }
                 }
 
-                for(PurchasedItem item : report.getItems().getList()){
+                for(PurchasedItem item : report.getItems().getBox()){
                     item.setSellPrice(item.getSellPrice() / this.currentKurs * newKurs);
                     item.setBuyPrice(item.getBuyPrice() / this.currentKurs * newKurs);
                 }

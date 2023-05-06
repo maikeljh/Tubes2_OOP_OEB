@@ -53,7 +53,7 @@ public class CashierDetailPage extends VBox {
         this.usePoint = usePoint;
         this.regisCust = regisCust;
 
-        for (PurchasedItem purchItem : purchasedItems.getList()){
+        for (PurchasedItem purchItem : purchasedItems.getBox()){
             if (purchItem.getItemID() == item.getItemID()){
                 this.quantity = purchItem.getQuantity();
                 break;
@@ -222,7 +222,7 @@ public class CashierDetailPage extends VBox {
 
     public CashierPage processAdd(){
         boolean flag = false;
-        for (PurchasedItem purchItem : purchasedItems.getList()){
+        for (PurchasedItem purchItem : purchasedItems.getBox()){
             if (purchItem.getItemID() == item.getItemID()){
                 flag = true;
                 purchItem.setQuantity(this.quantity);
@@ -246,7 +246,7 @@ public class CashierDetailPage extends VBox {
     }
 
     public PurchasedItem findPurchasedItem(){
-        for (PurchasedItem purchItem : purchasedItems.getList()){
+        for (PurchasedItem purchItem : purchasedItems.getBox()){
             if (purchItem.getItemID() == item.getItemID()){
                 return purchItem;
             }

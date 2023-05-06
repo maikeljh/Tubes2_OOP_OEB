@@ -177,7 +177,7 @@ public class Tutorial {
         double totalNetProfit = 0;
 
         // Tambahin cell untuk tiap kolom secara terurut
-        for (PurchasedItem item : hasil2.getElement(0).getItems().getList()) {
+        for (PurchasedItem item : hasil2.getElement(0).getItems().getBox()) {
             PdfPCell itemId = new PdfPCell(new Phrase(String.valueOf(item.getItemID())));
             PdfPCell itemName = new PdfPCell(new Phrase(item.getName()));
             PdfPCell itemBuyPrice = new PdfPCell(new Phrase(String.valueOf(item.getBuyPrice())));

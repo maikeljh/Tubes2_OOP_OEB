@@ -105,7 +105,6 @@ public class ApplicationBNMOStore extends Application {
         bill2.getItems().addElement(new PurchasedItem(new Item("Cappuccino", 10, 20000, 15000, "Coffee", new Image("/images/item/item4.png")), 3));
         bill2.getItems().addElement(new PurchasedItem(new Item("Blueberry Pie", 10, 38000, 30000, "Desserts", new Image("/images/item/item4.png")), 1));
 
-
         // Read transactions
         double totalPrice = 30000;
         double discount = 0.10;

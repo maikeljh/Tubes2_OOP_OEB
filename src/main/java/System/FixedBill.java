@@ -5,31 +5,25 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+@Getter @Setter @NoArgsConstructor
 @XmlRootElement
 public class FixedBill extends Bill{
     /* attributes */
     private int billID;
     private static int billCount = 1;
 
-    public FixedBill(){
-        super();
-    }
     public FixedBill(int billID) { super(); this.billID = billID; }
     public FixedBill(String date, double totalPrice, double discount) { super(date); this.billID = billCount; this.totalPrice = totalPrice; this.discount = discount; billCount++; }
     public FixedBill(String date, int customerID, double totalPrice, double discount) { super(date, customerID); this.billID = billCount; this.totalPrice = totalPrice; this.discount = discount; billCount++;}
 
     /* methods */
-    public int getBillID(){
-        return billID;
-    }
-
-    public void setBillID(int billID){
-        this.billID = billID;
-    }
 
     public void printBill() throws DocumentException, FileNotFoundException {
         //
@@ -114,7 +108,7 @@ public class FixedBill extends Bill{
 
         // Iterate every item
         int idx = 0;
-        for (PurchasedItem item : items.getList()) {
+        for (PurchasedItem item : items.getBox()) {
             // Add cell
             PdfPCell itemId = new PdfPCell(new Phrase(String.valueOf(item.getItemID())));
             PdfPCell itemName = new PdfPCell(new Phrase(item.getName()));

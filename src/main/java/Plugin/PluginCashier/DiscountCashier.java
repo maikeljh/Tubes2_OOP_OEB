@@ -41,7 +41,7 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
                 this.page.getFixTotalPriceBill().setText("Charge Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
             }
         } catch (Exception e){
-            e.printStackTrace();
+            // Do nothing
         }
 
         // Create a thread to execute the task
@@ -54,12 +54,12 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
                         this.page.setTotalPrice(this.page.getTotalPrice() + this.TAS.getService() + this.TAS.getTax());
                         this.page.setFinalTotalPrice(this.page.getFinalTotalPrice() + this.TAS.getService() + this.TAS.getTax());
                     } catch (Exception e){
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     // Sleep for two seconds
                     Thread.sleep(2000);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // Do nothing
                 }
             }
         });

@@ -167,7 +167,7 @@ public class DetailMemberPage extends VBox {
             membershipIcon.getChildren().add(vipDetailLogo);
         }
 
-        if (((RegisteredCustomer) customer).getActiveStatus()) {
+        if (((RegisteredCustomer) customer).isActiveStatus()) {
             membershipIcon.getChildren().add(activateLogo);
         }
         else {

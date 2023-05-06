@@ -9,7 +9,7 @@ import lombok.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Data
+@NoArgsConstructor @AllArgsConstructor @Data
 @XmlRootElement
 public class Customer implements Serializable {
     protected int id;

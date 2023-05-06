@@ -62,7 +62,7 @@ public class ListItemPage extends Page {
         int col = 0;
 
         // Display List Of Items
-        for (Item item : items.getList()) {
+        for (Item item : items.getBox()) {
             // VBox Display Item
             VBox itemDisplay = new VBox();
 
@@ -133,7 +133,7 @@ public class ListItemPage extends Page {
                 int col1 = 0;
 
                 // Display List Of Items
-                for (Item item : items.getList()) {
+                for (Item item : items.getBox()) {
                     // VBox Display Item
                     VBox itemDisplay = new VBox();
 

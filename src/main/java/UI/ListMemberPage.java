@@ -57,7 +57,7 @@ public class ListMemberPage extends VBox {
 
         // Display list of customers
         int i = 1;
-        for (Customer customer : customers.getList()) {
+        for (Customer customer : customers.getBox()) {
             // Create HBox for every customer
             HBox customerBox = new HBox();
 
@@ -74,7 +74,7 @@ public class ListMemberPage extends VBox {
             }
             else {
                 details.setText(i + "   " + ((RegisteredCustomer) customer).getName());
-                if (!((RegisteredCustomer) customer).getActiveStatus()) {
+                if (!((RegisteredCustomer) customer).isActiveStatus()) {
                     details.setStyle("-fx-text-fill: #93A2A5");
                 }
             }
@@ -189,7 +189,7 @@ public class ListMemberPage extends VBox {
 
             // historyButton styling
             if (customer.getClass().getSimpleName().equals("Member") || customer.getClass().getSimpleName().equals("VIP")) {
-                if (((RegisteredCustomer) customer).getActiveStatus()) {
+                if (((RegisteredCustomer) customer).isActiveStatus()) {
                     historyButton.setStyle("-fx-background-color: #98CBDE");
                 }
                 else {
@@ -203,7 +203,7 @@ public class ListMemberPage extends VBox {
             // Set buttons to customerButtons
             customerButtons.getChildren().add(historyButton);
             if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
-                if (((RegisteredCustomer) customer).getActiveStatus()) {
+                if (((RegisteredCustomer) customer).isActiveStatus()) {
                     updateButton.setStyle("-fx-background-color: #98CBDE");
                     previewButton.setStyle("-fx-background-color: #98CBDE");
                 }
@@ -217,7 +217,8 @@ public class ListMemberPage extends VBox {
 
             // memberBox styling
             if (customer.getClass().getSimpleName().equals("VIP") || customer.getClass().getSimpleName().equals("Member")) {
-                if (((RegisteredCustomer) customer).getActiveStatus()) {
+                if (((RegisteredCustomer) customer).isActiveStatus()
+            ) {
                     customerBox.setStyle("-fx-background-color: #98CBDE; -fx-background-radius: 10px");
                 }
                 else {

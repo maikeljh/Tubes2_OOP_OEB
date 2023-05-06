@@ -12,12 +12,8 @@ public class OBJAdapter implements DataAdapter {
             Object result = objectInputStream.readObject();
             objectInputStream.close();
             return result;
-        } catch (FileNotFoundException e) {
-            // Do Nothing
-        } catch (IOException e) {
-            // Do Nothing
-        } catch (ClassNotFoundException e) {
-            // Do Nothing
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return null;
     }

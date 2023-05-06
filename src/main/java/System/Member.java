@@ -23,17 +23,20 @@ public class Member extends RegisteredCustomer {
     }
 
     public double calculateDiscount(double totalPrice, boolean point){
-        double result = 0;
-        if(point){
-            if ( this.point > totalPrice){
-                this.point -= totalPrice;
+        if (isActiveStatus()) {
+            double result = 0;
+            if(point){
+                if ( this.point > totalPrice){
+                    this.point -= totalPrice;
+                } else {
+                    result = totalPrice - (double) this.point;
+                    this.point = 0;
+                }
             } else {
-                result = totalPrice - (double) this.point;
-                this.point = 0;
+                result = totalPrice;
             }
-        } else {
-            result = totalPrice;
+            return result;
         }
-        return result;
+        return totalPrice;
     }
 }

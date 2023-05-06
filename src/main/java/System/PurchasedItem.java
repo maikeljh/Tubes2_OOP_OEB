@@ -1,31 +1,23 @@
 package System;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@NoArgsConstructor @Getter @Setter
 @XmlRootElement
 public class PurchasedItem extends Item {
     protected int quantity;
 
-    public PurchasedItem(){
-        super();
-    }
 
     public PurchasedItem(Item e, int quantity){
         super(e);
         this.quantity = quantity;
     }
 
-    /* Setter */
-    public void setQuantity(int quantity){
-        this.quantity = quantity;
-    }
-
-    /* Getter */
-    public int getQuantity(){
-        return this.quantity;
-    }
 
     /* Methods */
     public double calculateGrossProfit(){

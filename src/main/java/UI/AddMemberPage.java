@@ -85,7 +85,7 @@ public class AddMemberPage extends VBox {
 
         // Listing all customerID that is available to turn to member
         List<Integer> idList = new ArrayList<Integer>();
-        for (Customer customer : customers.getList()) {
+        for (Customer customer : customers.getBox()) {
             if (customer.getClass().getSimpleName().equals("Customer")) {
                 idList.add(customer.getId());
             }
@@ -164,7 +164,7 @@ public class AddMemberPage extends VBox {
             String phoneNumber = inputNumber.getText();
             FixedBill bill = new FixedBill();
 
-            for (Customer customer : customers.getList()) {
+            for (Customer customer : customers.getBox()) {
                 if (customer.getId() == id) {
                     bill = customer.getTransaction().getElement(0);
                 }

@@ -67,7 +67,7 @@ public class HistoryPage extends VBox {
         int i = 1; // counter
 
         // Display list of transactions / history
-        for (FixedBill transaction : customer.getTransaction().getList()) {
+        for (FixedBill transaction : customer.getTransaction().getBox()) {
             // Create HBox for every transaction (fixed bill)
             HBox transactionHBox = new HBox();
 

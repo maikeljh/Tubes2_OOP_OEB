@@ -124,7 +124,7 @@ public class SalesReportPage extends VBox {
 
         // Define a list (data) of items
         ObservableList<PurchasedItem> tableItems = FXCollections.observableArrayList();
-        tableItems.addAll(report.getItems().getList());
+        tableItems.addAll(report.getItems().getBox());
 
         // Set data to table
         table.setItems(tableItems);

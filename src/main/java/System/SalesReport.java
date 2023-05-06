@@ -5,11 +5,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 
+@Getter @Setter
 @XmlRootElement
 public class SalesReport implements Serializable {
     /* attributes */
@@ -25,30 +28,6 @@ public class SalesReport implements Serializable {
     }
 
     /* methods */
-
-    public void setItems(Inventory<PurchasedItem> items) {
-        this.items = items;
-    }
-
-    public void setTotalGrossProfit(double totalGrossProfit) {
-        this.totalGrossProfit = totalGrossProfit;
-    }
-
-    public void setTotalNetProfit(double totalNetProfit) {
-        this.totalNetProfit = totalNetProfit;
-    }
-
-    public double getTotalGrossProfit() {
-        return totalGrossProfit;
-    }
-
-    public double getTotalNetProfit() {
-        return totalNetProfit;
-    }
-
-    public Inventory<PurchasedItem> getItems(){
-        return items;
-    }
 
     public int getElementIdx(String itemName){
         boolean found = false;
@@ -68,37 +47,19 @@ public class SalesReport implements Serializable {
     }
 
     public void updateReport(FixedBill fixedBill){
-        for(PurchasedItem item : fixedBill.getItems().getList()){
-            items.addElement(item);
-        }
-    }
-
-    public void calculateReport(Inventory<FixedBill> transactions){
-        /*
-        for (FixedBill fixedBill : transactions.getList()){
-            for (PurchasedItem purchasedItem : fixedBill.getItems().getList()){
-                ReportItem reportItem = new ReportItem(purchasedItem, purchasedItem.getQuantity()); // convert PurchasedItem to ReportItem
-                if (getElementIdx(purchasedItem.getName()) == -1){
-                    // if not found on items, then add item to list
-                    items.addElement(reportItem);
-                } else {
-                    // if item already on the items list, then update the item on the list
-                    ReportItem salesReportItem = items.getElement(getElementIdx(purchasedItem.getName())); // ReportItem exists in items
-                    reportItem.setQuantity(purchasedItem.getQuantity() + salesReportItem.getQuantity()); // set new quantity
-                    reportItem.calculateGrossProfit(); // calculate new gross profit
-                    reportItem.calculateNetProfit(); // calculate new net profit
-                    items.setElement(getElementIdx(purchasedItem.getName()), reportItem);
-                }
+        // update items when a fixed bill is added
+        for (PurchasedItem item : fixedBill.getItems().getBox()){
+            if (getElementIdx(item.getName()) == -1){
+                // if item not in items list, then add item to list
+                items.addElement(item);
+            } else {
+                // update item list
+                int newQty = items.getElement(getElementIdx(item.getName())).getQuantity() + item.getQuantity();
+                items.getElement(getElementIdx(item.getName())).setQuantity(newQty);
             }
+            totalGrossProfit += item.calculateGrossProfit();
+            totalNetProfit += item.calculateNetProfit();
         }
-        // sum all gross and net profit
-        totalGrossProfit = 0;
-        totalNetProfit = 0;
-        for (ReportItem reportItem : items.getList()){
-            totalGrossProfit += reportItem.getGrossProfit();
-            totalNetProfit += reportItem.getNetProfit();
-        }
-        */
     }
 
     public void printReport() throws DocumentException, FileNotFoundException{
@@ -175,7 +136,7 @@ public class SalesReport implements Serializable {
 
         // Iterate every item
         int idx = 0;
-        for (PurchasedItem item : items.getList()) {
+        for (PurchasedItem item : items.getBox()) {
             // Add cell
             PdfPCell itemId = new PdfPCell(new Phrase(String.valueOf(item.getItemID())));
             PdfPCell itemName = new PdfPCell(new Phrase(item.getName()));

@@ -19,7 +19,7 @@ public class XMLAdapter implements DataAdapter{
             Object object = unmarshaller.unmarshal(file);
             return object;
         } catch (JAXBException e) {
-            // Do Nothing
+            e.printStackTrace();
         }
         return null;
     }
@@ -42,7 +42,7 @@ public class XMLAdapter implements DataAdapter{
             // Write to XML file
             marshaller.marshal(newData, file);
         } catch (JAXBException e) {
-            // Do Nothing
+            e.printStackTrace();
         }
     }
 }

@@ -35,10 +35,14 @@ public class DataStore<T> {
         this.adapter.writeData(settings.getSaveDirectory() + "/" + fileName + "." + settings.getFormat(), classTypes, newData);
     }
 
-    public Inventory<T> loadData(String fileName, Settings settings, Class<?>[] classTypes){
+    public Inventory<T> loadData(String fileName, Settings settings, Class<?>[] classTypes) throws Exception {
         checkAdapter(settings.getFormat());
         @SuppressWarnings("unchecked")
         Inventory<T> result = (Inventory<T>) this.adapter.readData(settings.getSaveDirectory() + "/" + fileName + "." + settings.getFormat(), classTypes);
-        return result;
+        if(result == null){
+            throw new Exception("Null");
+        } else {
+            return result;
+        }
     }
 }
