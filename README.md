@@ -14,9 +14,7 @@ Java versi 17 atau lebih
 Maven versi 3.8 atau lebih
 Windows Subsystem Linux (WSL) untuk menjalankan program
 ## Cara Menjalankan Program
-Untuk menjalankan jar program pada WSL, lakukan:
-1. Masuk pada directory projek atau jar program ini pada terminal Linux atau WSL
-2. Jalankan program dengan mengetikkan `java -jar ApplicationBNMOStore.java`
+Program ini tidak bisa dijalankan pada WSL atau Linux. Executable jar dapat langsung di run dengan membuka jar tersebut.
 
 Untuk menjalankan program pada project ini, lakukan:
 1. Masuk pada directory projek menggunakan intellij
