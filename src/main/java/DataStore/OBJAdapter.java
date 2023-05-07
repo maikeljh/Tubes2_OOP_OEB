@@ -16,7 +16,7 @@ public class OBJAdapter implements DataAdapter, Serializable  {
             objectInputStream.close();
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            // Do nothing
         }
         return null;
     }

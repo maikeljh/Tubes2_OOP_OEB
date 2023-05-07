@@ -139,7 +139,7 @@ public class SalesReportPage extends Page {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // Do nothing
                 }
             }
         });

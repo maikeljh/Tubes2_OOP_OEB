@@ -241,14 +241,14 @@ public class CashierPage extends Page {
                             try {
                                 constructor = cashierDetailDecoratorClass.getDeclaredConstructor();
                             } catch (NoSuchMethodException e) {
-                                e.printStackTrace();
+                                // Do nothing
                             }
                             CashierDetailDecorator cashierDetailDecorated = null;
                             try {
                                 assert constructor != null;
                                 cashierDetailDecorated = (CashierDetailDecorator) constructor.newInstance();
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                // Do nothing
                             }
                             cashierDetailDecorated.setPage(detailCashierContent);
                             cashierDetailDecorated.getPage().setStage(stage);
@@ -591,14 +591,14 @@ public class CashierPage extends Page {
                             try {
                                 constructor = cashierDetailDecoratorClass.getDeclaredConstructor();
                             } catch (NoSuchMethodException e) {
-                                e.printStackTrace();
+                                // Do nothing
                             }
                             CashierDetailDecorator cashierDetailDecorated = null;
                             try {
                                 assert constructor != null;
                                 cashierDetailDecorated = (CashierDetailDecorator) constructor.newInstance();
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                // Do nothing
                             }
                             cashierDetailDecorated.setPage(detailCashierContent);
                             cashierDetailDecorated.getPage().setStage(stage);
@@ -1125,14 +1125,14 @@ public class CashierPage extends Page {
                     try {
                         constructor = cashierDecoratorClass.getDeclaredConstructor();
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     CashierDecorator cashierDecorated = null;
                     try {
                         assert constructor != null;
                         cashierDecorated = (CashierDecorator) constructor.newInstance();
                     } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     assert cashierDecorated != null;
                     cashierDecorated.setPage(cashierContent);
@@ -1596,9 +1596,7 @@ public class CashierPage extends Page {
                 custID = this.tempID.get(this.selectionIndex);
 
                 // Update customer point
-                System.out.println(this.regisCust.getPoint());
                 this.regisCust.calculatePoint(this.finalTotalPrice);
-                System.out.println(this.regisCust.getPoint());
 
                 // Create newBill to the customer
                 newBill = new Bill (timenow, custID, this.totalPrice, formattedDiscount);
@@ -1668,14 +1666,14 @@ public class CashierPage extends Page {
                     try {
                         constructor = cashierDecoratorClass.getDeclaredConstructor();
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     CashierDecorator cashierDecorated = null;
                     try {
                         assert constructor != null;
                         cashierDecorated = (CashierDecorator) constructor.newInstance();
                     } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     assert cashierDecorated != null;
                     cashierDecorated.setPage(cashierContent);
@@ -1754,14 +1752,14 @@ public class CashierPage extends Page {
                     try {
                         constructor = cashierDetailDecoratorClass.getDeclaredConstructor();
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     CashierDetailDecorator cashierDetailDecorated = null;
                     try {
                         assert constructor != null;
                         cashierDetailDecorated = (CashierDetailDecorator) constructor.newInstance();
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
 
                     cashierDetailDecorated.setPage(detailCashierContent);

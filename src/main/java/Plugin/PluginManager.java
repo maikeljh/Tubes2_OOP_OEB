@@ -18,6 +18,12 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import Plugin.Decorator.SettingsDecorator;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 @XmlRootElement
 public class PluginManager implements Serializable {
@@ -84,7 +90,22 @@ public class PluginManager implements Serializable {
                     // Check if plugin already exists
                     for (Plugin check : this.plugins){
                         if (check.getPluginName().equals(plugin.getPluginName())) {
-                            throw new Exception("Plugin already exists");
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("File Error");
+                            // Center the header and content text
+                            Label header = new Label("Not Valid");
+                            header.setStyle("-fx-font-size: 1.5em;");
+                            header.setStyle("-fx-font-weight: bold;");
+                            header.setAlignment(Pos.CENTER);
+
+                            Text content = new Text("Plugin already exists!");
+                            content.setTextAlignment(TextAlignment.CENTER);
+
+                            // Set the content text as a graphic
+                            alert.getDialogPane().setContent(new VBox(header, content));
+                            alert.setHeaderText("");
+                            alert.showAndWait();
+                            throw new Exception("Plugin already exists!");
                         }
                     }
 
@@ -169,7 +190,7 @@ public class PluginManager implements Serializable {
                     // Load plugins from the current JAR file
                     loadPlugin(jarFile);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // Do nothing
                 }
             }
         }

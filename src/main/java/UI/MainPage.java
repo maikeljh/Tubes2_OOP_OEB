@@ -65,7 +65,7 @@ public class MainPage extends VBox {
                 try {
                     Thread.sleep(100);
                 } catch (Exception e){
-                    System.out.println(e);
+                    // Do nothing
                 }
                 final String timenow = sdf.format(new Date());
                 Platform.runLater(()->{

@@ -159,14 +159,14 @@ public class ApplicationBNMOStore extends Application {
                     try {
                         constructor = cashierDecoratorClass.getDeclaredConstructor();
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     CashierDecorator cashierDecorated = null;
                     try {
                         assert constructor != null;
                         cashierDecorated = (CashierDecorator) constructor.newInstance();
                     } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        // Do nothing
                     }
                     assert cashierDecorated != null;
 
@@ -190,7 +190,7 @@ public class ApplicationBNMOStore extends Application {
         MenuItem salesReportPage = new MenuItem("Sales Report");
         salesReportPage.setOnAction(event -> {
             // Handle open menu item click
-            Tab newTab = new Tab("History");
+            Tab newTab = new Tab("Sales Report");
             newTab.setStyle("-fx-background-color: #F3F9FB;");
             SalesReportPage reportPage = new SalesReportPage(stage, newTab, report, settings, settingsDS);
             newTab.setContent(reportPage);
