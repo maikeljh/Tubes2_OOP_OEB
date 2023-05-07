@@ -223,7 +223,7 @@ public class AddItemPage extends Page {
                 items.addElement(newItem);
 
                 // Create Image File
-                File output = new File("src/main/resources/images/item/item" + newItem.getItemID() + ".png");
+                File output = new File("./saves/item" + newItem.getItemID() + ".png");
                 try {
                     // Create buffer image
                     BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TRANSLUCENT);

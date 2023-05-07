@@ -217,7 +217,7 @@ public class UpdateItemPage extends Page {
                     item.setImage(newImage);
 
                     // Create Image File
-                    File output = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
+                    File output = new File("./saves/item" + item.getItemID() + ".png");
 
                     // Create buffer image
                     BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TYPE_INT_RGB);

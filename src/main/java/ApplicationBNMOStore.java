@@ -15,8 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
@@ -46,6 +49,21 @@ public class ApplicationBNMOStore extends Application {
 
     @Override
     public void start(Stage stage) {
+        // Check if directory exist or not
+        Path directory = Path.of("./saves");
+        try {
+            // Check if the directory exists
+            if (!Files.exists(directory)) {
+                // Create the directory if it does not exist
+                Files.createDirectories(directory);
+                System.out.println("Directory created: " + directory);
+            } else {
+                System.out.println("Directory already exists: " + directory);
+            }
+        } catch (IOException e) {
+            System.err.println("Error creating directory: " + e.getMessage());
+        }
+
         // Load settings
         try {
             Settings temp = new Settings();
@@ -61,7 +79,7 @@ public class ApplicationBNMOStore extends Application {
         } finally {
             PluginManager pluginManager = new PluginManager();
             settings.setPluginManager(pluginManager);
-            pluginManager.loadPluginClasses();
+            pluginManager.loadPluginClasses(settings.getSaveDirectory());
         }
 
         // Read Items Data
@@ -131,7 +149,7 @@ public class ApplicationBNMOStore extends Application {
         // Set image for items
         if(items.getNeff() > 0){
             for(int i = 0; i < items.getNeff(); i++){
-                Image image = new Image("/images/item/item" + items.getElement(i).getItemID() + ".png");
+                Image image = new Image(new File("./saves/item" + items.getElement(i).getItemID() + ".png").toURI().toString());
                 items.getElement(i).setImage(image);
             }
         }
@@ -236,7 +254,7 @@ public class ApplicationBNMOStore extends Application {
             if (selectedFile != null) {
                 try {
                     // Try to load plugin from selected jar file
-                    settings.getPluginManager().loadPlugin(selectedFile);
+                    settings.getPluginManager().loadPlugin(selectedFile, settings.getSaveDirectory());
 
                     // Create New Menu from BasePlugin if the plugin is derived from BasePlugin
                     int idx =  settings.getPluginManager().getPlugins().size() - 1;

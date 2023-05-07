@@ -52,7 +52,7 @@ public class ItemDetailPage extends Page {
 
         deleteButton.setOnAction(event -> {
             // Delete Image
-            File fileToDelete = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
+            File fileToDelete = new File("./saves/item" + item.getItemID() + ".png");
             fileToDelete.delete();
 
             // Delete Item

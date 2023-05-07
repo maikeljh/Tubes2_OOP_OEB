@@ -18,7 +18,7 @@ public class Settings implements Serializable {
 
     public Settings(){
         format = "obj";
-        saveDirectory = "src/main/resources/files/";
+        saveDirectory = "./saves/";
         pluginManager = new PluginManager();
     }
 }

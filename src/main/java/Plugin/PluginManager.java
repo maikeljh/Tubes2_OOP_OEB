@@ -39,7 +39,7 @@ public class PluginManager implements Serializable {
         plugins.remove(idx);
     }
 
-    public void loadPlugin(File jarFile) throws Exception {
+    public void loadPlugin(File jarFile, String pathname) throws Exception {
         // Class Loader
         URLClassLoader classLoader = new URLClassLoader(new URL[] {jarFile.toURI().toURL()});
 
@@ -48,7 +48,7 @@ public class PluginManager implements Serializable {
         Enumeration<JarEntry> entries = jar.entries();
 
         // Save Jar File
-        File destinationDirectory = new File("src/main/resources/files");
+        File destinationDirectory = new File(pathname);
         Files.copy(jarFile.toPath(), destinationDirectory.toPath().resolve(jarFile.getName()), StandardCopyOption.REPLACE_EXISTING);
 
         while (entries.hasMoreElements()) {
@@ -164,7 +164,7 @@ public class PluginManager implements Serializable {
         if (found) {
             // Remove the associated JAR file
             String jarFileName = pluginName + ".jar";
-            String jarFilePath = "src/main/resources/files/" + jarFileName;
+            String jarFilePath = "./saves/" + jarFileName;
             File jarFile = new File(jarFilePath);
             if (jarFile.exists()) {
                 jarFile.delete();
@@ -172,12 +172,9 @@ public class PluginManager implements Serializable {
         }
     }
 
-    public void loadPluginClasses() {
-        // Get the directory path for JAR files
-        String jarDirectoryPath = "src/main/resources/files";
-
+    public void loadPluginClasses(String pathname) {
         // Create a File object for the directory
-        File jarDirectory = new File(jarDirectoryPath);
+        File jarDirectory = new File(pathname);
 
         // Check if the directory exists and is a directory
         if (jarDirectory.exists() && jarDirectory.isDirectory()) {
@@ -188,9 +185,9 @@ public class PluginManager implements Serializable {
             for (File jarFile : jarFiles) {
                 try {
                     // Load plugins from the current JAR file
-                    loadPlugin(jarFile);
+                    loadPlugin(jarFile, pathname);
                 } catch (Exception e) {
-                    // Do nothing
+                    e.printStackTrace();
                 }
             }
         }

@@ -55,7 +55,7 @@ public class SalesReportPage extends Page {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Successful");
                 alert.setHeaderText("Print Sales Report was successful!");
-                alert.setContentText("You can open it on resources/files/Sales Report.pdf");
+                alert.setContentText("You can open it on saves/Sales Report.pdf");
                 alert.showAndWait();
             } catch (DocumentException | FileNotFoundException | InterruptedException e){
                 // Do Nothing
