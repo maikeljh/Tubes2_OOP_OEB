@@ -12,9 +12,14 @@ Aplikasi ini merupakan suatu program yang dapat digunakan oleh kasir untuk menda
 ## Requirements
 Java versi 17 atau lebih
 Maven versi 3.8 atau lebih
+JavaFX-SDK versi 17 atau lebih
 Windows Subsystem Linux (WSL) untuk menjalankan program
 ## Cara Menjalankan Program
-Program ini tidak bisa dijalankan pada WSL atau Linux. Executable jar dapat langsung di run dengan membuka jar tersebut.
+Untuk menjalankan jar program ini, lakukan:
+1. Masuk ke directory letak jar pada WSL terminal anda.
+2. Masukan directory instalasi JavaFX-SDK dalam path environtment variabel.
+3. Jalankan `java --module-path %PATH_TO_FX% --add-modules ALL-MODULE-PATH -jar ApplicationBNMOStore.jar`
+4. Pada %PATH_TO_FX% dapat digantikan dengan direktori langsung lokasi JavaFX-SDK yang telah diunggah.
 
 Untuk menjalankan program pada project ini, lakukan:
 1. Masuk pada directory projek menggunakan intellij
