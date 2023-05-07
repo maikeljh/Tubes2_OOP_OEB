@@ -1,5 +1,6 @@
 package Plugin.PluginCashier;
 
+import Core.VIP;
 import Plugin.Decorator.CashierDecorator;
 import UI.Page;
 import javafx.application.Platform;
@@ -38,25 +39,27 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
         // Try to read data
         try{
             this.TAS = this.TASStore.loadData("taxAndService", this.page.getSettings(), new Class<?>[]{Inventory.class, TaxAndService.class}).getElement(0);
-
-            if(this.TAS.getTax() != this.currentTax || this.TAS.getService() != this.currentService){
-                // Variable
+            // Variable
+            if(this.page.getRegisCust() instanceof VIP){
+                this.page.setFinalTotalPrice(this.page.getFinalTotalPrice() + ((this.TAS.getService() + this.TAS.getTax()) * 0.9) - currentTax - currentService);
+                this.page.setTotalPrice((this.page.getFinalTotalPrice() / 0.9));
+            } else {
                 this.page.setTotalPrice(this.page.getTotalPrice() + this.TAS.getService() + this.TAS.getTax() - currentTax - currentService);
                 this.page.setFinalTotalPrice(this.page.getFinalTotalPrice() + this.TAS.getService() + this.TAS.getTax() - currentTax - currentService);
-                tax.setText("Tax: Rp" + String.format("%.2f", TAS.getTax()));
-                service.setText("Service: Rp" + String.format("%.2f", TAS.getService()));
-
-                // UI
-                if(this.page.getTotalPrice() == this.page.getFinalTotalPrice()){
-                    this.page.getTotalPriceBills().setText("Charge Rp" + String.format("%.2f", this.page.getTotalPrice()));
-                } else {
-                    this.page.getTotalPriceBillLabel().setText("Rp" + String.format("%.2f", this.page.getTotalPrice()));
-                    this.page.getFixTotalPriceBill().setText("Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
-                }
-
-                this.currentTax = this.TAS.getTax();
-                this.currentService = this.TAS.getService();
             }
+            tax.setText("Tax: Rp" + String.format("%.2f", TAS.getTax()));
+            service.setText("Service: Rp" + String.format("%.2f", TAS.getService()));
+
+            // UI
+            if(this.page.getTotalPrice() == this.page.getFinalTotalPrice()){
+                this.page.getTotalPriceBills().setText("Charge Rp" + String.format("%.2f", this.page.getTotalPrice()));
+            } else {
+                this.page.getTotalPriceBillLabel().setText("Rp" + String.format("%.2f", this.page.getTotalPrice()));
+                this.page.getFixTotalPriceBill().setText("Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
+            }
+
+            this.currentTax = this.TAS.getTax();
+            this.currentService = this.TAS.getService();
         } catch (Exception e){
             // Do nothing
         }
@@ -68,8 +71,13 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
 
                     if(this.TAS.getTax() != this.currentTax || this.TAS.getService() != this.currentService){
                         // Variable
-                        this.page.setTotalPrice(this.page.getTotalPrice() + this.TAS.getService() + this.TAS.getTax() - currentTax - currentService);
-                        this.page.setFinalTotalPrice(this.page.getFinalTotalPrice() + this.TAS.getService() + this.TAS.getTax() - currentTax - currentService);
+                        if(this.page.getRegisCust() instanceof VIP){
+                            this.page.setFinalTotalPrice(this.page.getFinalTotalPrice() + ((this.TAS.getService() + this.TAS.getTax()) * 0.9) - currentTax - currentService);
+                            this.page.setTotalPrice((this.page.getFinalTotalPrice() / 0.9));
+                        } else {
+                            this.page.setTotalPrice(this.page.getTotalPrice() + this.TAS.getService() + this.TAS.getTax() - currentTax - currentService);
+                            this.page.setFinalTotalPrice(this.page.getFinalTotalPrice() + this.TAS.getService() + this.TAS.getTax() - currentTax - currentService);
+                        }
 
                         // UI update on JavaFX Application Thread
                         Platform.runLater(() -> {
@@ -104,7 +112,7 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
             this.stop = true;
         });
 
-        // Set defaul text
+        // Set default text
         tax.setText("Tax: Rp" + String.format("%.2f", TAS.getTax()));
         service.setText("Service: Rp" + String.format("%.2f", TAS.getService()));
 
@@ -140,7 +148,6 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
         });
 
         this.getPage().getChoiceBox().getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            this.getPage().setRegCust();
             this.getPage().choiceBoxHandler(newValue);
             // Create Discount, Tax, and Service Label
             Label tempTax = new Label("Tax: Rp" + String.format("%.2f", TAS.getTax()));
@@ -158,6 +165,10 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
         });
 
         thread.start();
+    }
+
+    public void reset(){
+
     }
 
     public static void main(String args[]){}

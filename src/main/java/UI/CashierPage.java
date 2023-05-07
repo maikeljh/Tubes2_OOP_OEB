@@ -1,6 +1,8 @@
 package UI;
 
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import Core.*;
@@ -222,7 +224,21 @@ public class CashierPage extends Page {
                     CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, finalChosen, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, report);
                     boolean found = false;
                     for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
-                        if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
+                        if(plugin instanceof CashierDetailDecorator){
+                            Class<?> cashierDetailDecoratorClass = plugin.getClass();
+                            Constructor<?> constructor = null;
+                            try {
+                                constructor = cashierDetailDecoratorClass.getDeclaredConstructor();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                            CashierDetailDecorator cashierDetailDecorated = null;
+                            try {
+                                assert constructor != null;
+                                cashierDetailDecorated = (CashierDetailDecorator) constructor.newInstance();
+                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
                             cashierDetailDecorated.setPage(detailCashierContent);
                             cashierDetailDecorated.getPage().setStage(stage);
                             cashierDetailDecorated.getPage().setSettings(settings);
@@ -559,7 +575,21 @@ public class CashierPage extends Page {
                     CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, library, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, report);
                     boolean found = false;
                     for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
-                        if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
+                        if(plugin instanceof CashierDetailDecorator){
+                            Class<?> cashierDetailDecoratorClass = plugin.getClass();
+                            Constructor<?> constructor = null;
+                            try {
+                                constructor = cashierDetailDecoratorClass.getDeclaredConstructor();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                            CashierDetailDecorator cashierDetailDecorated = null;
+                            try {
+                                assert constructor != null;
+                                cashierDetailDecorated = (CashierDetailDecorator) constructor.newInstance();
+                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
                             cashierDetailDecorated.setPage(detailCashierContent);
                             cashierDetailDecorated.getPage().setStage(stage);
                             cashierDetailDecorated.getPage().setSettings(settings);
@@ -1076,10 +1106,25 @@ public class CashierPage extends Page {
             newTab.setStyle("-fx-background-color: #F3F9FB;");
 
             // Create cashierContent (newTab)
-            CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
+            CashierPage cashierContent = new CashierPage(this.stage, newTab, this.items, tabPane, this.customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
-                if(plugin instanceof CashierDecorator cashierDecorated){
+                if(plugin instanceof CashierDecorator){
+                    Class<?> cashierDecoratorClass = plugin.getClass();
+                    Constructor<?> constructor = null;
+                    try {
+                        constructor = cashierDecoratorClass.getDeclaredConstructor();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    CashierDecorator cashierDecorated = null;
+                    try {
+                        assert constructor != null;
+                        cashierDecorated = (CashierDecorator) constructor.newInstance();
+                    } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    assert cashierDecorated != null;
                     cashierDecorated.setPage(cashierContent);
                     cashierDecorated.getPage().setStage(stage);
                     cashierDecorated.getPage().setSettings(settings);
@@ -1438,8 +1483,8 @@ public class CashierPage extends Page {
             totalPriceBillLabel.setTextAlignment(TextAlignment.CENTER);
             totalPriceBillLabel.setStyle("-fx-background-color: #C8DFE8; -fx-text-fill: black;-fx-strikethrough-width: 2px;");
             totalPriceBillLabel.setStrikethrough(true);
-
         }
+
 
         // Styling totalPriceBills
         totalPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 20));
@@ -1459,14 +1504,11 @@ public class CashierPage extends Page {
 
         // Add choiceBox functionality
         this.choiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-
             choiceBoxHandler(newValue);
-
         });
 
         // Add saveButton functionality
         saveButton.setOnAction(event -> {
-
             // Create alert
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
@@ -1590,7 +1632,22 @@ public class CashierPage extends Page {
             CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
-                if(plugin instanceof CashierDecorator cashierDecorated){
+                if(plugin instanceof CashierDecorator){
+                    Class<?> cashierDecoratorClass = plugin.getClass();
+                    Constructor<?> constructor = null;
+                    try {
+                        constructor = cashierDecoratorClass.getDeclaredConstructor();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    CashierDecorator cashierDecorated = null;
+                    try {
+                        assert constructor != null;
+                        cashierDecorated = (CashierDecorator) constructor.newInstance();
+                    } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    assert cashierDecorated != null;
                     cashierDecorated.setPage(cashierContent);
                     cashierDecorated.getPage().setStage(stage);
                     cashierDecorated.getPage().setSettings(settings);
@@ -1650,7 +1707,7 @@ public class CashierPage extends Page {
 
     }
 
-    // Funtion for clicking item
+    // Function for clicking item
     private void clickItem(HBox itemDisplay, Item item){
 
         // Add itemDisplay functionality
@@ -1661,7 +1718,22 @@ public class CashierPage extends Page {
             CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, this.report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
-                if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
+                if(plugin instanceof CashierDetailDecorator){
+                    Class<?> cashierDetailDecoratorClass = plugin.getClass();
+                    Constructor<?> constructor = null;
+                    try {
+                        constructor = cashierDetailDecoratorClass.getDeclaredConstructor();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    CashierDetailDecorator cashierDetailDecorated = null;
+                    try {
+                        assert constructor != null;
+                        cashierDetailDecorated = (CashierDetailDecorator) constructor.newInstance();
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+
                     cashierDetailDecorated.setPage(detailCashierContent);
                     cashierDetailDecorated.getPage().setStage(stage);
                     cashierDetailDecorated.getPage().setSettings(settings);

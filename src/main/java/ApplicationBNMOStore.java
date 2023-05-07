@@ -15,6 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -136,7 +138,23 @@ public class ApplicationBNMOStore extends Application {
             CashierPage cashierTab = new CashierPage(stage, newTab, items, tabPane, customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
             boolean found = false;
             for(Plugin plugin : this.settings.getPluginManager().getPlugins()){
-                if(plugin instanceof CashierDecorator cashierDecorated){
+                if(plugin instanceof CashierDecorator){
+                    Class<?> cashierDecoratorClass = plugin.getClass();
+                    Constructor<?> constructor = null;
+                    try {
+                        constructor = cashierDecoratorClass.getDeclaredConstructor();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    CashierDecorator cashierDecorated = null;
+                    try {
+                        assert constructor != null;
+                        cashierDecorated = (CashierDecorator) constructor.newInstance();
+                    } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    assert cashierDecorated != null;
+
                     cashierDecorated.setPage(cashierTab);
                     cashierDecorated.getPage().setStage(stage);
                     cashierDecorated.getPage().setSettings(settings);

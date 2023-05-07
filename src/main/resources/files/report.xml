@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <salesReport>
+        <items>
+            <purchasedItem>
+                <buyPrice>123.0</buyPrice>
+                <category>TES</category>
+                <itemID>1</itemID>
+                <name>TES</name>
+                <sellPrice>1234.0</sellPrice>
+                <stock>8</stock>
+                <quantity>2</quantity>
+            </purchasedItem>
+            <purchasedItem>
+                <buyPrice>123.0</buyPrice>
+                <category>TES</category>
+                <itemID>1</itemID>
+                <name>TES</name>
+                <sellPrice>1234.0</sellPrice>
+                <stock>9</stock>
+                <quantity>1</quantity>
+            </purchasedItem>
+            <neff>2</neff>
+        </items>
+        <totalGrossProfit>3702.0</totalGrossProfit>
+        <totalNetProfit>3333.0</totalNetProfit>
+    </salesReport>
+    <neff>1</neff>
+</inventory>
