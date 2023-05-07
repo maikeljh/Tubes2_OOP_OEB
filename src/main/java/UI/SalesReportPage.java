@@ -88,14 +88,14 @@ public class SalesReportPage extends Page {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<PurchasedItem, Double> buyPriceCol = new TableColumn("Buy Price");
+        TableColumn<PurchasedItem, Integer> buyPriceCol = new TableColumn("Buy Price");
         buyPriceCol.setMinWidth(180);
-        buyPriceCol.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getBuyPrice()).asObject());
+        buyPriceCol.setCellValueFactory(param -> new SimpleIntegerProperty((int) param.getValue().getBuyPrice()).asObject());
         buyPriceCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<PurchasedItem, Double> sellPriceCol = new TableColumn("Sell Price");
+        TableColumn<PurchasedItem, Integer> sellPriceCol = new TableColumn("Sell Price");
         sellPriceCol.setMinWidth(180);
-        sellPriceCol.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getSellPrice()).asObject());
+        sellPriceCol.setCellValueFactory(param -> new SimpleIntegerProperty((int) param.getValue().getSellPrice()).asObject());
         sellPriceCol.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<PurchasedItem, Integer> qtyCol = new TableColumn("Quantity");
@@ -103,21 +103,21 @@ public class SalesReportPage extends Page {
         qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         qtyCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<PurchasedItem, Double> grossProfitCol = new TableColumn("Gross Profit");
+        TableColumn<PurchasedItem, Integer> grossProfitCol = new TableColumn("Gross Profit");
         grossProfitCol.setMinWidth(180);
         grossProfitCol.setCellValueFactory(cellData -> {
             PurchasedItem item = cellData.getValue();
-            Double grossProfit = item.calculateGrossProfit();
-            return new SimpleDoubleProperty(grossProfit).asObject();
+            Integer grossProfit = (int) item.calculateGrossProfit();
+            return new SimpleIntegerProperty(grossProfit).asObject();
         });
         grossProfitCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<PurchasedItem, Double> netProfitCol = new TableColumn("Net Profit");
+        TableColumn<PurchasedItem, Integer> netProfitCol = new TableColumn("Net Profit");
         netProfitCol.setMinWidth(180);
         netProfitCol.setCellValueFactory(cellData -> {
             PurchasedItem item = cellData.getValue();
-            Double netProfit = item.calculateNetProfit();
-            return new SimpleDoubleProperty(netProfit).asObject();
+            Integer netProfit = (int) item.calculateNetProfit();
+            return new SimpleIntegerProperty(netProfit).asObject();
         });
         netProfitCol.setStyle("-fx-alignment: CENTER;");
 
@@ -149,7 +149,7 @@ public class SalesReportPage extends Page {
         // Create label for total gross profit
         HBox totalGrossHBox = new HBox();
         Label totalGrossLabel = new Label("Total Gross Profit: ");
-        Label totalGrossValueLabel = new Label(String.valueOf(report.getTotalGrossProfit()));
+        Label totalGrossValueLabel = new Label(String.valueOf((int) report.getTotalGrossProfit()));
         
         // Style total net label
         totalGrossLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 16));
@@ -162,7 +162,7 @@ public class SalesReportPage extends Page {
         // Create a label for total net profit
         HBox totalNetHBox = new HBox();
         Label totalNetLabel = new Label("Total Net Profit: ");
-        Label totalNetValueLabel = new Label(String.valueOf(report.getTotalNetProfit()));
+        Label totalNetValueLabel = new Label(String.valueOf((int) report.getTotalNetProfit()));
 
         // Style total net label
         totalNetLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 16));
