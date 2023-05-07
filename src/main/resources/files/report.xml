@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <salesReport>
+        <items>
+            <purchasedItem>
+                <buyPrice>24000.0</buyPrice>
+                <category>Makanan</category>
+                <itemID>1</itemID>
+                <name>Cat food</name>
+                <sellPrice>30000.0</sellPrice>
+                <stock>100</stock>
+                <quantity>10</quantity>
+            </purchasedItem>
+            <neff>1</neff>
+        </items>
+        <totalGrossProfit>300000.0</totalGrossProfit>
+        <totalNetProfit>60000.0</totalNetProfit>
+    </salesReport>
+    <neff>1</neff>
+</inventory>

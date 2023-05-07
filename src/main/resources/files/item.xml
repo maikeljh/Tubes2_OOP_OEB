@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <item>
+        <buyPrice>24000.0</buyPrice>
+        <category>Makanan</category>
+        <itemID>1</itemID>
+        <name>Cat food</name>
+        <sellPrice>30000.0</sellPrice>
+        <stock>90</stock>
+    </item>
+    <neff>1</neff>
+</inventory>

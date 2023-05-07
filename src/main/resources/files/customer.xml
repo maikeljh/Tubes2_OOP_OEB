@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <customer>
+        <id>1</id>
+        <transaction>
+            <bill>
+                <billID>1</billID>
+                <customerID>1</customerID>
+                <date>Sun, 7 May 2023
+21:39:12</date>
+                <discount>0.0</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>24000.0</buyPrice>
+                        <category>Makanan</category>
+                        <itemID>1</itemID>
+                        <name>Cat food</name>
+                        <sellPrice>30000.0</sellPrice>
+                        <stock>100</stock>
+                        <quantity>10</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>30000.0</totalPrice>
+            </bill>
+            <neff>1</neff>
+        </transaction>
+    </customer>
+    <customer>
+        <id>2</id>
+        <transaction>
+            <bill>
+                <billID>2</billID>
+                <customerID>2</customerID>
+                <date>Sun, 7 May 2023
+21:39:36</date>
+                <discount>0.0</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>24000.0</buyPrice>
+                        <category>Makanan</category>
+                        <itemID>1</itemID>
+                        <name>Cat food</name>
+                        <sellPrice>30000.0</sellPrice>
+                        <stock>99</stock>
+                        <quantity>3</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>90000.0</totalPrice>
+            </bill>
+            <neff>1</neff>
+        </transaction>
+    </customer>
+    <member>
+        <id>3</id>
+        <transaction>
+            <bill>
+                <billID>3</billID>
+                <customerID>3</customerID>
+                <date>Sun, 7 May 2023
+21:39:53</date>
+                <discount>0.0</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>24000.0</buyPrice>
+                        <category>Makanan</category>
+                        <itemID>1</itemID>
+                        <name>Cat food</name>
+                        <sellPrice>30000.0</sellPrice>
+                        <stock>96</stock>
+                        <quantity>2</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>60000.0</totalPrice>
+            </bill>
+            <bill>
+                <billID>4</billID>
+                <customerID>3</customerID>
+                <date>Sun, 7 May 2023
+21:40:44</date>
+                <discount>0.0</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>24000.0</buyPrice>
+                        <category>Makanan</category>
+                        <itemID>1</itemID>
+                        <name>Cat food</name>
+                        <sellPrice>30000.0</sellPrice>
+                        <stock>94</stock>
+                        <quantity>4</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>120000.0</totalPrice>
+            </bill>
+            <neff>2</neff>
+        </transaction>
+        <activeStatus>true</activeStatus>
+        <name>Marcel</name>
+        <phoneNumber>302132392</phoneNumber>
+        <point>1200</point>
+    </member>
+    <neff>3</neff>
+</inventory>
