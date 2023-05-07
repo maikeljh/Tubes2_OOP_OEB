@@ -19,7 +19,7 @@ import java.util.Comparator;
 public class Plugin1 extends BasePlugin {
 
     public Plugin1(){
-        this.pluginName = "Line & Bar Chart";
+        this.pluginName = "Plugin1";
         this.mainPlugin = true;
     }
 

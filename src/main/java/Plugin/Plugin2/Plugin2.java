@@ -22,7 +22,7 @@ public class Plugin2 extends BasePlugin {
 
     public Plugin2(){
         // Create Name
-        this.pluginName = "Pie Chart";
+        this.pluginName = "Plugin2";
         this.mainPlugin = true;
     }
 
@@ -111,4 +111,6 @@ public class Plugin2 extends BasePlugin {
 //        }
         return pchart;
     }
+
+    public static void main(String args[]){}
 }

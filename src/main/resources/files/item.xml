@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
     <item>
-        <buyPrice>123.0</buyPrice>
+        <buyPrice>0.011193</buyPrice>
         <category>TES</category>
         <itemID>1</itemID>
         <name>TES</name>
-        <sellPrice>1234.0</sellPrice>
-        <stock>6</stock>
+        <sellPrice>0.112294</sellPrice>
+        <stock>2</stock>
     </item>
-    <neff>1</neff>
+    <item>
+        <buyPrice>1.82</buyPrice>
+        <category>Makanan</category>
+        <itemID>2</itemID>
+        <name>Cat food</name>
+        <sellPrice>2.73</sellPrice>
+        <stock>100</stock>
+    </item>
+    <neff>2</neff>
 </inventory>

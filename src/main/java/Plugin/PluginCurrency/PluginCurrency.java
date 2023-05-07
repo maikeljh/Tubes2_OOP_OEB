@@ -38,7 +38,7 @@ public class PluginCurrency extends SettingsDecorator implements Serializable{
         currencies = new Inventory<Currency>();
         this.currentKurs = 1;
         this.currency = "IDR";
-        this.pluginName = "Plugin Currency";
+        this.pluginName = "PluginCurrency";
         this.mainPlugin = true;
     }
 

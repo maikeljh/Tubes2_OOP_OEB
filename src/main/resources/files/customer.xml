@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
-    <vip>
+    <member>
         <id>1</id>
         <transaction>
             <bill>
@@ -11,11 +11,11 @@
                 <discount>0.0</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>123.0</buyPrice>
+                        <buyPrice>0.011193</buyPrice>
                         <category>TES</category>
                         <itemID>1</itemID>
                         <name>TES</name>
-                        <sellPrice>1234.0</sellPrice>
+                        <sellPrice>0.112294</sellPrice>
                         <stock>9</stock>
                         <quantity>1</quantity>
                     </purchasedItem>
@@ -31,11 +31,11 @@
                 <discount>0.1</discount>
                 <items>
                     <purchasedItem>
-                        <buyPrice>123.0</buyPrice>
+                        <buyPrice>0.011193</buyPrice>
                         <category>TES</category>
                         <itemID>1</itemID>
                         <name>TES</name>
-                        <sellPrice>1234.0</sellPrice>
+                        <sellPrice>0.112294</sellPrice>
                         <stock>8</stock>
                         <quantity>2</quantity>
                     </purchasedItem>
@@ -43,12 +43,32 @@
                 </items>
                 <totalPrice>8468.0</totalPrice>
             </bill>
-            <neff>2</neff>
+            <bill>
+                <billID>1</billID>
+                <customerID>1</customerID>
+                <date>Sun, 7 May 2023
+14:42:02</date>
+                <discount>0.11</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>0.011193</buyPrice>
+                        <category>TES</category>
+                        <itemID>1</itemID>
+                        <name>TES</name>
+                        <sellPrice>0.112294</sellPrice>
+                        <stock>6</stock>
+                        <quantity>1</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>7234.0</totalPrice>
+            </bill>
+            <neff>3</neff>
         </transaction>
-        <activeStatus>true</activeStatus>
+        <activeStatus>false</activeStatus>
         <name>TES</name>
-        <phoneNumber>123</phoneNumber>
+        <phoneNumber>0823132</phoneNumber>
         <point>76</point>
-    </vip>
+    </member>
     <neff>1</neff>
 </inventory>

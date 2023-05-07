@@ -128,13 +128,26 @@ public class PluginManager implements Serializable {
     }
 
     public void removePlugin(String pluginName){
+        boolean found = false;
         for(Plugin plugin : plugins){
             if(plugin.getPluginName().equals(pluginName)){
                 if(plugin.nextPlugin != null){
                     removePlugin(plugin.nextPlugin);
                 }
                 plugins.remove(plugin);
+                found = true;
                 break;
+            }
+        }
+
+        // Check if the plugin was found
+        if (found) {
+            // Remove the associated JAR file
+            String jarFileName = pluginName + ".jar";
+            String jarFilePath = "src/main/resources/files/" + jarFileName;
+            File jarFile = new File(jarFilePath);
+            if (jarFile.exists()) {
+                jarFile.delete();
             }
         }
     }
