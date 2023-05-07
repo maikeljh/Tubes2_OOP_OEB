@@ -19,7 +19,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
+import Exception.*;
 import javafx.scene.image.ImageView;
 
 public class UpdateMemberPage extends Page {
@@ -303,72 +303,90 @@ public class UpdateMemberPage extends Page {
 
         // Set event handler for save button
         saveButton.setOnAction(event -> {
-            if (customer.getClass().getSimpleName().equals("Member")) {
-                if (memberToggle.isSelected()) {
-                    int id = customer.getId();
-                    String name = inputName.getText();
-                    String phoneNumber = inputNumber.getText();
-                    int point = ((RegisteredCustomer) customer).getPoint();
-                    boolean activeStat = ((RegisteredCustomer) customer).isActiveStatus();
-                    Inventory<Bill> bills = customer.getTransaction();
+            try {
+                if (!inputName.getText().isEmpty() && !inputNumber.getText().isEmpty()) {
 
-                    if (customers.getElement(id-1).getId() == id) {
-                        customers.setElement(id-1, new VIP(id, name, phoneNumber, point, activeStat, bills));
+                    // Check phone number valid or not
+                    int checkNumber = Integer.parseInt(inputNumber.getText());
+
+                    if (customer.getClass().getSimpleName().equals("Member")) {
+                        if (memberToggle.isSelected()) {
+                            int id = customer.getId();
+                            String name = inputName.getText();
+                            String phoneNumber = inputNumber.getText();
+                            int point = ((RegisteredCustomer) customer).getPoint();
+                            boolean activeStat = ((RegisteredCustomer) customer).isActiveStatus();
+                            Inventory<Bill> bills = customer.getTransaction();
+
+                            if (customers.getElement(id-1).getId() == id) {
+                                customers.setElement(id-1, new VIP(id, name, phoneNumber, point, activeStat, bills));
+                            }
+                        }
+                        else {
+                            ((RegisteredCustomer) customer).setName(inputName.getText());
+                            ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
+                            if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
+                                customers.setElement(customer.getId()-1, customer);
+                            }
+                        }
                     }
-                }
-                else {
-                    ((RegisteredCustomer) customer).setName(inputName.getText());
-                    ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
-                    if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
-                        customers.setElement(customer.getId()-1, customer);
+                    else {
+                        if (memberToggle.isSelected()) {
+                            int id = customer.getId();
+                            String name = inputName.getText();
+                            String phoneNumber = inputNumber.getText();
+                            int point = ((RegisteredCustomer) customer).getPoint();
+                            boolean activeStat = ((RegisteredCustomer) customer).isActiveStatus();
+                            Inventory<Bill> bills = customer.getTransaction();
+
+                            if (customers.getElement(id-1).getId() == id) {
+                                customers.setElement(id-1, new Member(id, name, phoneNumber, point, activeStat, bills));
+                            }
+                        }
+                        else {
+                            ((RegisteredCustomer) customer).setName(inputName.getText());
+                            ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
+                            if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
+                                customers.setElement(customer.getId()-1, customer);
+                            }
+                        }
                     }
-                }
-            }
-            else {
-                if (memberToggle.isSelected()) {
-                    int id = customer.getId();
-                    String name = inputName.getText();
-                    String phoneNumber = inputNumber.getText();
-                    int point = ((RegisteredCustomer) customer).getPoint();
-                    boolean activeStat = ((RegisteredCustomer) customer).isActiveStatus();
-                    Inventory<Bill> bills = customer.getTransaction();
 
-                    if (customers.getElement(id-1).getId() == id) {
-                        customers.setElement(id-1, new Member(id, name, phoneNumber, point, activeStat, bills));
+                    if (((RegisteredCustomer) customer).isActiveStatus()) {
+                        if (deactToggle.isSelected()) {
+                            ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
+                        }
+                        else {
+                            ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(true);
+                        }
                     }
-                }
-                else {
-                    ((RegisteredCustomer) customer).setName(inputName.getText());
-                    ((RegisteredCustomer) customer).setPhoneNumber(inputNumber.getText());
-                    if (customers.getElement(customer.getId()-1).getId() == customer.getId()) {
-                        customers.setElement(customer.getId()-1, customer);
+                    else {
+                        if (deactToggle.isSelected()) {
+                            ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(true);
+                        }
+                        else {
+                            ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
+                        }
                     }
-                }
-            }
 
-            if (((RegisteredCustomer) customer).isActiveStatus()) {
-                if (deactToggle.isSelected()) {
-                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
-                }
-                else {
-                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(true);
-                }
-            }
-            else {
-                if (deactToggle.isSelected()) {
-                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(true);
-                }
-                else {
-                    ((RegisteredCustomer) customers.getElement(customer.getId()-1)).setActiveStatus(false);
-                }
-            }
+                    // Save data
+                    customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
 
-            // Save data
-            customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
-
-            // Change page back to ListMemberPage
-            ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
-            tab.setContent(listMemberPage);
+                    // Change page back to ListMemberPage
+                    ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
+                    tab.setContent(listMemberPage);
+                } else {
+                    // Show alert
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setHeaderText("Fail to Update Member");
+                    alert.setContentText("All fields must not be empty!");
+                    alert.showAndWait();
+                }
+            } catch (NumberFormatException e) {
+                InputException err = new InputException("Phone Number");
+                err.showError();
+            }
         });
     }
 }

@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import Exception.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -202,21 +203,22 @@ public class UpdateItemPage extends Page {
 
             // Check if all inputs not empty
             if (!newName.isEmpty() && !newStockText.isEmpty() && !sellPriceText.isEmpty() && !buyPriceText.isEmpty() && !newCategory.isEmpty()) {
-                int newStock = Integer.parseInt(newStockText);
-                double newSellPrice = Double.parseDouble(sellPriceText);
-                double newBuyPrice = Double.parseDouble(buyPriceText);
-
-                // Set new attribute values
-                item.setName(newName);
-                item.setCategory(newCategory);
-                item.setBuyPrice(newBuyPrice);
-                item.setSellPrice(newSellPrice);
-                item.setStock(newStock);
-                item.setImage(newImage);
-
-                // Create Image File
-                File output = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
                 try {
+                    int newStock = Integer.parseInt(newStockText);
+                    double newSellPrice = Double.parseDouble(sellPriceText);
+                    double newBuyPrice = Double.parseDouble(buyPriceText);
+
+                    // Set new attribute values
+                    item.setName(newName);
+                    item.setCategory(newCategory);
+                    item.setBuyPrice(newBuyPrice);
+                    item.setSellPrice(newSellPrice);
+                    item.setStock(newStock);
+                    item.setImage(newImage);
+
+                    // Create Image File
+                    File output = new File("src/main/resources/images/item/item" + item.getItemID() + ".png");
+
                     // Create buffer image
                     BufferedImage awtImage = new BufferedImage((int)newImage.getWidth(), (int)newImage.getHeight(), BufferedImage.TYPE_INT_RGB);
                     SwingFXUtils.fromFXImage(newImage, awtImage);
@@ -224,16 +226,21 @@ public class UpdateItemPage extends Page {
                     // Write image to file
                     ImageIO.write(awtImage, "png", output);
 
+                    // Save Data
+                    itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
+
+                    // Change page
+                    ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings, settingsDS);
+                    tab.setContent(detailItemContent);
+
+                } catch (NumberFormatException e) {
+                    TypeException err = new TypeException();
+                    err.showError();
                 } catch (IOException e) {
-                    // Handle Error
+                    FileException err = new FileException();
+                    err.showError();
                 }
 
-                // Save Data
-                itemDS.saveData("item", settings, new Class<?>[]{Inventory.class, Item.class}, items);
-
-                // Change page
-                ItemDetailPage detailItemContent = new ItemDetailPage(stage, tab, item, items, itemDS, settings, settingsDS);
-                tab.setContent(detailItemContent);
             } else {
                 // Show alert
                 Alert alert = new Alert(Alert.AlertType.ERROR);
