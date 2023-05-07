@@ -52,4 +52,13 @@ public class Item implements Serializable {
     public static void setItemIDCount(int itemCount){
         itemIDCount = itemCount;
     }
+
+    public boolean equals(Item other){
+        if (this.name.equals(other.getName()) && this.itemID == other.getItemID()
+                && this.sellPrice == other.getSellPrice() && this.buyPrice == other.getBuyPrice()){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

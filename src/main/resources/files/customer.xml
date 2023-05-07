@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <customer>
+        <id>1</id>
+        <transaction>
+            <bill>
+                <billID>1</billID>
+                <customerID>1</customerID>
+                <date>Sun, 7 May 2023
+17:49:40</date>
+                <discount>0.0</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>1234.0</buyPrice>
+                        <category>TES</category>
+                        <itemID>1</itemID>
+                        <name>TES</name>
+                        <sellPrice>12345.0</sellPrice>
+                        <stock>12</stock>
+                        <quantity>1</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>12345.0</totalPrice>
+            </bill>
+            <neff>1</neff>
+        </transaction>
+    </customer>
+    <customer>
+        <id>2</id>
+        <transaction>
+            <bill>
+                <billID>2</billID>
+                <customerID>2</customerID>
+                <date>Sun, 7 May 2023
+17:50:23</date>
+                <discount>0.0</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>1234.0</buyPrice>
+                        <category>TES</category>
+                        <itemID>1</itemID>
+                        <name>CEK</name>
+                        <sellPrice>12345.0</sellPrice>
+                        <stock>11</stock>
+                        <quantity>2</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>24690.0</totalPrice>
+            </bill>
+            <neff>1</neff>
+        </transaction>
+    </customer>
+    <neff>2</neff>
+</inventory>

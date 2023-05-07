@@ -31,11 +31,12 @@ public class SalesReport implements Serializable {
 
     /* methods */
 
-    public int getElementIdx(String itemName){
+    public int getElementIdx(PurchasedItem item){
         boolean found = false;
         int idx = 0;
         while (idx < items.getNeff() && !found){
-            if (itemName == items.getElement(idx).getName()){
+            PurchasedItem temp = items.getElement(idx);
+            if (item.equals(temp)){
                 found = true;
             } else {
                 idx++;
@@ -51,13 +52,13 @@ public class SalesReport implements Serializable {
     public void updateReport(Bill Bill){
         // update items when a fixed bill is added
         for (PurchasedItem item : Bill.getItems().getBox()){
-            if (getElementIdx(item.getName()) == -1){
+            if (getElementIdx(item) == -1){
                 // if item not in items list, then add item to list
                 items.addElement(item);
             } else {
                 // update item list
-                int newQty = items.getElement(getElementIdx(item.getName())).getQuantity() + item.getQuantity();
-                items.getElement(getElementIdx(item.getName())).setQuantity(newQty);
+                int newQty = items.getElement(getElementIdx(item)).getQuantity() + item.getQuantity();
+                items.getElement(getElementIdx(item)).setQuantity(newQty);
             }
             totalGrossProfit += item.calculateGrossProfit();
             totalNetProfit += item.calculateNetProfit();

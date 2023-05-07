@@ -177,6 +177,7 @@ public class CashierPage extends Page {
         int row = 0;
         int col = 0;
         int count = 0;
+        List<Integer> ids = new ArrayList<Integer>();
 
         // Display List Of Items (grid)
         for (Item item : this.report.getItems().getBox()) {
