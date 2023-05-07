@@ -88,7 +88,11 @@ public class DiscountDetailCashier extends CashierDetailDecorator implements Ser
             toggleButton.setOnAction(event -> {
                 if (toggleButton.isSelected()) {
                     toggleButton.setGraphic(onToggle);
-                    tempDiscount += discount.getDiscount();
+
+                    if ( tempDiscount + discount.getDiscount <=100){
+                        tempDiscount += discount.getDiscount();
+                    }
+
                 }
                 else {
                     toggleButton.setGraphic(offToggle);
