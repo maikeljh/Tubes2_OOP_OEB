@@ -23,6 +23,7 @@ import Core.Bill;
 import Core.PurchasedItem;
 import java.util.ArrayList;
 import java.util.List;
+import Exception.*;
 
 public class AddMemberPage extends Page {
     public AddMemberPage(Stage stage, Tab tab, Inventory<Customer> customers, DataStore<Customer> customerDS, Settings settings, DataStore<Settings> settingsDS) {
@@ -161,44 +162,48 @@ public class AddMemberPage extends Page {
 
         // Add event handler for save button
         saveButton.setOnAction(event -> {
-            int id = customerID.getValue();
-            String name = inputName.getText();
-            String phoneNumber = inputNumber.getText();
-            Bill bill = new Bill();
+            try {
+                int id = customerID.getValue();
+                String name = inputName.getText();
+                String phoneNumber = inputNumber.getText();
+                Bill bill = new Bill();
 
-            for (Customer customer : customers.getBox()) {
-                if (customer.getId() == id) {
-                    bill = customer.getTransaction().getElement(0);
+                // Check phone number valid or not
+                int checkPhone = Integer.parseInt(phoneNumber);
+
+                for (Customer customer : customers.getBox()) {
+                    if (customer.getId() == id) {
+                        bill = customer.getTransaction().getElement(0);
+                    }
                 }
-            }
 
-            if (!(customerID.getValue() == null) && !name.isEmpty() && !phoneNumber.isEmpty()) {
-                // Create new member
-                Member newMember = new Member(id, name, phoneNumber, bill);
+                if (!(customerID.getValue() == null) && !name.isEmpty() && !phoneNumber.isEmpty()) {
+                    // Create new member
+                    Member newMember = new Member(id, name, phoneNumber, bill);
 
-                // Change customer to member
-                if (customers.getElement(id-1).getId() == id) {
-                    customers.setElement(id-1, newMember);
+                    // Change customer to member
+                    if (customers.getElement(id-1).getId() == id) {
+                        customers.setElement(id-1, newMember);
+                    }
+                    // Save data
+                    customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
+
+                    // Change page back to ListMemberPage
+                    ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
+                    tab.setContent(listMemberPage);
                 }
+                // If input is not completed
                 else {
-                    throw new Error("Niggas are drunk up oop open it up");
+                    // Show alert
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setHeaderText("Fail to Add Member");
+                    alert.setContentText("All fields must not be empty!");
+                    alert.showAndWait();
                 }
-
-                // Save data
-                customerDS.saveData("customer", settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
-
-                // Change page back to ListMemberPage
-                ListMemberPage listMemberPage = new ListMemberPage(stage, tab, customers, customerDS, settings, settingsDS);
-                tab.setContent(listMemberPage);
-            }
-            // If input is not completed
-            else {
-                // Show alert
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialog");
-                alert.setHeaderText("Fail to Add Member");
-                alert.setContentText("All fields must not be empty!");
-                alert.showAndWait();
+            } catch (NumberFormatException e) {
+                InputException err = new InputException("Phone number");
+                err.showError();
             }
         });
     }

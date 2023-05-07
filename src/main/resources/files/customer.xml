@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <inventory>
-    <vip>
+    <member>
         <id>1</id>
         <transaction>
             <bill>
@@ -45,10 +45,10 @@
             </bill>
             <neff>2</neff>
         </transaction>
-        <activeStatus>true</activeStatus>
+        <activeStatus>false</activeStatus>
         <name>TES</name>
-        <phoneNumber>123</phoneNumber>
+        <phoneNumber>0823132</phoneNumber>
         <point>76</point>
-    </vip>
+    </member>
     <neff>1</neff>
 </inventory>
