@@ -106,6 +106,29 @@ public class ApplicationBNMOStore extends Application {
             }
         }
 
+        // Set initial customer ID
+        if(customers.getNeff() > 0){
+            // Find the maximum item ID
+            OptionalInt maxCustomerId = customers.getBox().stream()
+                    .mapToInt(Customer::getId) // Assuming getItemID() returns an int
+                    .max();
+
+            if (maxCustomerId.isPresent()) {
+                Customer.setCustomerCount(maxCustomerId.getAsInt());
+            }
+
+            int max = 0;
+            for(Customer customer : customers.getBox()){
+                for(Bill bill : customer.getTransaction().getBox()){
+                    if(bill.getBillID() > max){
+                        max = bill.getBillID();
+                    }
+                }
+            }
+
+            Bill.setBillCount(max);
+        }
+        // Set image for items
         if(items.getNeff() > 0){
             for(int i = 0; i < items.getNeff(); i++){
                 Image image = new Image("/images/item/item" + items.getElement(i).getItemID() + ".png");

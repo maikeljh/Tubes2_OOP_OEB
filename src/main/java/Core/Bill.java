@@ -22,7 +22,7 @@ public class Bill implements Serializable {
     protected double discount;
     protected String date;
     protected int customerID;
-    private static int billCount = 1;
+    private static int billCount = 0;
 
     /* constructors */
     public Bill(){
@@ -35,22 +35,22 @@ public class Bill implements Serializable {
     }
 
     public Bill(String date, double totalPrice, double discount) {
+        billCount++;
         this.date = date;
         this.items = new Inventory<PurchasedItem>();
         this.billID = billCount;
         this.totalPrice = totalPrice;
         this.discount = discount;
-        billCount++;
     }
 
     public Bill(String date, int customerID, double totalPrice, double discount) {
+        billCount++;
         this.date = date;
         this.customerID = customerID;
         this.items = new Inventory<PurchasedItem>();
         this.billID = billCount;
         this.totalPrice = totalPrice;
         this.discount = discount;
-        billCount++;
     }
 
     /* methods */
@@ -260,5 +260,9 @@ public class Bill implements Serializable {
 
     public double calculateChargePrice(){
         return totalPrice - calculateDiscount();
+    }
+
+    public static void setBillCount(int count){
+        billCount = count;
     }
 }

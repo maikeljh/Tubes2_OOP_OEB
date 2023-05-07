@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @XmlRootElement
 public class Customer implements Serializable {
     protected int id;
-    private static int customerCount = 1;
+    private static int customerCount = 0;
     protected Inventory<Bill> transaction;
 
     public Customer(int id) {
@@ -19,10 +19,14 @@ public class Customer implements Serializable {
     }
 
     public Customer(Bill bill) {
+        customerCount++;
         this.id = customerCount;
         this.transaction = new Inventory<Bill>();
         this.transaction.addElement(bill);
-        customerCount++;
         bill.setCustomerID(this.id);
+    }
+
+    public static void setCustomerCount(int count){
+        customerCount = count;
     }
 }
