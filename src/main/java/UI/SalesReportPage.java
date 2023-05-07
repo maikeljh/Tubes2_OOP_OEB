@@ -47,7 +47,7 @@ public class SalesReportPage extends Page {
         printButton.setOnAction(event -> {
             try {
                 printButton.setDisable(true);
-                report.printReport();
+                report.printReport(this.settings.getSaveDirectory());
                 Thread.sleep(1000);
                 printButton.setDisable(false);
 

@@ -54,10 +54,9 @@ public class Bill implements Serializable {
     }
 
     /* methods */
-    public void printBill() throws DocumentException, FileNotFoundException {
-        //
+    public void printBill(String pathname) throws DocumentException, FileNotFoundException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/files/Bill" + billID + ".pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream(pathname + "/Bill" + billID + ".pdf"));
         document.open();
 
         // Add title
@@ -142,8 +141,8 @@ public class Bill implements Serializable {
             PdfPCell itemId = new PdfPCell(new Phrase(String.valueOf(item.getItemID())));
             PdfPCell itemName = new PdfPCell(new Phrase(item.getName()));
             PdfPCell itemQuantity = new PdfPCell(new Phrase(String.valueOf(item.getQuantity())));
-            PdfPCell itemPrice = new PdfPCell(new Phrase(String.valueOf(item.getSellPrice())));
-            PdfPCell itemAmount = new PdfPCell(new Phrase(String.valueOf(item.getQuantity() * item.getSellPrice())));
+            PdfPCell itemPrice = new PdfPCell(new Phrase(String.valueOf((int) item.getSellPrice())));
+            PdfPCell itemAmount = new PdfPCell(new Phrase(String.valueOf((int)(item.getQuantity() * item.getSellPrice()))));
 
             // Style item's cells
             itemId.setHorizontalAlignment(Element.ALIGN_CENTER);

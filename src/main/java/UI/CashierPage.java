@@ -1627,7 +1627,7 @@ public class CashierPage extends Page {
             if (result.isPresent() && result.get() == yesButton) { // if result is yesButton, printBill then close alert
                 // Print bill
                 try {
-                    newBill.printBill();
+                    newBill.printBill(this.settings.getSaveDirectory());
                     alert.close();
                 } catch (DocumentException | FileNotFoundException | IndexOutOfBoundsException e){
                     // Do Nothing
