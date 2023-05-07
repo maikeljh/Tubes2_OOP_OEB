@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -47,6 +48,7 @@ public class DiscountDetailCashier extends CashierDetailDecorator implements Ser
 
         // Discount Inputs
         int idx = 0;
+
         for(Discount discount : discounts.getBox()){
             // Create toggle box
             HBox toggleBox = new HBox();
@@ -89,14 +91,15 @@ public class DiscountDetailCashier extends CashierDetailDecorator implements Ser
                 if (toggleButton.isSelected()) {
                     toggleButton.setGraphic(onToggle);
 
-                    if ( tempDiscount + discount.getDiscount <=100){
+                    if (tempDiscount + discount.getDiscount() <= 1){
                         tempDiscount += discount.getDiscount();
+                    } else {
+                        tempDiscount = 1;
                     }
 
-                }
-                else {
+                } else {
                     toggleButton.setGraphic(offToggle);
-                    if ( tempDiscount - discount.getDiscount() >= 0){
+                    if (tempDiscount - discount.getDiscount() >= 0){
                         tempDiscount -= discount.getDiscount();
                     } else {
                         tempDiscount = 0;
@@ -145,6 +148,7 @@ public class DiscountDetailCashier extends CashierDetailDecorator implements Ser
                 this.page.getItem().setSellPrice(this.page.getItem().getSellPrice() - tempDiscount * this.page.getItem().getSellPrice());
                 CashierPage newPage = this.page.processAdd();
                 this.page.getItem().setSellPrice(oldPrice);
+                newPage.getBackButton().fire();
                 DiscountCashier newCashier = new DiscountCashier();
                 newCashier.setPage(newPage);
                 newCashier.getPage().setStage(newPage.getStage());

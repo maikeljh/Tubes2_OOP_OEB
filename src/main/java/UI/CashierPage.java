@@ -353,7 +353,7 @@ public class CashierPage extends Page {
         this.checkBox2 = new CheckBox("Sort by Categories");
         checkBoxBox.getChildren().addAll(this.checkBox1, this.checkBox2);
 
-        // Create toogle group & radio buttons for descending or ascending (containerDropDownDetails)
+        // Create toggle group & radio buttons for descending or ascending (containerDropDownDetails)
         this.group = new ToggleGroup();
         VBox radioButtonBox = new VBox();
         RadioButton radioButton1 = new RadioButton("Descending");
@@ -2339,7 +2339,7 @@ public class CashierPage extends Page {
 
                 // Create totalPriceBills2 (totalPriceBox)
                 totalPriceBillLabel = new Text(totalPriceBill);
-                totalPriceBills = new Label("Charge4");
+                totalPriceBills = new Label("Charge");
 
                 // Add childrens to totalPriceBox
                 totalPriceBox.getChildren().addAll(totalPriceBills, totalPriceBillLabel, fixTotalPriceBill);
@@ -2451,5 +2451,9 @@ public class CashierPage extends Page {
 
     public RegisteredCustomer getRegisCust() {
         return regisCust;
+    }
+
+    public Button getBackButton(){
+        return this.backButton;
     }
 }
