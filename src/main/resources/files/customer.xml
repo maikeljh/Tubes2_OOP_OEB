@@ -43,12 +43,32 @@
                 </items>
                 <totalPrice>8468.0</totalPrice>
             </bill>
-            <neff>2</neff>
+            <bill>
+                <billID>1</billID>
+                <customerID>1</customerID>
+                <date>Sun, 7 May 2023
+14:42:02</date>
+                <discount>0.11</discount>
+                <items>
+                    <purchasedItem>
+                        <buyPrice>123.0</buyPrice>
+                        <category>TES</category>
+                        <itemID>1</itemID>
+                        <name>TES</name>
+                        <sellPrice>1234.0</sellPrice>
+                        <stock>6</stock>
+                        <quantity>1</quantity>
+                    </purchasedItem>
+                    <neff>1</neff>
+                </items>
+                <totalPrice>7234.0</totalPrice>
+            </bill>
+            <neff>3</neff>
         </transaction>
         <activeStatus>true</activeStatus>
         <name>TES</name>
         <phoneNumber>123</phoneNumber>
-        <point>76</point>
+        <point>64</point>
     </vip>
     <neff>1</neff>
 </inventory>

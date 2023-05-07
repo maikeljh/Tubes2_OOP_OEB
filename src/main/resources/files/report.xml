@@ -20,10 +20,19 @@
                 <stock>9</stock>
                 <quantity>1</quantity>
             </purchasedItem>
-            <neff>2</neff>
+            <purchasedItem>
+                <buyPrice>123.0</buyPrice>
+                <category>TES</category>
+                <itemID>1</itemID>
+                <name>TES</name>
+                <sellPrice>1234.0</sellPrice>
+                <stock>6</stock>
+                <quantity>1</quantity>
+            </purchasedItem>
+            <neff>3</neff>
         </items>
-        <totalGrossProfit>3702.0</totalGrossProfit>
-        <totalNetProfit>3333.0</totalNetProfit>
+        <totalGrossProfit>4936.0</totalGrossProfit>
+        <totalNetProfit>4444.0</totalNetProfit>
     </salesReport>
     <neff>1</neff>
 </inventory>

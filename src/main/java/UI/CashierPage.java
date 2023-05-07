@@ -84,6 +84,7 @@ public class CashierPage extends Page {
     private DataStore<Customer> customerDS;
     private DataStore<SalesReport> reportDS;
     private DataStore<Item> itemDS;
+    private int point;
 
     public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS, SalesReport report){
         super(stage, tab, settings, settingsDS);
@@ -101,6 +102,10 @@ public class CashierPage extends Page {
         this.customerDS = new DataStore<Customer>();
         this.reportDS = new DataStore<SalesReport>();
         this.itemDS = new DataStore<Item>();
+
+        if (this.regisCust != null) {
+            this.point = this.regisCust.getPoint();
+        }
 
         // Create main VBox
         VBox mainVBox = new VBox();
@@ -1446,7 +1451,13 @@ public class CashierPage extends Page {
             setRegCust();
 
             // Set finalTotalPrice with calculateDiscount
+            if (this.regisCust != null) {
+                this.point = this.regisCust.getPoint();
+            }
             this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+            if (this.regisCust != null) {
+                this.regisCust.setPoint(this.point);
+            }
 
         } else { // if no customer selected
 
@@ -1461,7 +1472,8 @@ public class CashierPage extends Page {
         totalPriceBill = formatter.format(this.totalPrice);
         fixTotalPrice = formatter.format(this.finalTotalPrice);
         fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
-        if(this.finalTotalPrice == this.totalPrice){
+
+        if(this.finalTotalPrice == this.totalPrice && (this.regisCust == null || !this.regisCust.getClass().getSimpleName().equalsIgnoreCase("VIP"))){
             totalPriceBills = new Label("Charge Rp" + totalPriceBill);
 
             // Add totalPriceBills to totalPriceBox
@@ -1537,6 +1549,18 @@ public class CashierPage extends Page {
             // Init newBill
             Bill newBill;
 
+            System.out.println(this.regisCust.getPoint());
+            // Decrease Point
+            if (this.regisCust !=null){
+                if ( this.point > this.finalTotalPrice){
+                    this.point -= this.finalTotalPrice;
+                    this.regisCust.setPoint(this.point);
+                    this.point = 0;
+                } else {
+                    this.regisCust.setPoint(0);
+                }
+            }
+
             // Create formattedDiscount (newBill)
             double discount = (this.totalPrice - this.finalTotalPrice) / this.totalPrice;
             DecimalFormat df = new DecimalFormat("#.##");
@@ -1568,7 +1592,9 @@ public class CashierPage extends Page {
                 custID = this.tempID.get(this.selectionIndex);
 
                 // Update customer point
+                System.out.println(this.regisCust.getPoint());
                 this.regisCust.calculatePoint(this.finalTotalPrice);
+                System.out.println(this.regisCust.getPoint());
 
                 // Create newBill to the customer
                 newBill = new Bill (timenow, custID, this.totalPrice, formattedDiscount);
@@ -2266,7 +2292,13 @@ public class CashierPage extends Page {
                 setRegCust();
 
                 // Set finalTotalPrice with calculateDiscount
+                if (this.regisCust != null) {
+                    this.point = this.regisCust.getPoint();
+                }
                 this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+                if (this.regisCust != null) {
+                    this.regisCust.setPoint(this.point);
+                }
 
             } else {
 
@@ -2281,13 +2313,19 @@ public class CashierPage extends Page {
                 setRegCust();
 
                 // Set finalTotalPrice with calculateDiscount
+                if (this.regisCust != null) {
+                    this.point = this.regisCust.getPoint();
+                }
                 this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+                if (this.regisCust != null) {
+                    this.regisCust.setPoint(this.point);
+                }
             }
 
             fixTotalPrice = formatter.format(this.finalTotalPrice);
             fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
 
-            if(this.finalTotalPrice == this.totalPrice){ // if customer don't get discount
+            if(this.finalTotalPrice == this.totalPrice && (this.regisCust == null || !this.regisCust.getClass().getSimpleName().equalsIgnoreCase("VIP"))){ // if customer don't get discount
 
                 // Create totalPriceBills2 (totalPriceBox)
                 totalPriceBills = new Label("Charge Rp" + totalPriceBill);
@@ -2299,7 +2337,7 @@ public class CashierPage extends Page {
 
                 // Create totalPriceBills2 (totalPriceBox)
                 totalPriceBillLabel = new Text("Rp" + totalPriceBill);
-                totalPriceBills = new Label("Charge");
+                totalPriceBills = new Label("Charge4");
 
                 // Add childrens to totalPriceBox
                 totalPriceBox.getChildren().addAll(totalPriceBills, totalPriceBillLabel, fixTotalPriceBill);
@@ -2351,7 +2389,9 @@ public class CashierPage extends Page {
         if (this.regisCust != null){
 
             // Set finalTotalPrice with calculateDiscount
+            this.point = this.regisCust.getPoint();
             this.finalTotalPrice = this.regisCust.calculateDiscount(this.totalPrice, usePointButton.isSelected());
+            this.regisCust.setPoint(this.point);
 
         } else {
             // Set finalTotalPrice with totalPrice
@@ -2361,7 +2401,7 @@ public class CashierPage extends Page {
         fixTotalPrice = formatter.format(this.finalTotalPrice);
         fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
 
-        if(this.finalTotalPrice == this.totalPrice){ // if customer don't get discount
+        if(this.finalTotalPrice == this.totalPrice && (this.regisCust == null || !this.regisCust.getClass().getSimpleName().equalsIgnoreCase("VIP"))){ // if customer don't get discount
 
             // Create totalPriceBills2 (totalPriceBox)
             totalPriceBills = new Label("Charge Rp" + totalPriceBill);

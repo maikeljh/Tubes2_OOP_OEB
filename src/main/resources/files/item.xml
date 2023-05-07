@@ -6,7 +6,7 @@
         <itemID>1</itemID>
         <name>TES</name>
         <sellPrice>1234.0</sellPrice>
-        <stock>6</stock>
+        <stock>5</stock>
     </item>
     <neff>1</neff>
 </inventory>

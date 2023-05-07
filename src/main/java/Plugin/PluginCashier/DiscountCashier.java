@@ -10,6 +10,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import java.io.Serializable;
+import java.text.NumberFormat;
+
 import Core.Inventory;
 import DataStore.DataStore;
 
@@ -19,6 +21,10 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
     private double currentTax;
     private double currentService;
     private boolean stop = false;
+    private NumberFormat formatter;
+    private String totalPriceBill;
+    private String fixTotalPrice;
+
 
     public DiscountCashier(){
         this.pluginName = "Plugin Discount, Tax, and Service";
@@ -51,11 +57,15 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
             service.setText("Service: Rp" + String.format("%.2f", TAS.getService()));
 
             // UI
+            formatter = NumberFormat.getInstance();
+            formatter.setGroupingUsed(true);
+            totalPriceBill = formatter.format(this.page.getTotalPrice());
+            fixTotalPrice = formatter.format(this.page.getFinalTotalPrice());
             if(this.page.getTotalPrice() == this.page.getFinalTotalPrice()){
-                this.page.getTotalPriceBills().setText("Charge Rp" + String.format("%.2f", this.page.getTotalPrice()));
+                this.page.getTotalPriceBills().setText("Charge Rp" + totalPriceBill);
             } else {
-                this.page.getTotalPriceBillLabel().setText("Rp" + String.format("%.2f", this.page.getTotalPrice()));
-                this.page.getFixTotalPriceBill().setText("Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
+                this.page.getTotalPriceBillLabel().setText("Rp" + totalPriceBill);
+                this.page.getFixTotalPriceBill().setText("Rp" + fixTotalPrice);
             }
 
             this.currentTax = this.TAS.getTax();
@@ -84,11 +94,16 @@ public class DiscountCashier extends CashierDecorator implements Serializable {
                             tax.setText("Tax: Rp" + String.format("%.2f", TAS.getTax()));
                             service.setText("Service: Rp" + String.format("%.2f", TAS.getService()));
 
+                            formatter = NumberFormat.getInstance();
+                            formatter.setGroupingUsed(true);
+                            totalPriceBill = formatter.format(this.page.getTotalPrice());
+                            fixTotalPrice = formatter.format(this.page.getFinalTotalPrice());
+
                             if (this.page.getTotalPrice() == this.page.getFinalTotalPrice()) {
-                                this.page.getTotalPriceBills().setText("Charge Rp" + String.format("%.2f", this.page.getTotalPrice()));
+                                this.page.getTotalPriceBills().setText("Charge Rp" + totalPriceBill);
                             } else {
-                                this.page.getTotalPriceBillLabel().setText("Rp" + String.format("%.2f", this.page.getTotalPrice()));
-                                this.page.getFixTotalPriceBill().setText("Rp" + String.format("%.2f", this.page.getFinalTotalPrice()));
+                                this.page.getTotalPriceBillLabel().setText("Rp" + totalPriceBill);
+                                this.page.getFixTotalPriceBill().setText("Rp" + fixTotalPrice);
                             }
                         });
 
