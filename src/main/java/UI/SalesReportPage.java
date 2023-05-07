@@ -134,7 +134,7 @@ public class SalesReportPage extends Page {
 
         // Create thread
         Thread thread = new Thread(() -> {
-            while (!close || !Page.isExit()) {
+            while (!close && !Page.isExit()) {
                 Platform.runLater(table::refresh);
                 try {
                     Thread.sleep(5000);

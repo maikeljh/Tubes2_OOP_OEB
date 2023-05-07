@@ -19,6 +19,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
 
 import Core.Inventory;
 import Core.Item;
@@ -93,8 +94,19 @@ public class ApplicationBNMOStore extends Application {
             // Do Nothing
         }
 
+        // Set initial item ID
+        if(report.getItems().getNeff() > 0){
+            // Find the maximum item ID
+            OptionalInt maxItemId = report.getItems().getBox().stream()
+                    .mapToInt(Item::getItemID) // Assuming getItemID() returns an int
+                    .max();
+
+            if (maxItemId.isPresent()) {
+                Item.setItemIDCount(maxItemId.getAsInt());
+            }
+        }
+
         if(items.getNeff() > 0){
-            Item.setItemIDCount(items.getElement(items.getNeff() - 1).getItemID());
             for(int i = 0; i < items.getNeff(); i++){
                 Image image = new Image("/images/item/item" + items.getElement(i).getItemID() + ".png");
                 items.getElement(i).setImage(image);

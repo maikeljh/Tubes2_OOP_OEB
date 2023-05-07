@@ -1549,7 +1549,6 @@ public class CashierPage extends Page {
             // Init newBill
             Bill newBill;
 
-            System.out.println(this.regisCust.getPoint());
             // Decrease Point
             if (this.regisCust !=null){
                 if ( this.point > this.finalTotalPrice){
