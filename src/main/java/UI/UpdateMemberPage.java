@@ -307,7 +307,7 @@ public class UpdateMemberPage extends Page {
                 if (!inputName.getText().isEmpty() && !inputNumber.getText().isEmpty()) {
 
                     // Check phone number valid or not
-                    int checkNumber = Integer.parseInt(inputNumber.getText());
+                    long checkPhone = Long.parseLong(inputNumber.getText());
 
                     if (customer.getClass().getSimpleName().equals("Member")) {
                         if (memberToggle.isSelected()) {

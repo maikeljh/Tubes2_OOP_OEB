@@ -169,7 +169,7 @@ public class AddMemberPage extends Page {
                 Bill bill = new Bill();
 
                 // Check phone number valid or not
-                int checkPhone = Integer.parseInt(phoneNumber);
+                long checkPhone = Long.parseLong(phoneNumber);
 
                 for (Customer customer : customers.getBox()) {
                     if (customer.getId() == id) {
