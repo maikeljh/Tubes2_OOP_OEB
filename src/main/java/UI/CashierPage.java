@@ -1645,7 +1645,7 @@ public class CashierPage extends Page {
             setRegCust();
 
             // Reset usePointButton
-            if (isUsePoint){
+            if (this.isUsePoint){
                 usePointButton.fire();
             }
 
@@ -1696,7 +1696,7 @@ public class CashierPage extends Page {
         });
 
         // Reset usePointButton
-        if (isUsePoint){
+        if (this.isUsePoint){
             usePointButton.fire();
         }
 
@@ -1743,6 +1743,10 @@ public class CashierPage extends Page {
 
             // Set regisCust into the selected customer
             setRegCust();
+            if (usePointButton.isSelected()){
+                usePointButton.fire();
+                this.isUsePoint = true;
+            }
             CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, this.report);
             boolean found = false;
             for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
