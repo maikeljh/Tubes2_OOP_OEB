@@ -81,6 +81,7 @@ public class CashierPage extends Page {
     private SalesReport report;
     private DataStore<Customer> customerDS;
     private DataStore<SalesReport> reportDS;
+    private DataStore<Item> itemDS;
 
     public CashierPage(Stage stage, Tab tab, Inventory<Item> items, TabPane tabPane, Inventory<Customer> customers, Integer mode, Inventory<PurchasedItem> purchasedItems, boolean usePoint, RegisteredCustomer registeredCust, Settings settings, DataStore<Settings> settingsDS, SalesReport report){
         super(stage, tab, settings, settingsDS);
@@ -97,6 +98,7 @@ public class CashierPage extends Page {
         this.mode = mode;
         this.customerDS = new DataStore<Customer>();
         this.reportDS = new DataStore<SalesReport>();
+        this.itemDS = new DataStore<Item>();
 
         // Create main VBox
         VBox mainVBox = new VBox();
@@ -173,9 +175,11 @@ public class CashierPage extends Page {
         for (Item item : this.report.getItems().getBox()) {
             if (count < 9 && item.getStock() > 0){
                 boolean valid = false;
+                Item chosen = item;
                 for(Item temp : this.items.getBox()){
                     if(item.getItemID() == temp.getItemID()){
                         valid = true;
+                        chosen = temp;
                     }
                 }
 
@@ -187,7 +191,7 @@ public class CashierPage extends Page {
                 VBox itemDisplay = new VBox();
 
                 // Image View Item
-                ImageView itemImage = new ImageView(item.getImage());
+                ImageView itemImage = new ImageView(chosen.getImage());
 
                 // Styling Item Image
                 itemImage.setPreserveRatio(true);
@@ -197,7 +201,7 @@ public class CashierPage extends Page {
                 itemImage.setFitHeight(109);
 
                 // Item Name
-                Text itemName = new Text(item.getName());
+                Text itemName = new Text(chosen.getName());
 
                 // Styling Item Name
                 itemName.setFont(Font.font("Montserrat", 14));
@@ -212,9 +216,10 @@ public class CashierPage extends Page {
                 itemDisplay.setSpacing(5);
 
                 // Add onclick event
+                Item finalChosen = chosen;
                 itemDisplay.setOnMouseClicked(event -> {
                     setRegCust();
-                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, item, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, report);
+                    CashierDetailPage detailCashierContent = new CashierDetailPage(this.stage, tab, finalChosen, this.purchasedItems, this.items, tabPane, this.customers, this.mode, this.isUsePoint, this.regisCust, this.settings, this.settingsDS, report);
                     boolean found = false;
                     for(Plugin plugin : this.getSettings().getPluginManager().getPlugins()){
                         if(plugin instanceof CashierDetailDecorator cashierDetailDecorated){
@@ -1579,6 +1584,7 @@ public class CashierPage extends Page {
             tempReport.addElement(report);
             this.reportDS.saveData("report", this.settings, new Class<?>[]{Inventory.class, SalesReport.class, PurchasedItem.class}, tempReport);
             this.customerDS.saveData("customer", this.settings, new Class<?>[]{Inventory.class, Customer.class, RegisteredCustomer.class, Member.class, VIP.class, Bill.class, PurchasedItem.class}, customers);
+            this.itemDS.saveData("item", this.settings, new Class<?>[]{Inventory.class, Item.class}, items);
 
             // Create cashierContent (tab)
             CashierPage cashierContent = new CashierPage(this.stage, tab, this.items, tabPane, this.customers, 0, new Inventory<PurchasedItem>(), false, null, settings, settingsDS, report);
