@@ -58,7 +58,7 @@ public class CashierDetailPage extends Page {
         String titleName = item.getName();
         NumberFormat formatter = NumberFormat.getInstance();
         formatter.setGroupingUsed(true);
-        String titlePrice = "Rp" + formatter.format(item.getSellPrice());
+        String titlePrice = formatter.format(item.getSellPrice());
         Label title = new Label(titleName + " - " + titlePrice);
         title.setFont(Font.font("Montserrat", FontWeight.BOLD, 36));
         title.setStyle("-fx-text-fill: #3B919B");

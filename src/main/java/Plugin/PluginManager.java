@@ -6,7 +6,6 @@ import Plugin.Decorator.Decorator;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.net.URL;

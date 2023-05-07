@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<inventory>
+    <currency>
+        <currency>IDR</currency>
+        <kurs>1.0</kurs>
+    </currency>
+    <neff>1</neff>
+</inventory>

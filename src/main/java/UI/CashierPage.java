@@ -186,8 +186,13 @@ public class CashierPage extends Page {
                 Item chosen = item;
                 for(Item temp : this.items.getBox()){
                     if(item.getItemID() == temp.getItemID()){
-                        valid = true;
-                        chosen = temp;
+                        long exist = ids.stream().filter(id -> id == temp.getItemID()).count();
+                        if(exist == 0){
+                            valid = true;
+                            chosen = temp;
+                            ids.add(temp.getItemID());
+                            break;
+                        }
                     }
                 }
 
@@ -314,7 +319,6 @@ public class CashierPage extends Page {
         searchBar.setPromptText("Search. . .");
         searchBar.setPrefWidth(600);
         searchBar.setStyle("-fx-background-color: transparent;-fx-padding: 0;-fx-background-insets: 0;-fx-border-color: transparent;-fx-border-width: 0;-fx-border-radius: 0;-fx-prompt-text-fill: #8CAEBB;-fx-font-size: 14;-fx-font-weight: bold;");
-
 
         // Create a filter button (searchBox)
         ImageView filterIcon = new ImageView("/images/icon/filterButton.png");
@@ -557,7 +561,7 @@ public class CashierPage extends Page {
                 double libraryPrice = library.getSellPrice();
                 NumberFormat formatter = NumberFormat.getInstance();
                 formatter.setGroupingUsed(true);
-                String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                String libraryPriceBill = formatter.format(libraryPrice);
                 Label libraryPriceBills = new Label(libraryPriceBill);
                 libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
                 libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
@@ -717,7 +721,7 @@ public class CashierPage extends Page {
                     double libraryPrice = library.getSellPrice();
                     formatter = NumberFormat.getInstance();
                     formatter.setGroupingUsed(true);
-                    String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                    String libraryPriceBill = formatter.format(libraryPrice);
                     Label libraryPriceBills = new Label(libraryPriceBill);
                     libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
                     libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
@@ -1327,7 +1331,7 @@ public class CashierPage extends Page {
             double itemPrice = itemBill.getSellPrice() * quantityItem;
             NumberFormat formatter = NumberFormat.getInstance();
             formatter.setGroupingUsed(true);
-            String itemPriceBill = "Rp" + formatter.format(itemPrice);
+            String itemPriceBill = formatter.format(itemPrice);
             Label itemPriceBills = new Label(itemPriceBill);
 
             // Styling itemPriceBills
@@ -1472,10 +1476,10 @@ public class CashierPage extends Page {
         formatter.setGroupingUsed(true);
         totalPriceBill = formatter.format(this.totalPrice);
         fixTotalPrice = formatter.format(this.finalTotalPrice);
-        fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
+        fixTotalPriceBill = new Label(fixTotalPrice);
 
         if(this.finalTotalPrice == this.totalPrice && (this.regisCust == null || !this.regisCust.getClass().getSimpleName().equalsIgnoreCase("VIP"))){
-            totalPriceBills = new Label("Charge Rp" + totalPriceBill);
+            totalPriceBills = new Label("Charge " + totalPriceBill);
 
             // Add totalPriceBills to totalPriceBox
             totalPriceBox.getChildren().add(totalPriceBills);
@@ -1483,7 +1487,7 @@ public class CashierPage extends Page {
         } else { // if customer get discount
 
             // Create totalPriceBills (totalPriceBox)
-            totalPriceBillLabel = new Text("Rp" + totalPriceBill);
+            totalPriceBillLabel = new Text(totalPriceBill);
             totalPriceBills = new Label("Charge");
 
             // Add childrens to totalPriceBox
@@ -1904,7 +1908,7 @@ public class CashierPage extends Page {
                         double libraryPrice = library.getSellPrice();
                         NumberFormat formatter = NumberFormat.getInstance();
                         formatter.setGroupingUsed(true);
-                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        String libraryPriceBill = formatter.format(libraryPrice);
                         Label libraryPriceBills = new Label(libraryPriceBill);
                         libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
                         libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
@@ -1966,7 +1970,7 @@ public class CashierPage extends Page {
                         double libraryPrice = library.getSellPrice();
                         NumberFormat formatter = NumberFormat.getInstance();
                         formatter.setGroupingUsed(true);
-                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        String libraryPriceBill = formatter.format(libraryPrice);
                         Label libraryPriceBills = new Label(libraryPriceBill);
                         libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
                         libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
@@ -2028,7 +2032,7 @@ public class CashierPage extends Page {
                         double libraryPrice = library.getSellPrice();
                         NumberFormat formatter = NumberFormat.getInstance();
                         formatter.setGroupingUsed(true);
-                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        String libraryPriceBill = formatter.format(libraryPrice);
                         Label libraryPriceBills = new Label(libraryPriceBill);
                         libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
                         libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
@@ -2089,7 +2093,7 @@ public class CashierPage extends Page {
                         double libraryPrice = library.getSellPrice();
                         NumberFormat formatter = NumberFormat.getInstance();
                         formatter.setGroupingUsed(true);
-                        String libraryPriceBill = "Rp" + formatter.format(libraryPrice);
+                        String libraryPriceBill = formatter.format(libraryPrice);
                         Label libraryPriceBills = new Label(libraryPriceBill);
                         libraryPriceBills.setFont(Font.font("Montserrat", FontWeight.BOLD, 14));
                         libraryPriceBills.setTextAlignment(TextAlignment.CENTER);
@@ -2323,12 +2327,12 @@ public class CashierPage extends Page {
             }
 
             fixTotalPrice = formatter.format(this.finalTotalPrice);
-            fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
+            fixTotalPriceBill = new Label(fixTotalPrice);
 
             if(this.finalTotalPrice == this.totalPrice && (this.regisCust == null || !this.regisCust.getClass().getSimpleName().equalsIgnoreCase("VIP"))){ // if customer don't get discount
 
                 // Create totalPriceBills2 (totalPriceBox)
-                totalPriceBills = new Label("Charge Rp" + totalPriceBill);
+                totalPriceBills = new Label("Charge " + totalPriceBill);
 
                 // Add totalPriceBills to totalPriceBox
                 totalPriceBox.getChildren().add(totalPriceBills);
@@ -2336,7 +2340,7 @@ public class CashierPage extends Page {
             } else { // if customer get discount
 
                 // Create totalPriceBills2 (totalPriceBox)
-                totalPriceBillLabel = new Text("Rp" + totalPriceBill);
+                totalPriceBillLabel = new Text(totalPriceBill);
                 totalPriceBills = new Label("Charge4");
 
                 // Add childrens to totalPriceBox
@@ -2399,12 +2403,12 @@ public class CashierPage extends Page {
         }
 
         fixTotalPrice = formatter.format(this.finalTotalPrice);
-        fixTotalPriceBill = new Label("Rp" + fixTotalPrice);
+        fixTotalPriceBill = new Label(fixTotalPrice);
 
         if(this.finalTotalPrice == this.totalPrice && (this.regisCust == null || !this.regisCust.getClass().getSimpleName().equalsIgnoreCase("VIP"))){ // if customer don't get discount
 
             // Create totalPriceBills2 (totalPriceBox)
-            totalPriceBills = new Label("Charge Rp" + totalPriceBill);
+            totalPriceBills = new Label("Charge " + totalPriceBill);
 
             // Add totalPriceBills to totalPriceBox
             totalPriceBox.getChildren().add(totalPriceBills);
@@ -2412,7 +2416,7 @@ public class CashierPage extends Page {
         } else { // if customer get discount
 
             // Create totalPriceBills2 (totalPriceBox)
-            totalPriceBillLabel = new Text("Rp" + totalPriceBill);
+            totalPriceBillLabel = new Text(totalPriceBill);
             totalPriceBills = new Label("Charge");
 
             // Add childrens to totalPriceBox
