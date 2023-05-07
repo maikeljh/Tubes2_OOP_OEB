@@ -145,11 +145,38 @@ public class SalesReportPage extends Page {
         });
 
         thread.start();
+
+        // Create label for total gross profit
+        HBox totalGrossHBox = new HBox();
+        Label totalGrossLabel = new Label("Total Gross Profit: ");
+        Label totalGrossValueLabel = new Label(String.valueOf(report.getTotalGrossProfit()));
+        
+        // Style total net label
+        totalGrossLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 16));
+        totalGrossValueLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 16));
+
+        // Add labels to HBox
+        totalGrossHBox.getChildren().add(totalGrossLabel);
+        totalGrossHBox.getChildren().add(totalGrossValueLabel);
+
+        // Create a label for total net profit
+        HBox totalNetHBox = new HBox();
+        Label totalNetLabel = new Label("Total Net Profit: ");
+        Label totalNetValueLabel = new Label(String.valueOf(report.getTotalNetProfit()));
+
+        // Style total net label
+        totalNetLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 16));
+        totalNetValueLabel.setFont(Font.font("Montserrat", FontWeight.BOLD, 16));
+        
+        // Add labels to HBox
+        totalNetHBox.getChildren().add(totalNetLabel);
+        totalNetHBox.getChildren().add(totalNetValueLabel);
+
         // Create scroll pane for VBox
         ScrollPane scrollPane = new ScrollPane(table);
 
         // Style scroll pane
-        scrollPane.setMaxHeight(640);
+        scrollPane.setMaxHeight(700);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background-color: #F3F9FB;");
         scrollPane.setPadding(new Insets(0, 10, 20, 10));
@@ -157,6 +184,8 @@ public class SalesReportPage extends Page {
         // Add contents
         getChildren().add(hbox);
         getChildren().add(scrollPane);
+        getChildren().add(totalGrossHBox);
+        getChildren().add(totalNetHBox);
 
         // Styling Layout
         setPadding(new Insets(20, 40, 0, 40));
