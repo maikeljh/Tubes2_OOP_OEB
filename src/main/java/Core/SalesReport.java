@@ -67,10 +67,10 @@ public class SalesReport implements Serializable {
         Collections.sort(items.getBox(), Comparator.comparingInt(PurchasedItem::getQuantity).reversed());
     }
 
-    public void printReport() throws DocumentException, FileNotFoundException{
+    public void printReport(String pathname) throws DocumentException, FileNotFoundException{
         // Create PDF for sales report
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/files/Sales Report.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream(pathname + "/Sales Report.pdf"));
         document.open();
 
         // Add title
@@ -145,11 +145,11 @@ public class SalesReport implements Serializable {
             // Add cell
             PdfPCell itemId = new PdfPCell(new Phrase(String.valueOf(item.getItemID())));
             PdfPCell itemName = new PdfPCell(new Phrase(item.getName()));
-            PdfPCell itemBuyPrice = new PdfPCell(new Phrase(String.valueOf(item.getBuyPrice())));
-            PdfPCell itemSellPrice = new PdfPCell(new Phrase(String.valueOf(item.getSellPrice())));
+            PdfPCell itemBuyPrice = new PdfPCell(new Phrase(String.valueOf((int) item.getBuyPrice())));
+            PdfPCell itemSellPrice = new PdfPCell(new Phrase(String.valueOf((int) item.getSellPrice())));
             PdfPCell itemQuantity = new PdfPCell(new Phrase(String.valueOf(item.getQuantity())));
-            PdfPCell itemGrossProfit = new PdfPCell(new Phrase(String.valueOf(item.calculateGrossProfit())));
-            PdfPCell itemNetProfit = new PdfPCell(new Phrase(String.valueOf(item.calculateNetProfit())));
+            PdfPCell itemGrossProfit = new PdfPCell(new Phrase(String.valueOf((int) item.calculateGrossProfit())));
+            PdfPCell itemNetProfit = new PdfPCell(new Phrase(String.valueOf((int) item.calculateNetProfit())));
 
             // Style item's cells
             itemId.setHorizontalAlignment(Element.ALIGN_CENTER);

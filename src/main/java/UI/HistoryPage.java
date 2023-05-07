@@ -108,7 +108,7 @@ public class HistoryPage extends Page {
                         previewButton.setOnAction(event -> {
                             try {
                                 previewButton.setDisable(true);
-                                transaction.printBill();
+                                transaction.printBill(this.settings.getSaveDirectory());
                                 Thread.sleep(1000);
                                 previewButton.setDisable(false);
 
