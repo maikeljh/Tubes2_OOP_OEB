@@ -17,6 +17,7 @@ public class Customer implements Serializable {
         this.id = id;
         this.transaction = new Inventory<Bill>();
     }
+
     public Customer(Bill bill) {
         this.id = customerCount;
         this.transaction = new Inventory<Bill>();
@@ -24,5 +25,4 @@ public class Customer implements Serializable {
         customerCount++;
         bill.setCustomerID(this.id);
     }
-
 }

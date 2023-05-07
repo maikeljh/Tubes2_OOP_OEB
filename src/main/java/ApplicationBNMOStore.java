@@ -30,7 +30,6 @@ import Core.Bill;
 import Core.SalesReport;
 import Plugin.PluginManager;
 
-
 public class ApplicationBNMOStore extends Application {
     private TabPane tabPane;
     private MainPage mainPage;
@@ -58,6 +57,10 @@ public class ApplicationBNMOStore extends Application {
         } catch (Exception e){
             // Do Nothing
             settings.setFormat("xml");
+        } finally {
+            PluginManager pluginManager = new PluginManager();
+            settings.setPluginManager(pluginManager);
+            pluginManager.loadPluginClasses();
         }
 
         // Read Items Data

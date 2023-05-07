@@ -26,7 +26,6 @@ public class Plugin2 extends BasePlugin {
         this.mainPlugin = true;
     }
 
-    public static void main(String args[]){}
     public void filterData(){
         this.cat = new ArrayList<>();
         this.profit = new ArrayList<>();

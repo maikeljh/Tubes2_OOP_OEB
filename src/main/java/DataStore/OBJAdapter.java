@@ -1,6 +1,10 @@
 package DataStore;
 
+import Plugin.PluginManager;
+
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class OBJAdapter implements DataAdapter, Serializable  {
     // Function to read data from a file
@@ -11,8 +15,8 @@ public class OBJAdapter implements DataAdapter, Serializable  {
             Object result = objectInputStream.readObject();
             objectInputStream.close();
             return result;
-        } catch (IOException | ClassNotFoundException e) {
-            // Do Nothing
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

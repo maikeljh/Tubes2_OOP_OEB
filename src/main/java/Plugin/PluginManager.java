@@ -6,10 +6,13 @@ import Plugin.Decorator.Decorator;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -38,6 +41,10 @@ public class PluginManager implements Serializable {
         // Read Jar File
         JarFile jar = new JarFile(jarFile);
         Enumeration<JarEntry> entries = jar.entries();
+
+        // Save Jar File
+        File destinationDirectory = new File("src/main/resources/files");
+        Files.copy(jarFile.toPath(), destinationDirectory.toPath().resolve(jarFile.getName()), StandardCopyOption.REPLACE_EXISTING);
 
         while (entries.hasMoreElements()) {
             // Iterate all elements in Jar File
@@ -128,6 +135,30 @@ public class PluginManager implements Serializable {
                 }
                 plugins.remove(plugin);
                 break;
+            }
+        }
+    }
+
+    public void loadPluginClasses() {
+        // Get the directory path for JAR files
+        String jarDirectoryPath = "src/main/resources/files";
+
+        // Create a File object for the directory
+        File jarDirectory = new File(jarDirectoryPath);
+
+        // Check if the directory exists and is a directory
+        if (jarDirectory.exists() && jarDirectory.isDirectory()) {
+            // Get a list of JAR files in the directory
+            File[] jarFiles = jarDirectory.listFiles((dir, name) -> name.endsWith(".jar"));
+
+            // Iterate over each JAR file
+            for (File jarFile : jarFiles) {
+                try {
+                    // Load plugins from the current JAR file
+                    loadPlugin(jarFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

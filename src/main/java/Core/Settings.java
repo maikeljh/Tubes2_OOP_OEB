@@ -12,7 +12,7 @@ import java.io.Serializable;
 @XmlRootElement
 public class Settings implements Serializable {
     /* Attributes */
-    private PluginManager pluginManager;
+    private transient PluginManager pluginManager;
     private String format;
     private String saveDirectory;
 
