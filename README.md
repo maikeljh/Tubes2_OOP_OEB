@@ -11,16 +11,23 @@
 Aplikasi ini merupakan suatu program yang dapat digunakan oleh kasir untuk mendata segala keperluan toko BNMO. Program ini dapat digunakan untuk mendata pembelian pelanggan yang dilayani agar pelanggan mendapat keterangan barang yang dibeli beserta harga yang harus dibayar. Untuk hal tersebut, program ini dapat mencetak bill pembelian yang dilakukan pelanggan untuk membantu transaksi pembayaran pelanggan sekaligus pendataan oleh kasir untuk dimasukkan pada laporan penjualan barang - barang pada toko. Selain itu, kasir juga dapat mendata setiap pelanggan yang ingin mendaftar menjadi anggota member atau VIP untuk mendapatkan keuntungan lebih dari pelanggan biasa saat berbelanja di toko BNMO. Program ini dibuat dalam bahasa java dengan extensi JavaFX serta penggunaan maven.
 
 ## Requirements
-Java versi 17 atau lebih
-Maven versi 3.8 atau lebih
-JavaFX-SDK versi 17 atau lebih
-Windows Subsystem Linux (WSL) untuk menjalankan program
+- Java versi 17 atau lebih
+- Maven versi 3.8 atau lebih
+- JavaFX-SDK versi 17 atau lebih (Unduh pada: https://download2.gluonhq.com/openjfx/17.0.7/openjfx-17.0.7_linux-x64_bin-sdk.zip)
+- XServer (untuk menampilkan aplikasi)
+- Windows Subsystem Linux (WSL) untuk menjalankan program
+
 ## Cara Menjalankan Program
 Untuk menjalankan jar program ini, lakukan:
-1. Masuk ke directory letak jar pada WSL terminal anda.
-2. Masukan directory instalasi JavaFX-SDK dalam path environtment variabel.
-3. Jalankan `java --module-path %PATH_TO_FX% --add-modules ALL-MODULE-PATH -jar ApplicationBNMOStore.jar`
-4. Pada %PATH_TO_FX% dapat digantikan dengan direktori langsung lokasi JavaFX-SDK yang telah diunggah.
+1. Jalankan XServer
+2. Masuk ke directory letak jar pada WSL terminal anda.
+3. Jalankan perintah `export DISPLAY=:0`
+4. Bila belum ada jdk versi 17 pada terminal, jalankan perintah `sudo apt-get update`. Lalu jalankan `sudo apt install openjdk-17-jdk`. 
+5. Jalankan `java --module-path %PATH_TO_FX% --add-modules ALL-MODULE-PATH -jar ApplicationBNMOStore.jar`
+
+Perhatikan: 
+- Pada %PATH_TO_FX% dapat digantikan dengan direktori langsung lokasi JavaFX-SDK yang telah diunggah.
+- Untuk membuat %PATH_TO_FX%, masukkan jalur direktori ke JavaFX-SDK ke sebuah variabel tersebut. Kemudian masukkan %PATH_TO_FX% kedalam Path variabel.
 
 Untuk menjalankan program pada project ini, lakukan:
 1. Masuk pada directory projek menggunakan intellij
