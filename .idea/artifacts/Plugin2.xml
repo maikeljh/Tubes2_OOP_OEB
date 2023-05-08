@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="Plugin2">
+  <artifact type="jar" name="Plugin2">
     <output-path>$PROJECT_DIR$/out/artifacts/Plugin2</output-path>
     <root id="archive" name="Plugin2.jar">
       <element id="directory" name="META-INF">
